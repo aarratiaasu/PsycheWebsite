@@ -1,0 +1,15 @@
+body {
+    margin: 0 auto;
+}
+
+header {
+    font-weight: bold;
+}
+
+main {
+    font-weight: normal;
+}
+
+footer {
+    font-weight: normal;
+}

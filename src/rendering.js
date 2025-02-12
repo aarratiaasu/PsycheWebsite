@@ -10,10 +10,12 @@
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
-
+import { loadObjects } from './objects';
+import { CSS2DObject, CSS2DRenderer } from 'three/examples/jsm/Addons.js';
 
 let scene, camera, renderer, controls;
 let clock = new THREE.Clock();
+let labelRenderer;
 
 async function init() {
   scene = new THREE.Scene();
@@ -22,6 +24,13 @@ async function init() {
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFShadowMap;
+
+  labelRenderer = new CSS2DRenderer();
+  labelRenderer.setSize(window.innerWidth, window.innerHeight);
+  labelRenderer.domElement.style.position = 'absolute';
+  labelRenderer.domElement.style.top = '0px';
+  labelRenderer.domElement.style.pointerEvents = 'none';
+  document.body.appendChild(labelRenderer.domElement);
 
   let container = document.getElementById('canvas-container');
   let width = container.clientWidth;
@@ -34,8 +43,8 @@ async function init() {
 
   addLighting();
   addControls();
-  addGroundPlane(scene);
-  
+  addSkySphere(scene);
+  const { player, rocks } = loadObjects(scene);
 
   animate();
 }
@@ -50,28 +59,21 @@ function addLighting() {
   scene.add(directionalLight);
 }
 
-export function addGroundPlane(scene) {
-  const textureLoader = new THREE.TextureLoader();
-  const texture = textureLoader.load('/res/textures/grass.jpg');
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-
-  const material = new THREE.MeshStandardMaterial({ map: texture });
-  const geometry = new THREE.PlaneGeometry(100, 100);
-  const ground = new THREE.Mesh(geometry, material);
-
-  ground.rotation.x = -Math.PI /2;
-  ground.position.y = 0;
-  ground.receiveShadow = true;
-  scene.add(ground);
-}
-
 function addControls() {
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
   controls.screenSpacePanning = false;
   controls.maxPolarAngle = Math.PI / 2;
+}
+
+function addSkySphere(scene) {
+  const textureLoader = new THREE.TextureLoader();
+  const texture = textureLoader.load('/res/textures/8k_stars_milky_way.jpg');
+  const skyGeometry = new THREE.SphereGeometry(500, 32, 32);
+  const SkyMaterial = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
+  const skySphere = new THREE.Mesh(skyGeometry, SkyMaterial);
+  scene.add(skySphere);
 }
 
 function onWindowResize() {
@@ -81,6 +83,7 @@ function onWindowResize() {
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
   renderer.setSize(width, height);
+  labelRenderer.setSize(width, height);
 }
 
 function animate() {
@@ -90,6 +93,7 @@ function animate() {
   //   world.setp();
   // }
   controls.update();
+  labelRenderer.render(scene, camera);
   renderer.render(scene, camera);
 }
 

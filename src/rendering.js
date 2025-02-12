@@ -15,7 +15,7 @@ import { OrbitControls } from 'three/examples/jsm/Addons.js';
 let scene, camera, renderer, controls;
 let clock = new THREE.Clock();
 
-await function init() {
+async function init() {
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(0,1,10);
@@ -34,7 +34,7 @@ await function init() {
 
   addLighting();
   addControls();
-  addGround(scene);
+  addGroundPlane(scene);
   
 
   animate();
@@ -86,9 +86,9 @@ function onWindowResize() {
 function animate() {
   requestAnimationFrame(animate);
   let deltaTime = clock.getDelta();
-  if(world) {
-    world.setp();
-  }
+  // if(world) {
+  //   world.setp();
+  // }
   controls.update();
   renderer.render(scene, camera);
 }

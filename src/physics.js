@@ -11,8 +11,18 @@ export const gravityPresets = {
 
   export let world = new World(new Vector3(gravityPresets.Earth.x, gravityPresets.Earth.y, gravityPresets.Earth.z));
 
-  export function updateGravity(preset) {
-    if(gravityPresets[preset]) {
-        const { x, y, z}
+  export function updateGravity(preset, rigidBodies) {
+    if (!(preset in gravityPresets)) {
+      console.error(`Invalid gravity preset: ${preset}`);
+      return;
     }
+  
+    const gravityScale = gravityPresets[preset];
+  
+    for (let body of rigidBodies) {
+      body.setGravityScale(gravityScale, true);
+    }
+  
+    console.log(`Gravity updated to: ${preset} (Scale: ${gravityScale})`);
   }
+  

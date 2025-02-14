@@ -12,10 +12,12 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { loadObjects } from './objects';
 import { CSS2DObject, CSS2DRenderer } from 'three/examples/jsm/Addons.js';
+import { world, updateGravity } from './physics';
 
 let scene, camera, renderer, controls;
 let clock = new THREE.Clock();
 let labelRenderer;
+let rigidBodies = [];
 
 async function init() {
   scene = new THREE.Scene();
@@ -44,8 +46,17 @@ async function init() {
   addLighting();
   addControls();
   addSkySphere(scene);
-  const { player, rocks } = loadObjects(scene);
+  loadObjects(scene, world, rigidBodies);
 
+/** ////////////////
+ * using three.js shapes instead of models is conflicting with creating 
+ * rigid bodies that can have their physics/gravityscale altered dynamically.
+ * Consider using basic glb models instead of three.js objects to implement and test
+ * physics, or look at an alternative approach to dynamically modifying gravity
+ */////////////////
+
+
+  updateGravity("Earth", rigidBodies);
   animate();
 }
 
@@ -86,12 +97,16 @@ function onWindowResize() {
   labelRenderer.setSize(width, height);
 }
 
+document.getElementById("gravity-selector").addEventListener("change", (event) => {
+  updateGravity(event.target.value, rigidBodies);
+});
+
 function animate() {
   requestAnimationFrame(animate);
   let deltaTime = clock.getDelta();
-  // if(world) {
-  //   world.setp();
-  // }
+  if(world) {
+    world.setp();
+  }
   controls.update();
   labelRenderer.render(scene, camera);
   renderer.render(scene, camera);

@@ -21,7 +21,7 @@
 
 import * as THREE from 'three';
 import { CSS2DObject, GLTFLoader } from 'three/examples/jsm/Addons.js';
-
+import * as RAPIER from '@dimforge/rapier3d';
 
 export function createTerrain(scene) {
     const textureLoader = new THREE.TextureLoader();
@@ -42,7 +42,7 @@ export function createTerrain(scene) {
     scene.add(ground);
   }
 
-export function createPlayer(scene, playerHeight = 1.8) {
+export function createPlayer(scene, world, playerHeight = 1.8) {
     const radius = .4;
     const playerGeometry = new THREE.CylinderGeometry(radius, radius, playerHeight, 16);
     const playerMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
@@ -54,10 +54,16 @@ export function createPlayer(scene, playerHeight = 1.8) {
 
     createTextLabel("Player", player);
 
-    return player;
+    const rigidBodyDesc = RAPIER.RigidBodyDesc.dynamic().setTranslation(0, playerHeight / 2, 0);
+    const rigidBody = world.createRigidBody(rigidBodyDesc);
+
+    const colliderDesc = RAPIER.ColliderDesc.cylinder(playerHeight / 2, radius);
+    world.createCollider(colliderDesc, rigidBody);
+
+    return rigidBody; 
 }
 
-export function createRocks(scene, count = 5) {
+export function createRocks(scene, world, count = 5) {
     const rocks = [];
     for(let i = 0; i < count; i++) {
         const size = Math.random() * .5 +.2;
@@ -98,11 +104,26 @@ function createTextLabel(name, object) {
     object.add(label);
 }
 
-export function loadObjects(scene, playerHeight = 1.8) {
+export function loadObjects(scene, world, rigidBodies, playerHeight = 1.8) {
     createTerrain(scene);
-    const player = createPlayer(scene, playerHeight);
+    const player = createPlayer(scene, world, playerHeight);
     const rocks = createRocks(scene, 5);
     createStaticObjects(scene);
+    loadRocks(scene);
+    rigidBodies.push(player, rocks);
+    return rigidBodies;
+}
 
-    return { player, rocks };
+
+///// LOAD GLB OBJECTS
+
+export function loadRocks(scene) {
+    const loader = new GLTFLoader();
+    loader.load('/res/models/rock.glb', (gltf) => {
+        const rock = gltf.scene;
+        rock.position.set(10,0,10);
+        scene.add(rock);
+    }, undefined, (error) => {
+        console.error('Error loading glb rock:', error);
+    });
 }

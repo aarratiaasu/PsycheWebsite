@@ -60,7 +60,7 @@ export function createPlayer(scene, world, playerHeight = 1.8) {
     const colliderDesc = RAPIER.ColliderDesc.cylinder(playerHeight / 2, radius);
     world.createCollider(colliderDesc, rigidBody);
 
-    return rigidBody; 
+    return { mesh: player, body: rigidBody };
 }
 
 export function createRocks(scene, world, count = 5) {
@@ -110,7 +110,7 @@ export function loadObjects(scene, world, rigidBodies, playerHeight = 1.8) {
     const rocks = createRocks(scene, 5);
     createStaticObjects(scene);
     loadRocks(scene);
-    rigidBodies.push(player, rocks);
+    rigidBodies.push(player.body, ...rocks.map(rock => rock.body));
     return rigidBodies;
 }
 

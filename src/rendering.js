@@ -103,13 +103,17 @@ document.getElementById("gravity-selector").addEventListener("change", (event) =
 
 function animate() {
   requestAnimationFrame(animate);
+  
   let deltaTime = clock.getDelta();
+  
   if(world) {
-    world.setp();
+    world.step();
   }
+
   controls.update();
   labelRenderer.render(scene, camera);
   renderer.render(scene, camera);
 }
+
 
 init();

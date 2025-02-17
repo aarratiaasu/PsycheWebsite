@@ -103,11 +103,31 @@ document.getElementById("gravity-selector").addEventListener("change", (event) =
 
 function animate() {
   requestAnimationFrame(animate);
-  
+
   let deltaTime = clock.getDelta();
-  
-  if(world) {
+
+  if (world) {
     world.step();
+    console.log("into world.step()");
+
+    console.log("Current rigidBodies list:", rigidBodies);
+
+    for (let body of rigidBodies) { 
+      console.log("in for loop", body);
+
+      const position = body.translation(); 
+      const velocity = body.linvel();
+
+      console.log(`Object Position: X:${position.x}, Y:${position.y}, Z:${position.z}`);
+      console.log(`Object Velocity: X:${velocity.x}, Y:${velocity.y}, Z:${velocity.z}`);
+
+      const mesh = scene.children.find(obj => obj.userData?.rigidBody === body);
+      if (mesh) {
+        mesh.position.set(position.x, position.y, position.z);
+      } else {
+        console.warn("No matching mesh found for body:", body);
+      }
+    }
   }
 
   controls.update();

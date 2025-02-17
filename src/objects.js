@@ -48,38 +48,56 @@ export function createPlayer(scene, world, playerHeight = 1.8) {
     const playerMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
     const player = new THREE.Mesh(playerGeometry, playerMaterial);
     
-    player.position.set(0, playerHeight / 2, 0);
+    player.position.set(0, playerHeight / 2, 0);    
+
     player.castShadow = true;
     scene.add(player);
 
     createTextLabel("Player", player);
 
     const rigidBodyDesc = RAPIER.RigidBodyDesc.dynamic().setTranslation(0, playerHeight / 2, 0);
-    const rigidBody = world.createRigidBody(rigidBodyDesc);
+    const playerRigidBody = world.createRigidBody(rigidBodyDesc);
+
+    console.log("Player RigidBody created:", playerRigidBody);
+    console.log("Player Initial Position:", playerRigidBody.translation());
 
     const colliderDesc = RAPIER.ColliderDesc.cylinder(playerHeight / 2, radius);
-    world.createCollider(colliderDesc, rigidBody);
-
-    return { mesh: player, body: rigidBody };
+    world.createCollider(colliderDesc, playerRigidBody);
+    player.userData.rigidBody = playerRigidBody;
+    return { mesh: player, body: playerRigidBody };
 }
 
 export function createRocks(scene, world, count = 5) {
     const rocks = [];
-    for(let i = 0; i < count; i++) {
-        const size = Math.random() * .5 +.2;
+
+    for (let i = 0; i < count; i++) {
+        const size = Math.random() * 0.5 + 0.2;
         const geometry = new THREE.SphereGeometry(size, 12, 12);
         const material = new THREE.MeshStandardMaterial({ color: 0x7a5c45 });
-        const rock = new THREE.Mesh(geometry, material);
+        const rockMesh = new THREE.Mesh(geometry, material);
 
-        rock.position.set(
+        rockMesh.position.set(
             (Math.random() - 0.5) * 80,
             size / 2,
             (Math.random() - 0.5) * 80
         );
-        scene.add(rock);
-        createTextLabel(`Rock ${i + 1}`, rock);
-        rocks.push(rock);
+        scene.add(rockMesh);
+        createTextLabel(`Rock ${i + 1}`, rockMesh);
+
+        const rigidBodyDesc = RAPIER.RigidBodyDesc.dynamic().setTranslation(
+            rockMesh.position.x, rockMesh.position.y, rockMesh.position.z
+        );
+        const rockRigidBody = world.createRigidBody(rigidBodyDesc);
+
+        console.log("Rock RigidBody created:", rockRigidBody);
+        console.log("Rock Initial Position:", rockRigidBody.translation());
+
+        const colliderDesc = RAPIER.ColliderDesc.ball(size);
+        world.createCollider(colliderDesc, rockRigidBody);
+        rockMesh.userData.rigidBody = rockRigidBody;
+        rocks.push({ mesh: rockMesh, body: rockRigidBody }); 
     }
+
     return rocks;
 }
 
@@ -106,10 +124,13 @@ function createTextLabel(name, object) {
 
 export function loadObjects(scene, world, rigidBodies, playerHeight = 1.8) {
     createTerrain(scene);
+
     const player = createPlayer(scene, world, playerHeight);
-    const rocks = createRocks(scene, 5);
+    const rocks = createRocks(scene, world, 5);
+
     createStaticObjects(scene);
     loadRocks(scene);
+
     rigidBodies.push(player.body, ...rocks.map(rock => rock.body));
     return rigidBodies;
 }
@@ -119,9 +140,10 @@ export function loadObjects(scene, world, rigidBodies, playerHeight = 1.8) {
 
 export function loadRocks(scene) {
     const loader = new GLTFLoader();
-    loader.load('/res/models/rock.glb', (gltf) => {
+    loader.load('/res/models/sonic_forces_sonic_rig.glb', (gltf) => {
         const rock = gltf.scene;
         rock.position.set(10,0,10);
+        rock.scale.set(1,1,1);
         scene.add(rock);
     }, undefined, (error) => {
         console.error('Error loading glb rock:', error);

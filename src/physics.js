@@ -10,6 +10,8 @@ export const gravityPresets = {
   };
 
   export let world = new World(new Vector3(gravityPresets.Earth.x, gravityPresets.Earth.y, gravityPresets.Earth.z));
+  console.log("Rapier World created:", world);
+  console.log("Gravity Vector:", world.gravity);
 
   export function updateGravity(preset, rigidBodies) {
     if (!(preset in gravityPresets)) {
@@ -19,10 +21,21 @@ export const gravityPresets = {
   
     const gravityScale = gravityPresets[preset];
   
+    console.log(`Updating gravity to: ${preset}`);
+    console.log(`Gravity Scale Value:`, gravityScale);
+
     for (let body of rigidBodies) {
+      if (!body) {
+        console.error("Found undefined body in rigidBodies list!");
+        continue;
+      }
+  
+    //   console.log("Applying gravity scale to:", body);
       body.setGravityScale(gravityScale, true);
+    //   console.log(`Gravity scale applied to object:`, gravityScale());
     }
   
     console.log(`Gravity updated to: ${preset} (Scale: ${gravityScale})`);
   }
+  
   

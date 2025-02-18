@@ -24,11 +24,14 @@ main {
 }
 
 #canvas-container {
-    width: 80vw;
-    height: 85vh;
+    width: 55vw;  
+    height: 40vh; 
     background-color: #e0e0e0;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px; 
+    overflow: hidden; 
 }
+
 
 footer {
     background-color: #f0f0f0;

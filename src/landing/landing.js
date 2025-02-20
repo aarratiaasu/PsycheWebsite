@@ -1,11 +1,13 @@
 import * as THREE from 'three';
-import { enableTextInteractivity } from './utils.js';
+import { enableTextInteractivity, enableModelClick } from './utils.js';
 import { createStarfield, loadSun } from './starfield.js';
-import gsap from 'gsap';
+import { initSectionTracking, getCurrentSection } from './sectionTracking.js';
+import { createNavMenu } from './nav.js';
 import { loadSection0 } from './section0.js';
 import { loadSection1 } from './section1.js';
 import { loadSection2 } from './section2.js';
-
+import { loadSection3 } from './section3.js';
+import { loadSection4 } from './section4.js';
 
 function init() {
 
@@ -13,12 +15,13 @@ function init() {
     let scrollProgress = 1;
     let currentSection = 1;
     const sections = [
-        { x: 0, y: 100, z: -60 },    
+        { x: 0, y: 200, z: -60 },    
         { x: 0, y: 0, z: 13 }, 
-        { x: 60, y: -95, z: 20 }, 
-        { x: 40, y: -60, z: -100 },    
+        { x: 120, y: -60, z: 60 }, 
+        { x: 40, y: -60, z: -260 },    
         { x: 40, y: 60, z: -200 },    
-        { x: 40, y: 100, z: -300 }    
+        { x: 40, y: 100, z: -300 },     
+        { x: 20, y: 30, z: 10 },     
     ];
 
     // Scene setup
@@ -29,7 +32,7 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     document.getElementById('canvas-container').appendChild(renderer.domElement);
-
+    createNavMenu(scene);
     // Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
@@ -38,43 +41,12 @@ function init() {
     directionalLight.position.set(0, 0, 5);
     scene.add(directionalLight);
 
-    // scroll control
-    function onScroll(event) {
-        scrollProgress += event.deltaY * 0.01; 
-        scrollProgress = Math.max(0, Math.min(scrollProgress, sections.length - 1)); 
+    initSectionTracking(camera, sections, renderer);
 
-        const newSection = Math.round(scrollProgress);
-
-        if (newSection !== currentSection) {
-            currentSection = newSection;
-
-            gsap.to(camera.position, {
-                x: sections[currentSection].x,
-                y: sections[currentSection].y,
-                z: sections[currentSection].z,
-                duration: 2,
-                ease: "power2.inOut",
-                onUpdate: () => {
-                    camera.lookAt(getLookAtTarget(currentSection)); 
-                }
-            });
-
-        }
-    }
-    window.addEventListener("wheel", onScroll);
-    window.addEventListener("touchmove", onScroll);
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-
-    //// ADD FRUSTUM TO LOAD ALL OBJECTS AT ONCE, THEN HIDE THEM UNTIL THEY ARE 
-    //// CLOSE TO THE CAMERA'S FIELD OF VIEW
-
-    /////////// DEBUG PANEL
+/////////// DEBUG PANEL
     const debugPanel = document.getElementById('debug-panel');
     function updateDebugPanel() {
+        const currentSection = getCurrentSection();
         debugPanel.innerHTML = `
             <strong>Current Section:</strong>
             ${currentSection}<br>
@@ -84,18 +56,35 @@ function init() {
             Z: ${camera.position.z.toFixed(2)}
         `;
     }
-    /////////// DEBUG PANEL
+/////////// DEBUG PANEL
+
     function animate() {
         requestAnimationFrame(animate);
         updateDebugPanel();
         composer.render();
     }
+
+    // Enable text interactivity before model loading
     enableTextInteractivity(camera, scene, renderer);
+
     const composer = loadSun(scene, renderer, camera);
-    loadSection0(scene);
-    loadSection1(scene, camera);
-    createStarfield(scene);
-    animate();
+
+    Promise.all([
+        loadSection0(scene),
+        loadSection1(scene, camera),
+        loadSection2(scene, camera, sections),
+        loadSection3(scene, camera),
+        loadSection4(scene, camera)
+    ]).then(() => {
+        console.log("All sections loaded.");
+
+        createStarfield(scene);
+        enableModelClick(camera, renderer);
+
+        animate();
+    }).catch(error => {
+        console.error("Error loading sections:", error);
+    });
 }
 
 init();

@@ -9,7 +9,7 @@
 html, body {
     width: 100vw;
     height: 100vh;
-    overflow: hidden; /* Removes all scrollbars */
+    overflow: hidden; 
     display: flex;
     flex-direction: column;
 }
@@ -29,7 +29,7 @@ main {
 #canvas-container {
     width: 100vw;
     height: 100vh;
-    position: absolute; /* Ensures it fully covers the viewport */
+    position: absolute; 
     top: 0;
     left: 0;
 }
@@ -37,7 +37,7 @@ main {
 #debug-panel {
     position: absolute;
     top: 10px;
-    left: 10px;
+    right: 10px; 
     background: rgba(0, 0, 0, 0.7);
     color: white;
     padding: 5px 10px;
@@ -46,3 +46,4 @@ main {
     border-radius: 4px;
     z-index: 10;
 }
+

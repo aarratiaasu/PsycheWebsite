@@ -1,7 +1,7 @@
 import { createTextMesh, loadModel, createMenu, loadBadge } from './utils.js';
 
 export function loadSection0(scene) {
-    const mainTextPosition = { x: -12, y: 106, z: -73 };
+    const mainTextPosition = { x: -12, y: 206, z: -73 };
     const mainTextRotation = { x: 0, y: 0.1, z: 0 };
 
     createTextMesh("REFERENCES", mainTextPosition, mainTextRotation, 1, scene);

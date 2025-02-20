@@ -11,10 +11,11 @@ const modelCache = new Map();
 // Function to Create Text Mesh
 export function createTextMesh(text, position, rotation, size=1.5, scene) {
     const fontLoader = new FontLoader();
-    fontLoader.load('/res/font/DroidSans_Regular.json', (font) => {
+    fontLoader.load('/res/font/GenosThin_Regular.json', (font) => {
+    
         const textGeometry = new TextGeometry(text, {
             font: font,
-            size: size,
+            size: 2,
             depth: 0.3,
             curveSegments: 12,
             bevelEnabled: true,
@@ -68,7 +69,7 @@ export function createTextMesh(text, position, rotation, size=1.5, scene) {
 }
 
 
-export function loadModel(name, path, position, scale, rotation, animation, scene) {
+export function loadModel(name, path, position, scale, rotation, animation, scene, onLoadCallback) {
     if (modelCache.has(name)) {
         const model = modelCache.get(name);
         model.position.set(position.x, position.y, position.z);
@@ -76,6 +77,9 @@ export function loadModel(name, path, position, scale, rotation, animation, scen
         model.rotation.set(rotation.x, rotation.y, rotation.z);
         scene.add(model);
         animateModel(model, animation);
+
+        if (onLoadCallback) onLoadCallback(model);
+
         return model;
     }
 
@@ -86,14 +90,22 @@ export function loadModel(name, path, position, scale, rotation, animation, scen
         model.scale.set(scale, scale, scale);
         model.rotation.set(rotation.x, rotation.y, rotation.z);
 
+        model.traverse((child) => {
+            if (child.isMesh) {
+                child.geometry.computeBoundingSphere();
+            }
+        });
+
         modelCache.set(name, model);
         scene.add(model);
-        
         animateModel(model, animation);
+
+        if (onLoadCallback) onLoadCallback(model);
     }, undefined, (error) => {
         console.error(`Error loading model ${name}:`, error);
     });
 }
+
 
 // Function to Animate Model with GSAP
 function animateModel(model, animation) {
@@ -146,7 +158,7 @@ export function createMenuItem(text, position, scene, onClick) {
     const fontLoader = new FontLoader();
     const textMesh = new THREE.Mesh();
 
-    fontLoader.load('/res/font/DroidSans_Regular.json', (font) => {
+    fontLoader.load('/res/font/GenosThin_Regular.json', (font) => {
         const textGeometry = new TextGeometry(text, {
             font: font,
             size: 0.5,
@@ -159,18 +171,34 @@ export function createMenuItem(text, position, scene, onClick) {
             bevelSegments: 5
         });
 
-        const textMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
+        const textMaterial = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            transparent: true, 
+            opacity: 1,
+            emissive: 0x000000,
+            metalness: 0,
+            roughness: 1      
+        });
+
         textMesh.geometry = textGeometry;
         textMesh.material = textMaterial;
-        textMesh.position.set(position.x+1, position.y-1.5, position.z);
+        textMesh.position.set(position.x + 1, position.y - 1.25, position.z); 
         textMesh.userData.onClick = onClick;
         textMesh.userData.originalColor = textMaterial.color.getHex();
 
         interactiveTextMeshes.push(textMesh);
+
+        gsap.to(textMaterial, {
+            opacity: 1,
+            duration: 2,
+            delay: Math.abs(position.y) * 0.15, 
+            ease: "power2.out"
+        });
     });
 
     return textMesh;
 }
+
 
 
 function onMouseMove(event, camera, renderer) {
@@ -196,10 +224,14 @@ function onMouseMove(event, camera, renderer) {
             }
 
             hoveredText = intersectedText;
-            hoveredText.userData.originalColor = hoveredText.material.color.getHex(); 
+
+            if (!hoveredText.userData.originalColorStored) {
+                hoveredText.userData.originalColor = hoveredText.material.color.getHex();
+                hoveredText.userData.originalColorStored = true;
+            }
 
             gsap.to(hoveredText.material.color, { 
-                r: 1, g: 0.7, b: 0, 
+                r: 1, g: 0.5, b: 0, 
                 duration: 0.3 
             });
             gsap.to(hoveredText.scale, { x: 1.2, y: 1.2, z: 1.2, duration: 0.3 });
@@ -217,6 +249,8 @@ function onMouseMove(event, camera, renderer) {
         }
     }
 }
+
+
 
 
 
@@ -242,48 +276,42 @@ export function loadBadge(scene) {
     // load the psyche icon/badge into the scene
 }
 
-const raycaster1 = new THREE.Raycaster();
-const mouse1 = new THREE.Vector2();
-let isHoveringAsteroid = false;
-let originalCameraPosition = null;
 
-// Function to Detect Model Hover and Move Camera
-export function enableModelHoverEffect(camera, scene) {
-    window.addEventListener("mousemove", (event) => {
-        if (!asteroidModel) return; // Ensure the model is loaded
+const modelRaycaster = new THREE.Raycaster();
+const modelMouse = new THREE.Vector2();
+const clickableModels = [];
 
-        // Convert mouse position to normalized device coordinates
+/**
+ * Add a model to be clickable.
+ * @param {THREE.Object3D} model - The 3D model to make clickable.
+ * @param {Function} onClick - Callback when the model is clicked.
+ */
+export function makeModelClickable(model, onClick) {
+    model.traverse((child) => {
+        if (child.isMesh) {
+            child.userData.onClick = onClick;
+            clickableModels.push(child); 
+        }
+    });
+}
+
+/**
+ * Listen for clicks on the scene and trigger callbacks.
+ */
+export function enableModelClick(camera, renderer) {
+    window.addEventListener("click", (event) => {
         const rect = renderer.domElement.getBoundingClientRect();
-        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        modelMouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        modelMouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
-        // Cast a ray to check for intersection
-        raycaster.setFromCamera(mouse, camera);
-        const intersects = raycaster.intersectObject(asteroidModel, true);
+        modelRaycaster.setFromCamera(modelMouse, camera);
+        const intersects = modelRaycaster.intersectObjects(clickableModels, true);
 
         if (intersects.length > 0) {
-            if (!isHoveringAsteroid) {
-                isHoveringAsteroid = true;
-                originalCameraPosition = { ...camera.position };
-
-                // Move camera slightly right & up
-                gsap.to(camera.position, {
-                    x: camera.position.x + 3,
-                    y: camera.position.y + 2,
-                    duration: 1,
-                    ease: "power2.out"
-                });
+            const clickedModel = intersects[0].object;
+            if (clickedModel.userData.onClick) {
+                clickedModel.userData.onClick();
             }
-        } else if (isHoveringAsteroid) {
-            isHoveringAsteroid = false;
-
-            // Reset camera position
-            gsap.to(camera.position, {
-                x: originalCameraPosition.x,
-                y: originalCameraPosition.y,
-                duration: 1,
-                ease: "power2.out"
-            });
         }
     });
 }

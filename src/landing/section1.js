@@ -63,7 +63,7 @@ export function loadSection1(scene, camera) {
         });
 
         resolve();
-      }
+      }, camera
     );
 
     // Timeout if model fails to load within 10 seconds
@@ -73,10 +73,12 @@ export function loadSection1(scene, camera) {
     const startButton = { text: "Begin the journey", onClick: () => moveToSection(2) }
     // Create navigation menu after the model loads
     const menuItems = [
-      { text: "Mission Overview", onClick: () => moveToSection(1) },
-      { text: "Section 2", onClick: () => moveToSection(2) },
+      { text: "Psyche", onClick: () => moveToSection(2, psycheModelPosition) }, 
       { text: "Section 3", onClick: () => moveToSection(3) },
-      { text: "Psyche", onClick: () => moveToSection(6, psycheModelPosition) }, 
+      { text: "Section 4", onClick: () => moveToSection(4) },
+      { text: "Section 5", onClick: () => moveToSection(5) },
+      { text: "Section 6", onClick: () => moveToSection(6) },
+      { text: "Section 7", onClick: () => moveToSection(7) },
       { text: "References", onClick: () => moveToSection(0) }
     ];
     createMenu(menuItems, mainTextPosition, mainTextRotation, scene);

@@ -43,11 +43,11 @@ function init() {
   const sections = [
     { x: 0, y: 200, z: -60 },    // 0 references
     { x: 0, y: 0, z: 13 },       // 1 main section
-    { x: 120, y: -60, z: 60 },   // 2 nasa logo
+    { x: 20, y: 30, z: 10 },     // 2 Psyche Asteroid
     { x: 40, y: -60, z: -260 },  // 3 Armando's balance game (not functional in this scene)
     { x: 40, y: 60, z: -200 },   // 4 blank
     { x: 40, y: 100, z: -300 },  // 5 blank  
-    { x: 20, y: 30, z: 10 },     // 6 Psyche Asteroid
+    { x: 120, y: -60, z: 60 },   // 6 nasa logo
     { x: 200, y: 300, z: -110 }  // 7 Blank
     // sections can be added simply by adding a new coordinate to this list
     // the scene will be able to scroll to that section as soon as it is added. 
@@ -125,7 +125,7 @@ function init() {
     loadSection3(scene, camera),
     loadSection4(scene, camera, sections),
     loadSection5(scene, camera),
-    loadSection6(scene, camera),
+    loadSection6(scene, camera, sections),
     loadSection7(scene, camera)
   ]).then(() => {
     console.log("All sections loaded.");

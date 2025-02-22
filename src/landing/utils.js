@@ -310,7 +310,7 @@ export function createMenu(menuItems, referencePosition, referenceRotation, scen
   menuGroup.position.set(referencePosition.x, referencePosition.y, referencePosition.z);
   menuGroup.rotation.set(referenceRotation.x, referenceRotation.y, referenceRotation.z);
 
-  const menuSpacing = 2; // Vertical spacing between menu items
+  const menuSpacing = 1.2; // Vertical spacing between menu items
   const startY = 0;      // Starting Y position for the first menu item
 
   // Iterate over menu items and create each as a text mesh
@@ -613,6 +613,48 @@ export function enableModelClick(camera, renderer) {
       }
     }
   });
+}
+
+/**
+ * Calculates responsive spacing based on camera FOV, viewport size, and depth.
+ * @param {THREE.PerspectiveCamera} camera - The active perspective camera.
+ * @param {number} depth - Distance from the camera to the 3D element.
+ * @param {number} itemCount - Number of elements to space out.
+ * @param {number} [paddingFactor=1] - Optional multiplier for custom spacing.
+ * @returns {number} - The calculated spacing.
+ */
+export function getResponsiveSpacing(camera, depth, itemCount, paddingFactor = 1) {
+  const vFOV = THREE.MathUtils.degToRad(camera.fov);
+  const visibleHeight = 2 * Math.tan(vFOV / 2) * Math.abs(depth);
+
+  // Return spacing scaled by padding factor
+  return (visibleHeight / (itemCount + 1)) * paddingFactor;
+}
+
+/**
+ * Utility to get visible width at a certain depth (for horizontal spacing)
+ */
+export function getResponsiveWidth(camera, depth) {
+  const height = getResponsiveSpacing(camera, depth, 1);
+  return height * camera.aspect;
+}
+
+/**
+ * Calculates a dynamic scale based on the camera's FOV and distance to the object.
+ * 
+ * @param {THREE.PerspectiveCamera} camera - The camera in the scene.
+ * @param {Object} modelPosition - The position of the model { x, y, z }.
+ * @param {number} baseScale - The initial scale factor for the model.
+ * @param {number} [scaleFactor=20] - Divisor to control overall scale size (tweak as needed).
+ * @returns {number} - The dynamically calculated scale.
+ */
+export function getDynamicScale(camera, modelPosition, baseScale, scaleFactor = 20) {
+  const depth = Math.abs(modelPosition.z - camera.position.z); // Distance from camera to model
+  const vFOV = THREE.MathUtils.degToRad(camera.fov);           // Convert FOV to radians
+  const visibleHeight = 2 * Math.tan(vFOV / 2) * depth;        // Visible height at model depth
+
+  // Dynamic scale based on visible height and base scale
+  return baseScale * (visibleHeight / scaleFactor);
 }
 
 

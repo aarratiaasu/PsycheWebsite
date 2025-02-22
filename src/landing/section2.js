@@ -54,7 +54,6 @@ export function loadSection2(scene, camera, sections) {
       /*
        * Ensure bounding spheres exist for all meshes within the model.
        * 
-       * Why is this necessary?
        * - **Frustum Culling Optimization**: Three.js uses bounding spheres to quickly determine
        *   whether an object is within the camera's view (the frustum). If a bounding sphere
        *   is entirely outside the frustum, the mesh can be skipped during rendering, improving performance.

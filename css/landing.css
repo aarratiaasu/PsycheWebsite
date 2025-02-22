@@ -1,11 +1,9 @@
-/* Reset Defaults */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Ensure Fullscreen Layout */
 html, body {
     width: 100vw;
     height: 100vh;
@@ -14,7 +12,6 @@ html, body {
     flex-direction: column;
 }
 
-/* Main Scene Container */
 main {
     display: flex;
     justify-content: center;
@@ -25,7 +22,6 @@ main {
     overflow: hidden;
 }
 
-/* Three.js Canvas Container */
 #canvas-container {
     width: 100vw;
     height: 100vh;
@@ -47,3 +43,62 @@ main {
     z-index: 10;
 }
 
+#background-switcher {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 15px;
+    background-color: #242526;
+    box-shadow: 0 0 12px rgba(0, 150, 255, 0.7);
+    overflow: hidden;
+    z-index: 10;
+    width: 180px;
+}
+
+#menu-trigger {
+    color: orange;
+    font-family: 'Roboto', 'Arial', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 15px;
+    background-color: #242526;
+    user-select: none;
+}
+
+#background-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background-color: #242526;
+    border-radius: 0 0 15px 15px;
+}
+
+#background-switcher:hover #background-menu {
+    max-height: 300px;
+}
+
+#background-menu li {
+    padding: 10px;
+    color: orange;
+    cursor: pointer;
+    text-align: center;
+    border-top: 1px solid #3a3b3c;
+    transition: background-color 0.2s ease;
+    font-family: 'Roboto', 'Arial', sans-serif;
+    font-size: 14px;
+}
+
+#background-menu li:hover {
+    background-color: #3a3b3c;
+}
+
+#background-switcher:hover {
+    box-shadow: 0 0 16px rgba(0, 150, 255, 1);
+}

@@ -15,7 +15,7 @@
  *   and sets up the navigation menu.
  */
 
-import { createTextMesh, loadModel, createMenu, makeModelClickable } from './utils.js';
+import { createTextMesh, loadModel, createMenu, makeModelClickable, createMenuItem } from './utils.js';
 import { moveToSection } from './sectionTracking.js';
 
 let asteroidModel = null;
@@ -70,6 +70,7 @@ export function loadSection1(scene, camera) {
     setTimeout(() => reject("Model load timeout"), 10000); 
   })
   .then(() => {
+    const startButton = { text: "Begin the journey", onClick: () => moveToSection(2) }
     // Create navigation menu after the model loads
     const menuItems = [
       { text: "Mission Overview", onClick: () => moveToSection(1) },
@@ -84,3 +85,4 @@ export function loadSection1(scene, camera) {
     console.error("Error loading Section 1:", error);
   });
 }
+

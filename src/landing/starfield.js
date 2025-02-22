@@ -12,6 +12,11 @@
  * Functions:
  * - createStarfield(): Generates and adds a starfield to the scene.
  * - loadSun(): Adds a sun object and applies bloom post-processing effects.
+ * 
+ * THIS FILE HANDLES CREATING THE STARFIELD BACKGROUND AND ADDING A SUN WITH BLOOM EFFECTS TO THE BACKGROUND
+ * BLOOM EFFECTS ARE CRITICAL IN ADDING A REALISTIC SUN TO THE SCENE, BUT THEY REQUIRE AN EFFECT COMPOSER
+ * TO BE RENDERED IN THE ANIMATE LOOP
+ * 
  */
 
 import * as THREE from 'three';

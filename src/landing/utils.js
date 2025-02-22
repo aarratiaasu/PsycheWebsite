@@ -103,7 +103,7 @@ export function createTextMesh(text, position, rotation, size = 1.5, scene) {
     // Create the geometry for the 3D text
     const textGeometry = new TextGeometry(text, {
       font: font,
-      size: 2,
+      size: size,
       depth: 0.3,
       curveSegments: 12,
       bevelEnabled: true,

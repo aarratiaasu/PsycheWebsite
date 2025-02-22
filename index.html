@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Physics Scene</title>
   <link rel="stylesheet" href="/css/landing.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
@@ -12,6 +13,15 @@
   <main id="scene-container">
     <div id="canvas-container"></div>
     <div id="debug-panel"></div>
+    <div id="background-switcher">
+      <div id="menu-trigger">Select Background ▼</div>
+      <ul id="background-menu">
+        <li data-value="starfield">Starfield</li>
+        <li data-value="solidColor">Solid Color</li>
+        <li data-value="gradient">Gradient</li>
+        <li data-value="image">Background Image</li>
+      </ul>
+    </div>     
   </main>
   <footer>
   </footer>

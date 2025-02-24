@@ -10,44 +10,20 @@ import gsap from 'gsap';
 let frameMesh;
 
 export function loadSection3(scene, camera) {
-    // Create a frame with text
-    const frameGeometry = new THREE.BoxGeometry(85, 65, 2);
-    const frameMaterial = new THREE.MeshPhongMaterial({ 
-        color: 0x4CAF50,
-        specular: 0x050505,
-        shininess: 100
-    });
-    frameMesh = new THREE.Mesh(frameGeometry, frameMaterial);
-
-    // Add text
+    // Load the balance game preview image and use it as the main texture
     const loader = new THREE.TextureLoader();
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    canvas.width = 512;
-    canvas.height = 512;
-    context.fillStyle = '#ffffff';
-    context.font = 'bold 40px Arial';
-    context.textAlign = 'center';
-    context.fillText('Balance', canvas.width/2, canvas.height/2 - 20);
-    context.font = '30px Arial';
-    context.fillText('Game', canvas.width/2, canvas.height/2 + 20);
-    
-    const texture = new THREE.CanvasTexture(canvas);
-    const textMaterial = new THREE.MeshBasicMaterial({ 
-        map: texture,
-        transparent: true,
-        side: THREE.DoubleSide
+    const previewTexture = loader.load('./img/balance-preview.png');
+    // Create a plane that uses the preview image as its material
+    const previewGeometry = new THREE.PlaneGeometry(85, 65);
+    const previewMaterial = new THREE.MeshBasicMaterial({
+        map: previewTexture,
+        transparent: true
     });
-    
-    const textGeometry = new THREE.PlaneGeometry(80, 60);
-    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-    textMesh.position.z = 1.1;
-    
-    frameMesh.add(textMesh);
+    frameMesh = new THREE.Mesh(previewGeometry, previewMaterial);
     frameMesh.position.set(40, -60, -600);
     scene.add(frameMesh);
 
-    // Add lights to make the frame pop
+    // Add lights to enhance the scene
     const pointLight = new THREE.PointLight(0xffffff, 2, 200);
     pointLight.position.set(40, -60, -550);
     scene.add(pointLight);
@@ -55,14 +31,18 @@ export function loadSection3(scene, camera) {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
-    // Add directional light for better visibility
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position.set(40, -60, -500);
     scene.add(directionalLight);
 
-    // Make the frame clickable
+    // Make the frame clickable - animate then navigate directly to balance.html
     makeModelClickable(frameMesh, () => {
-        window.location.href = './balance/balance.html';
+        gsap.to(frameMesh.position, {
+            z: -1000,
+            duration: 1,
+            ease: "power2.in",
+            onComplete: () => window.location.href = './balance/balance.html'
+        });
     });
 
     // Add hover effect
@@ -78,7 +58,7 @@ export function loadSection3(scene, camera) {
             isHovered = true;
         }
     };
-    
+
     frameMesh.userData.onPointerOut = () => {
         if (isHovered) {
             gsap.to(frameMesh.material.color, {
@@ -111,4 +91,13 @@ export function renderSection3(camera, scene) {
 
         frameMesh.userData.hasAnimated = true;
     }
+}
+
+// If on the balance game page, add a listener for the Escape key to navigate back to the main page.
+if (window.location.href.indexOf('balance.html') !== -1) {
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            window.location.href = './index.html';
+        }
+    });
 }

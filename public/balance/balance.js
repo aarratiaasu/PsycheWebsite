@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const unitToggleBtn = document.getElementById('unitToggleBtn');
     // Track which unit system to use: SI (true) or US (false)
     let useSI = true;
+    // Dark mode is enabled by default
+    let darkMode = true;
     // Planet sizes (in px) for each gravity value (m/s²).
     const planetSizeMap = {
         "0.18": 20,
@@ -19,6 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
         "9.81": 60,
         "10.44": 80,
         "274": 100
+    };
+    
+    // Planet names for each gravity value
+    const planetNameMap = {
+        "0.18": "Psyche",
+        "1.62": "Moon",
+        "3.72": "Mars",
+        "9.81": "Earth",
+        "10.44": "Saturn",
+        "274": "Sun"
     };
     // Main balance beam configuration object
     let balance = {
@@ -159,6 +171,11 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         return planets[value] || '⚪';
     }
+    
+    // Get planet name
+    function getPlanetName(value) {
+        return planetNameMap[value] || 'Unknown';
+    }
     // MAIN PHYSICS
     function calculateWeights() {
         const leftGravity = parseFloat(leftGravitySelect.value);
@@ -222,20 +239,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     // DRAW / RENDER
-    function drawPlanet(ctx, x, y, size, emoji) {
+    function drawPlanet(ctx, x, y, size, emoji, name) {
+        // Draw planet emoji
         ctx.font = `${size}px Arial`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(emoji, x, y);
+        
+        // Draw planet name with background for better visibility
+        const nameText = name;
+        ctx.font = 'bold 16px Arial';
+        
+        // Add a semi-transparent background for the text
+        const textWidth = ctx.measureText(nameText).width;
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        ctx.fillRect(x - textWidth/2 - 5, y + size/2 + 5, textWidth + 10, 25);
+        
+        // Draw the text
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(nameText, x, y + size/2 + 10);
     }
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#666';
+        ctx.fillStyle = darkMode ? '#888' : '#666';
         ctx.fillRect(balance.x - 10, balance.y, 20, balance.pivotHeight);
         ctx.save();
         ctx.translate(balance.x, balance.y);
         ctx.rotate(balance.angle);
-        ctx.fillStyle = '#888';
+        ctx.fillStyle = darkMode ? '#999' : '#888';
         ctx.fillRect(-balance.width / 2, -balance.height / 2, balance.width, balance.height);
         const leftGravity = leftGravitySelect.value;
         const rightGravity = rightGravitySelect.value;
@@ -243,8 +276,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const rightEmoji = getPlanetEmoji(rightGravity);
         const leftSize = planetSizeMap[leftGravity] || 40;
         const rightSize = planetSizeMap[rightGravity] || 40;
-        drawPlanet(ctx, -balance.width / 2, balance.height / 2 + 20, leftSize, leftEmoji);
-        drawPlanet(ctx, balance.width / 2, balance.height / 2 + 20, rightSize, rightEmoji);
+        const leftName = getPlanetName(leftGravity);
+        const rightName = getPlanetName(rightGravity);
+        drawPlanet(ctx, -balance.width / 2, balance.height / 2 + 20, leftSize, leftEmoji, leftName);
+        drawPlanet(ctx, balance.width / 2, balance.height / 2 + 20, rightSize, rightEmoji, rightName);
         ctx.restore();
         particles.forEach(p => p.draw(ctx));
         [...objects.left, ...objects.right].forEach(obj => {
@@ -276,9 +311,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const leftGnum = parseFloat(leftGravitySelect.value);
         const rightGnum = parseFloat(rightGravitySelect.value);
-        ctx.fillStyle = `rgba(255, 255, 0, ${Math.min(leftGnum / 274, 0.3)})`;
+        ctx.fillStyle = darkMode 
+            ? `rgba(255, 255, 0, ${Math.min(leftGnum / 274, 0.2)})` 
+            : `rgba(255, 255, 0, ${Math.min(leftGnum / 274, 0.3)})`;
         ctx.fillRect(0, 0, canvas.width / 2, canvas.height);
-        ctx.fillStyle = `rgba(255, 255, 0, ${Math.min(rightGnum / 274, 0.3)})`;
+        
+        ctx.fillStyle = darkMode 
+            ? `rgba(255, 255, 0, ${Math.min(rightGnum / 274, 0.2)})` 
+            : `rgba(255, 255, 0, ${Math.min(rightGnum / 274, 0.3)})`;
         ctx.fillRect(canvas.width / 2, 0, canvas.width / 2, canvas.height);
     }
     // OBJECT MANAGEMENT
@@ -422,6 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
             calculateWeights();
         }
     });
+    
     function updateGravitySelectLabels() {
         [leftGravitySelect, rightGravitySelect].forEach(select => {
             for (let i = 0; i < select.options.length; i++) {

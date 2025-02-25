@@ -26,6 +26,13 @@
         </div>
         
         <div class="animation-container">
+            <div class="game-controls">
+                <div class="stats">
+                    <div>Score: <span id="balanceScore">0</span></div>
+                    <div class="multiplier">Multiplier: x<span id="multiplier">1</span></div>
+                </div>
+                <div class="hint" id="hint"></div>
+            </div>
             <canvas id="gameCanvas" width="800" height="500"></canvas>
         </div>
         
@@ -45,7 +52,11 @@
     </div>
     
     <div class="objects-container">
-        <button class="unit-toggle-btn" id="unitToggleBtn">Switch to US Units</button>
+        <div class="control-buttons">
+            <button class="unit-toggle-btn" id="unitToggleBtn">Switch to US Units</button>
+            <button class="clear-btn" id="clearBtn">Clear All Objects</button>
+            <div class="challenge" id="challenge"></div>
+        </div>
         <div class="objects-row">
             <!-- Row 1 - Lighter objects -->
             <button class="object-btn" data-mass="0.001" data-si-label="Feather (1g)" data-us-label="Feather (~0.035oz)">🪶 <span>Feather (1g)</span></button>
@@ -73,16 +84,6 @@
         <div class="instructions">
             🖱️ Drag objects from buttons to the balance beam • Move objects after placing • Drag outside to delete
         </div>
-    </div>
-    
-    <div class="controls-container">
-        <div class="stats">
-            <div>Score: <span id="balanceScore">0</span></div>
-            <div class="multiplier">Multiplier: x<span id="multiplier">1</span></div>
-        </div>
-        <div class="hint" id="hint"></div>
-        <div class="challenge" id="challenge"></div>
-        <button class="clear-btn" id="clearBtn">Clear All Objects</button>
     </div>
     <div class="disclaimer">
         Disclaimer: The planets and objects in this simulator are <strong>not drawn to actual scale</strong>. Sizes are stylized representations and do not reflect their real proportions.

@@ -59,7 +59,7 @@ export function loadSection1(scene, camera) {
         // Make the asteroid clickable to move to Psyche section
         makeModelClickable(asteroidModel, () => {
           console.log("asteroid clicked");
-          moveToSection(6, psycheModelPosition);
+          moveToSection(2, psycheModelPosition);
         });
 
         resolve();

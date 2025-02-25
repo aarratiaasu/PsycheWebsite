@@ -2,7 +2,9 @@
  * Balance Viewport Module
  * 
  * This module handles loading the balance.html content in an iframe
- * that appears on top of the Three.js scene instead of navigating away.
+ * that appears on top of the Three.js scene.
+ * 
+ * Updated to include futuristic animations and visual effects.
  */
 
 import * as THREE from 'three';
@@ -14,12 +16,15 @@ let iframe = null;
 let closeButton = null;
 
 /**
- * Creates and shows the balance viewport
+ * Creates and shows the balance viewport with futuristic animations.
  */
 export function showBalanceViewport() {
-    // If viewport already exists, just show it
+    // If viewport already exists, just show it and restart futuristic pulses
     if (viewportContainer) {
         viewportContainer.style.display = 'flex';
+        // Restart pulsating animations
+        gsap.to(viewportContainer, { borderColor: "#fff", duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
+        gsap.to(viewportContainer.querySelector('div'), { boxShadow: "0 0 20px 5px #45a049", duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
         return;
     }
 
@@ -32,8 +37,8 @@ export function showBalanceViewport() {
     viewportContainer.style.top = '50%';
     viewportContainer.style.left = '50%';
     viewportContainer.style.transform = 'translate(-50%, -50%)';
-    viewportContainer.style.width = '110%'; // Increased from 90% to 110% (20% wider)
-    viewportContainer.style.maxWidth = '1440px'; // Increased from 1200px to 1440px (20% wider)
+    viewportContainer.style.width = '110%'; // Increased from 90% to 110%
+    viewportContainer.style.maxWidth = '1440px'; // Increased from 1200px to 1440px
     viewportContainer.style.height = '100vh'; // Increased from 85vh to 95vh (10% higher)
     viewportContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
     viewportContainer.style.border = '2px solid #45a049';
@@ -95,13 +100,29 @@ export function showBalanceViewport() {
     viewportContainer.appendChild(iframe);
     document.body.appendChild(viewportContainer);
     
-    // Add animation for opening
-    gsap.from(viewportContainer, {
+    // Create futuristic opening animations using a timeline
+    const tl = gsap.timeline();
+    tl.from(viewportContainer, {
         opacity: 0,
         scale: 0.8,
         duration: 0.4,
         ease: "power2.out"
     });
+    tl.from(header, {
+        y: -50,
+        duration: 0.3,
+        ease: "back.out(1.7)"
+    }, "-=0.2");
+    tl.from(iframe, {
+        opacity: 0,
+        y: 20,
+        duration: 0.3,
+        ease: "power2.out"
+    }, "-=0.1");
+
+    // Apply continuous futuristic pulse effects
+    gsap.to(viewportContainer, { borderColor: "#fff", duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
+    gsap.to(header, { boxShadow: "0 0 20px 5px #45a049", duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
     
     // Add event listener for close button
     closeButton.addEventListener('click', hideBalanceViewport);
@@ -111,12 +132,12 @@ export function showBalanceViewport() {
 }
 
 /**
- * Hides the balance viewport
+ * Hides the balance viewport with futuristic closing animation.
  */
 export function hideBalanceViewport() {
     if (!viewportContainer) return;
     
-    // Animate closing
+    // Animate closing with a reverse futuristic effect
     gsap.to(viewportContainer, {
         opacity: 0,
         scale: 0.8,
@@ -132,7 +153,7 @@ export function hideBalanceViewport() {
 }
 
 /**
- * Handles keydown events for the viewport
+ * Handles keydown events for the viewport.
  */
 function handleKeyDown(e) {
     if (e.key === 'Escape') {
@@ -141,7 +162,7 @@ function handleKeyDown(e) {
 }
 
 /**
- * Removes the viewport completely
+ * Removes the viewport completely.
  */
 export function destroyBalanceViewport() {
     if (viewportContainer) {

@@ -29,7 +29,7 @@ import { loadSection3, renderSection3 } from './section3.js';
 import { loadSection4 } from './section4.js';
 import { loadSection5 } from './section5.js';
 import { loadSection6 } from './section6.js';
-import { loadSection7 } from './section7.js';
+import { loadSection7, renderSection7 } from './section7.js';
 
 
 /*
@@ -109,6 +109,7 @@ function init() {
       renderer.render(scene, camera);
     }    
     renderSection3(camera,scene);
+    renderSection7(camera,scene);
   }
 
   // Enable text interactivity before loading models

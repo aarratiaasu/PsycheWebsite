@@ -44,9 +44,9 @@ export function loadSection1(scene, camera) {
     // Load asteroid model with position, scale, and animation
     loadModel(
       "asteroid",                     
-      "/res/models/16psyche.glb",     // Model path
+      "/res/models/psyche_new.glb",     // Model path
       { x: 80, y: 60, z: 20 },        // Initial position
-      8,                              // Scale factor
+      6,                              // Scale factor
       { x: 0, y: 0, z: 0 },           // Initial rotation
       {
         position: { x: 20, y: 16, z: -45, duration: 3, ease: "power2.out" },

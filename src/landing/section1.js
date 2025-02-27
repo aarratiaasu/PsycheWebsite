@@ -75,7 +75,7 @@ export function loadSection1(scene, camera) {
     const menuItems = [
       { text: "Psyche", onClick: () => moveToSection(2, psycheModelPosition) }, 
       { text: "Section 3", onClick: () => moveToSection(3) },
-      { text: "Section 4", onClick: () => moveToSection(4) },
+      { text: "Living on Psyche", onClick: () => moveToSection(4) },
       { text: "Section 5", onClick: () => moveToSection(5) },
       { text: "Section 6", onClick: () => moveToSection(6) },
       { text: "Section 7", onClick: () => moveToSection(7) },

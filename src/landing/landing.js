@@ -26,7 +26,7 @@ import { loadSection0 } from './section0.js';
 import { loadSection1 } from './section1.js';
 import { loadSection2 } from './section2.js';
 import { loadSection3, renderSection3 } from './section3.js';
-import { loadSection4 } from './section4.js';
+import { loadSection4, renderSection4 } from './section4.js';
 import { loadSection5 } from './section5.js';
 import { loadSection6 } from './section6.js';
 import { loadSection7 } from './section7.js';
@@ -45,7 +45,7 @@ function init() {
     { x: 0, y: 0, z: 13 },       // 1 main section
     { x: 20, y: 30, z: 10 },     // 2 Psyche Asteroid
     { x: 40, y: -60, z: -260 },  // 3 Armando's balance game (not functional in this scene)
-    { x: 40, y: 60, z: -200 },   // 4 blank
+    { x: 40, y: 60, z: -200 },   // Year Things
     { x: 40, y: 100, z: -300 },  // 5 blank  
     { x: 120, y: -60, z: 60 },   // 6 nasa logo
     { x: 200, y: 300, z: -110 }  // 7 Blank
@@ -109,6 +109,7 @@ function init() {
       renderer.render(scene, camera);
     }    
     renderSection3(camera,scene);
+    renderSection4(camera,scene);
   }
 
   // Enable text interactivity before loading models

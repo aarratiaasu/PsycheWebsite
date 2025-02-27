@@ -1,135 +1,126 @@
 /**
- * Year Viewport Module
- *
- * This module handles loading the year.html content in an iframe
- * that appears on top of the Three.js scene
+ * Section 4 - Year Metrics
  */
+
 import * as THREE from 'three';
+import { getCurrentSection } from './sectionTracking.js';
+import { makeModelClickable } from './utils.js';
 import gsap from 'gsap';
-// Keep track of the viewport DOM elements
-let viewportContainer = null;
-let iframe = null;
-let closeButton = null;
-/**
- * Creates and shows the year viewport
- */
-export function showYearViewport() {
-    // If viewport already exists, just show it
-    if (viewportContainer) {
-        viewportContainer.style.display = 'flex';
-        return;
-    }
-    console.log("Creating Year viewport");
-    // Create container for the viewport
-    viewportContainer = document.createElement('div');
-    viewportContainer.id = 'year-viewport-container';
-    viewportContainer.style.position = 'fixed';
-    viewportContainer.style.top = '50%';
-    viewportContainer.style.left = '50%';
-    viewportContainer.style.transform = 'translate(-50%, -50%)';
-    viewportContainer.style.width = '110%'; // Increased from 90% to 110% (20% wider)
-    viewportContainer.style.maxWidth = '1440px'; // Increased from 1200px to 1440px (20% wider)
-    viewportContainer.style.height = '100vh'; // Increased from 85vh to 95vh (10% higher)
-    viewportContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-    viewportContainer.style.border = '2px solid #45A049';
-    viewportContainer.style.borderRadius = '10px';
-    viewportContainer.style.boxShadow = '0 0 20px rgba(69, 160, 73, 0.5)';
-    viewportContainer.style.zIndex = '1000';
-    viewportContainer.style.display = 'flex';
-    viewportContainer.style.flexDirection = 'column';
-    viewportContainer.style.overflow = 'hidden';
-    // Create header with title and close button
-    const header = document.createElement('div');
-    header.style.display = 'flex';
-    header.style.justifyContent = 'space-between';
-    header.style.alignItems = 'center';
-    header.style.padding = '10px 15px';
-    header.style.backgroundColor = '#45A049';
-    header.style.color = 'white';
-    header.style.borderTopLeftRadius = '8px';
-    header.style.borderTopRightRadius = '8px';
-    const title = document.createElement('h2');
-    title.textContent = 'Life on Psyche';
-    title.style.margin = '0';
-    title.style.fontSize = '1.2rem';
-    closeButton = document.createElement('button');
-    closeButton.textContent = '✕';
-    closeButton.style.background = 'none';
-    closeButton.style.border = 'none';
-    closeButton.style.color = 'white';
-    closeButton.style.fontSize = '1.5rem';
-    closeButton.style.cursor = 'pointer';
-    closeButton.style.padding = '0 5px';
-    closeButton.style.lineHeight = '1';
-    header.appendChild(title);
-    header.appendChild(closeButton);
-    viewportContainer.appendChild(header);
-    // Create iframe to load the balance.html content
-    iframe = document.createElement('iframe');
-    iframe.src = './year/year.html';
-    iframe.style.width = '100%';
-    iframe.style.height = '100%';
-    iframe.style.border = 'none';
-    iframe.style.backgroundColor = '#222';
-    // Add event listener for iframe load errors
-    iframe.onerror = () => {
-        console.error("Failed to load iframe content");
-    };
-    // Add event listener for iframe load success
-    iframe.onload = () => {
-        console.log("Iframe loaded successfully");
-    };
-    viewportContainer.appendChild(iframe);
-    document.body.appendChild(viewportContainer);
-    // Add animation for opening
-    gsap.from(viewportContainer, {
-        opacity: 0,
-        scale: 0.8,
-        duration: 0.4,
-        ease: "power2.out"
+import { showYearViewport, hideYearViewport } from './year.js';
+
+let yearButton;
+let hasShownViewport = false;
+
+export function loadSection4(scene, camera) {
+    // Create a button for the year metrics
+    const buttonGeometry = new THREE.BoxGeometry(40, 20, 5);
+    const buttonMaterial = new THREE.MeshBasicMaterial({
+        color: 0x45a049,
+        transparent: false
     });
-    // Add event listener for close button
-    closeButton.addEventListener('click', hideYearViewport);
-    // Add event listener for Escape key
-    document.addEventListener('keydown', handleKeyDown);
-}
-/**
- * Hides the byear viewport
- */
-export function hideYearViewport() {
-    if (!viewportContainer) return;
-    // Animate closing
-    gsap.to(viewportContainer, {
-        opacity: 0,
-        scale: 0.8,
-        duration: 0.3,
-        ease: "power2.in",
-        onComplete: () => {
-            viewportContainer.style.display = 'none';
-            // Reset opacity and scale for next time
-            viewportContainer.style.opacity = 1;
-            viewportContainer.style.transform = 'translate(-50%, -50%) scale(1)';
+    yearButton = new THREE.Mesh(buttonGeometry, buttonMaterial);
+    yearButton.position.set(40, -60, -360);
+    scene.add(yearButton);
+    
+    // Create a text label for the button
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 128;
+    const context = canvas.getContext('2d');
+    context.fillStyle = '#45a049';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.font = 'bold 24px Arial';
+    context.fillStyle = 'white';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText('Year Metrics', canvas.width / 2, canvas.height / 2);
+    
+    const texture = new THREE.CanvasTexture(canvas);
+    const labelMaterial = new THREE.MeshBasicMaterial({
+        map: texture,
+        transparent: true
+    });
+    const labelGeometry = new THREE.PlaneGeometry(50, 25);
+    const label = new THREE.Mesh(labelGeometry, labelMaterial);
+    label.position.set(40, -60, -357); // Slightly in front of the button
+    scene.add(label);
+    
+    // Add lights to enhance the section
+    const pointLight = new THREE.PointLight(0xffffff, 2, 200);
+    pointLight.position.set(40, -60, -350);
+    scene.add(pointLight);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+
+    // Make the button clickable
+    makeModelClickable(yearButton, () => {
+        showYearViewport();
+    });
+    
+    // Make the label clickable too
+    makeModelClickable(label, () => {
+        showYearViewport();
+    });
+
+    // Add hover effect to the button
+    let isHovered = false;
+    yearButton.userData.onPointerOver = () => {
+        if (!isHovered) {
+            gsap.to(yearButton.material.color, {
+                r: 0.271,  // 0x45a049 darker
+                g: 0.627,
+                b: 0.286,
+                duration: 0.3
+            });
+            isHovered = true;
         }
-    });
+    };
+
+    yearButton.userData.onPointerOut = () => {
+        if (isHovered) {
+            gsap.to(yearButton.material.color, {
+                r: 0.271,  // 0x45a049
+                g: 0.627,
+                b: 0.286,
+                duration: 0.3
+            });
+            isHovered = false;
+        }
+    };
+
+    yearButton.visible = false;
+    label.visible = false;
 }
-/**
- * Handles keydown events for the viewport
- */
-function handleKeyDown(e) {
-    if (e.key === 'Escape') {
-        hideYearViewport();
+
+export function renderSection4(camera, scene) {
+    if (!yearButton) return;
+
+    const currentSection = getCurrentSection();
+    const isVisible = currentSection === 4;
+
+    // Show/hide the button based on current section
+    if (yearButton.visible !== isVisible) {
+        yearButton.visible = isVisible;
+        // Also show/hide any other elements in this section
+        for (let i = 0; i < scene.children.length; i++) {
+            const child = scene.children[i];
+            if (child.userData && child.userData.section3Element) {
+                child.visible = isVisible;
+            }
+        }
     }
-}
-/**
- * Removes the viewport completely
- */
-export function destroyYearViewport() {
-    if (viewportContainer) {
-        closeButton.removeEventListener('click', hideYearViewport);
-        document.removeEventListener('keydown', handleKeyDown);
-        document.body.removeChild(viewportContainer);
-        viewportContainer = null;
-        iframe = null;
-        closeButton = null;
+
+    // Auto-show viewport when entering section 3
+    if (isVisible && !hasShownViewport) {
+        // Add a small delay to ensure the section transition is complete
+        setTimeout(() => {
+            showYearViewport();
+            hasShownViewport = true;
+        }, 500);
+    } else if (!isVisible && hasShownViewport) {
+        // Hide viewport when leaving section 3
+        hideYearViewport();
+        hasShownViewport = false;
     }
 }

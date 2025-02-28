@@ -5,34 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Pic</title>
     <link rel="stylesheet" href="css/photo.css">
+    <script src="js/shaders.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Space Pic</h1>
-        <p>Explore Psyche and take amazing space photos! Use the NASA viewer to find the perfect angle, then capture and customize your photos.</p>
-        <button id="captureBtn" class="tool-btn" style="display: block;">📸 Capture Pic</button>
+        <div class="header-section" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+            <div class="header-line" style="display: flex; align-items: center; gap: 10px; flex: 1;">
+                <h1 style="margin: 0; font-size: 20px;">Space Pic</h1>
+                <p style="margin: 0; font-size: 12px; max-width: 60%;">Explore Psyche and take amazing space photos!</p>
+            </div>
+            <div class="buttons-container" style="margin-left: 10px;">
+                <button id="captureBtn" class="tool-btn small-btn" style="margin: 0; padding: 3px 8px; font-size: 14px;">📸 Capture</button>
+                <div id="editButtons" style="display: none; gap: 2px; flex-wrap: wrap;">
+                    <button class="tool-btn small-btn" id="pencilBtn" style="padding: 1px 2px; font-size: 16px;">✏️</button>
+                    <button class="tool-btn small-btn" id="textBtn" style="padding: 1px 2px; font-size: 16px;">📝</button>
+                    <button class="tool-btn small-btn" id="stickerBtn" style="padding: 1px 2px; font-size: 16px;">🌟</button>
+                    <button class="tool-btn small-btn" id="saveBtn" style="padding: 1px 2px; font-size: 16px;">💾</button>
+                    <button class="tool-btn small-btn" id="clearBtn" style="padding: 1px 2px; font-size: 16px;">🗑️</button>
+                    <button class="tool-btn small-btn" id="filterBtn" style="padding: 1px 2px; font-size: 16px;">🎨</button>
+                    <button class="tool-btn small-btn" id="backBtn" style="padding: 1px 2px; font-size: 16px; background-color: red;">↩️</button>
+                    <input type="color" id="colorPicker" value="#000000" style="width: 25px; height: 25px; vertical-align: middle; display: none;">
+                </div>
+                <select id="filterSelect" style="display: none; padding: 5px; border-radius: 5px; background: #333; color: white; border: 1px solid #555; font-size: 14px; margin-top: 5px;">
+                    <option value="none">No Filter</option>
+                    <option value="grayscale">Grayscale</option>
+                    <option value="sepia">Sepia</option>
+                    <option value="invert">Invert</option>
+                    <option value="cosmicGlow">Cosmic Glow</option>
+                    <option value="marsRed">Mars Red</option>
+                    <option value="vintage">Vintage</option>
+                </select>
+                <input type="range" id="filterIntensity" min="0" max="100" value="100" style="display: none; width: 100px; height: 20px; vertical-align: middle; margin-top: 5px;">
+            </div>
+        </div>
         
         <div class="photo-section">
-        <div class="viewer-section">
-            <iframe src="https://eyes.nasa.gov/apps/solar-system/#/16_psyche" 
-                    width="100%" 
-                    height="780px" 
-                    frameborder="0"
-                    allowfullscreen></iframe>
-        </div>
+            <div class="viewer-section">
+                <iframe src="https://eyes.nasa.gov/apps/solar-system/#/16_psyche" 
+                        width="100%" 
+                        height="650px" 
+                        frameborder="0"
+                        allowfullscreen></iframe>
+            </div>
 
-        <div class="canvas-container" style="display: none;">
-            <h3>Edit Your Photo</h3>
-            <div style="display: flex; gap: 20px;">
-                <canvas id="drawingCanvas" width="1210" height="780"></canvas>
-                <div class="drawing-tools" style="display: flex; flex-direction: column; gap: 10px;">
-                    <input type="color" id="colorPicker" style="width: 100%;">
-                    <button class="tool-btn" id="pencilBtn">✏️ Pencil</button>
-                    <button class="tool-btn" id="textBtn">📝 Add Text</button>
-                    <button class="tool-btn" id="stickerBtn">🌟 Add Sticker</button>
-                    <button class="tool-btn" id="saveBtn">💾 Save Photo</button>
-                    <button class="tool-btn" id="clearBtn">🗑️ Clear</button>
-                    <button class="tool-btn" id="backBtn" style="background-color: red;">↩️ Back to Viewer</button>
+            <div class="canvas-container" style="display: none; background: #000; max-width: 100%;">
+                <h3 style="color: white; margin: 5px 0; font-size: 16px;">Edit Your Photo</h3>
+                <div style="display: flex; justify-content: center; position: relative;">
+                    <div id="canvasBackground" style="position: absolute; top: 0; left: 0; width: 100%; height: 650px; overflow: hidden; z-index: 0;"></div>
+                    <canvas id="drawingCanvas" width="1000" height="650" style="position: relative; z-index: 1; max-width: 100%;"></canvas>
                 </div>
             </div>
         </div>
@@ -103,14 +123,108 @@
             ctx.lineWidth = 2;
             ctx.lineCap = 'round';
 
+            // Function to toggle editing tools visibility
+            // Create starry background
+            function createStarryBackground() {
+                const bgDiv = document.getElementById('canvasBackground');
+                bgDiv.innerHTML = ''; // Clear any existing content
+                
+                // Create a dark blue to black gradient background
+                bgDiv.style.background = 'linear-gradient(to bottom, #000000, #0a0a2a, #000000)';
+                
+                // Add stars
+                const numStars = 200;
+                for (let i = 0; i < numStars; i++) {
+                    const star = document.createElement('div');
+                    const size = Math.random() * 2 + 1; // 1-3px
+                    const opacity = Math.random() * 0.7 + 0.3; // 0.3-1.0
+                    
+                    star.style.position = 'absolute';
+                    star.style.width = `${size}px`;
+                    star.style.height = `${size}px`;
+                    star.style.backgroundColor = 'white';
+                    star.style.borderRadius = '50%';
+                    star.style.opacity = opacity;
+                    star.style.left = `${Math.random() * 100}%`;
+                    star.style.top = `${Math.random() * 100}%`;
+                    star.style.boxShadow = `0 0 ${Math.random() * 3 + 1}px white`;
+                    
+                    // Add twinkling animation to some stars
+                    if (Math.random() > 0.7) {
+                        star.style.animation = `twinkle ${Math.random() * 3 + 2}s infinite alternate`;
+                    }
+                    
+                    bgDiv.appendChild(star);
+                }
+            }
+            
+            // Add CSS animation for twinkling stars
+            const styleSheet = document.createElement('style');
+            styleSheet.textContent = `
+                @keyframes twinkle {
+                    0% { opacity: 0.3; }
+                    100% { opacity: 1; }
+                }
+            `;
+            document.head.appendChild(styleSheet);
+            
+            // Create the starry background when the page loads
+            createStarryBackground();
+
+            function showEditingTools() {
+                document.getElementById('captureBtn').style.display = 'none';
+                document.getElementById('editButtons').style.display = 'flex';
+                document.getElementById('colorPicker').style.display = 'inline-block';
+                document.getElementById('filterSelect').style.display = 'none';
+                document.getElementById('filterIntensity').style.display = 'none';
+            }
+
+            function showCaptureTools() {
+                document.getElementById('captureBtn').style.display = 'inline-block';
+                document.getElementById('editButtons').style.display = 'none';
+                document.getElementById('filterSelect').style.display = 'none';
+                document.getElementById('filterIntensity').style.display = 'none';
+            }
+
             document.getElementById('captureBtn').addEventListener('click', async function() {
                 try {
+                    // Store original elements and their states
+                    const headerSection = document.querySelector('.header-section');
+                    const headerLine = document.querySelector('.header-line');
+                    const buttonsContainer = document.querySelector('.buttons-container');
                     const iframe = document.querySelector('.viewer-section iframe');
-                    const rect = iframe.getBoundingClientRect();
+                    const container = document.querySelector('.container');
                     
+                    // Hide header and buttons for clean capture
+                    headerSection.style.display = 'none';
+                    
+                    // Create a loading message with instructions
+                    const loadingMsg = document.createElement('div');
+                    loadingMsg.innerHTML = 'Capturing NASA viewer...<br><small>Please select <b>ONLY</b> the NASA viewer window when prompted</small>';
+                    loadingMsg.style.position = 'fixed';
+                    loadingMsg.style.top = '10px';
+                    loadingMsg.style.left = '50%';
+                    loadingMsg.style.transform = 'translateX(-50%)';
+                    loadingMsg.style.background = 'rgba(0,0,0,0.7)';
+                    loadingMsg.style.color = 'white';
+                    loadingMsg.style.padding = '5px 15px';
+                    loadingMsg.style.borderRadius = '5px';
+                    loadingMsg.style.zIndex = '10000';
+                    loadingMsg.style.fontSize = '14px';
+                    
+                    // Add loading message
+                    document.body.appendChild(loadingMsg);
+                    
+                    // Wait for layout to update
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    
+                    // Use the screen capture API to capture the NASA viewer
                     const stream = await navigator.mediaDevices.getDisplayMedia({
                         preferCurrentTab: true,
-                        video: {displaySurface: "browser"}
+                        video: {
+                            displaySurface: "browser",
+                            cursor: "never"
+                        }
                     });
                     
                     const video = document.createElement('video');
@@ -120,36 +234,140 @@
                         video.play();
                     });
                     
+                    // Create a canvas for the capture
                     const tempCanvas = document.createElement('canvas');
                     const tempCtx = tempCanvas.getContext('2d');
-                    tempCanvas.width = video.videoWidth * 2;
-                    tempCanvas.height = video.videoHeight * 2;
+                    
+                    // First draw the full screenshot
+                    tempCanvas.width = video.videoWidth;
+                    tempCanvas.height = video.videoHeight;
                     tempCtx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
                     
-                    const croppedCanvas = document.createElement('canvas');
-                    const croppedCtx = croppedCanvas.getContext('2d');
-                    croppedCanvas.width = rect.width * 2;
-                    croppedCanvas.height = rect.height * 2;
+                    // Automatically crop to focus on just the NASA viewer
+                    // We'll try to detect the viewer by looking for the blue perimeter
+                    const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+                    const data = imageData.data;
                     
-                    const scaleX = (video.videoWidth * 2) / window.innerWidth;
-                    const scaleY = (video.videoHeight * 2) / window.innerHeight;
+                    // Find the bounds of the blue perimeter
+                    let minX = tempCanvas.width;
+                    let minY = tempCanvas.height;
+                    let maxX = 0;
+                    let maxY = 0;
+                    let foundBlueArea = false;
                     
-                    croppedCtx.drawImage(
-                        tempCanvas,
-                        rect.left * scaleX, rect.top * scaleY, 
-                        rect.width * scaleX, rect.height * scaleY,
-                        0, 0, croppedCanvas.width, croppedCanvas.height
-                    );
+                    // Sample points across the image to find blue areas (NASA viewer has blue border)
+                    const sampleSize = 5; // Check every 5 pixels for more precision
+                    for (let y = 0; y < tempCanvas.height; y += sampleSize) {
+                        for (let x = 0; x < tempCanvas.width; x += sampleSize) {
+                            const i = (y * tempCanvas.width + x) * 4;
+                            // Check if this is a blue pixel (part of the NASA viewer border)
+                            // Blue channel is high, red and green are lower
+                            if (data[i+2] > 100 && data[i+2] > data[i] * 1.5 && data[i+2] > data[i+1] * 1.5) {
+                                minX = Math.min(minX, x);
+                                minY = Math.min(minY, y);
+                                maxX = Math.max(maxX, x);
+                                maxY = Math.max(maxY, y);
+                                foundBlueArea = true;
+                            }
+                        }
+                    }
                     
+                    // If we didn't find a blue area, try looking for any non-white area as fallback
+                    if (!foundBlueArea) {
+                        for (let y = 0; y < tempCanvas.height; y += sampleSize) {
+                            for (let x = 0; x < tempCanvas.width; x += sampleSize) {
+                                const i = (y * tempCanvas.width + x) * 4;
+                                // Check if this is a non-white pixel
+                                if (data[i] < 200 || data[i+1] < 200 || data[i+2] < 200) {
+                                    minX = Math.min(minX, x);
+                                    minY = Math.min(minY, y);
+                                    maxX = Math.max(maxX, x);
+                                    maxY = Math.max(maxY, y);
+                                    foundBlueArea = true;
+                                }
+                            }
+                        }
+                    }
+                    
+                    // If we found a blue area, crop to it
+                    if (foundBlueArea) {
+                        // Add some padding
+                        const padding = 20;
+                        minX = Math.max(0, minX - padding);
+                        minY = Math.max(0, minY - padding);
+                        maxX = Math.min(tempCanvas.width, maxX + padding);
+                        maxY = Math.min(tempCanvas.height, maxY + padding);
+                        
+                        // Calculate dimensions
+                        const width = maxX - minX;
+                        const height = maxY - minY;
+                        
+                        // Create a new canvas with the cropped dimensions
+                        const croppedCanvas = document.createElement('canvas');
+                        const croppedCtx = croppedCanvas.getContext('2d');
+                        croppedCanvas.width = width;
+                        croppedCanvas.height = height;
+                        
+                        // Draw the cropped region
+                        croppedCtx.drawImage(
+                            tempCanvas, 
+                            minX, minY, width, height,
+                            0, 0, width, height
+                        );
+                        
+                        // Replace the original canvas with the cropped one
+                        tempCanvas.width = width;
+                        tempCanvas.height = height;
+                        tempCtx.drawImage(croppedCanvas, 0, 0);
+                    }
+                    
+                    // Stop the stream
                     stream.getTracks().forEach(track => track.stop());
+                    
+                    // Restore original layout
+                    headerSection.style.display = '';
+                    
+                    // Remove loading message
+                    document.body.removeChild(loadingMsg);
+                    
+                    // Switch to edit mode
                     viewerSection.style.display = 'none';
                     canvasContainer.style.display = 'block';
-                    captureBtn.style.display = 'none';
+                    showEditingTools();
+                    
+                    // Clear the canvas
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     
-                    ctx.drawImage(croppedCanvas, 0, 0, canvas.width, canvas.height);
+                    // Calculate dimensions to maintain aspect ratio
+                    const aspectRatio = tempCanvas.width / tempCanvas.height;
+                    let drawWidth = canvas.width;
+                    let drawHeight = canvas.width / aspectRatio;
+                    
+                    // If the height is too large, scale based on height instead
+                    if (drawHeight > canvas.height) {
+                        drawHeight = canvas.height;
+                        drawWidth = canvas.height * aspectRatio;
+                    }
+                    
+                    // Calculate position to center the image
+                    const x = (canvas.width - drawWidth) / 2;
+                    const y = (canvas.height - drawHeight) / 2;
+                    
+                    // Draw with preserved aspect ratio
+                    ctx.drawImage(tempCanvas, x, y, drawWidth, drawHeight);
                     backgroundImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
                 } catch (error) {
+                    // Restore original layout in case of error
+                    const headerSection = document.querySelector('.header-section');
+                    const iframe = document.querySelector('.viewer-section iframe');
+                    
+                    headerSection.style.display = '';
+                    iframe.removeAttribute('style');
+                    
+                    // Remove loading message if it exists
+                    const loadingMsg = document.querySelector('div[style*="Capturing NASA viewer"]');
+                    if (loadingMsg) document.body.removeChild(loadingMsg);
+                    
                     console.error('Error capturing screenshot:', error);
                     alert('Failed to capture screenshot. Please try again.');
                 }
@@ -158,7 +376,7 @@
             document.getElementById('backBtn').addEventListener('click', function() {
                 canvasContainer.style.display = 'none';
                 viewerSection.style.display = 'block';
-                captureBtn.style.display = 'block';
+                showCaptureTools();
             });
 
             function redrawCanvas() {
@@ -246,6 +464,58 @@
                     ctx.strokeStyle, '30px'));
                 redrawCanvas();
             });
+            
+            // Filter functionality
+            let currentFilter = 'none';
+            let originalImageData = null;
+            let filterIntensity = 1.0;
+            
+            document.getElementById('filterBtn').addEventListener('click', () => {
+                const filterSelect = document.getElementById('filterSelect');
+                const filterIntensitySlider = document.getElementById('filterIntensity');
+                
+                if (filterSelect.style.display === 'none') {
+                    filterSelect.style.display = 'inline-block';
+                    filterIntensitySlider.style.display = 'inline-block';
+                } else {
+                    filterSelect.style.display = 'none';
+                    filterIntensitySlider.style.display = 'none';
+                }
+            });
+            
+            document.getElementById('filterSelect').addEventListener('change', (e) => {
+                currentFilter = e.target.value;
+                applyCurrentFilter();
+            });
+            
+            document.getElementById('filterIntensity').addEventListener('input', (e) => {
+                filterIntensity = parseInt(e.target.value) / 100;
+                applyCurrentFilter();
+            });
+            
+            function applyCurrentFilter() {
+                // Save the original image if we haven't already
+                if (!originalImageData && backgroundImage) {
+                    originalImageData = backgroundImage;
+                }
+                
+                // Restore the original image before applying a new filter
+                if (originalImageData) {
+                    ctx.putImageData(originalImageData, 0, 0);
+                    
+                    // Apply the selected filter
+                    if (currentFilter !== 'none') {
+                        PhotoFilters[currentFilter](ctx, canvas.width, canvas.height, filterIntensity);
+                    }
+                    
+                    // Save the filtered image as the new background
+                    backgroundImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    
+                    // Redraw any paths and elements on top
+                    paths.forEach(path => path.draw());
+                    elements.forEach(element => element.draw());
+                }
+            }
         });
     </script>
 </body>

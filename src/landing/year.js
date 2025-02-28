@@ -27,13 +27,13 @@ export function showYearViewport() {
     viewportContainer.style.top = '50%';
     viewportContainer.style.left = '50%';
     viewportContainer.style.transform = 'translate(-50%, -50%)';
-    viewportContainer.style.width = '110%'; // Increased from 90% to 110% (20% wider)
+    viewportContainer.style.width = '80%'; // Decreased to 80% 
     viewportContainer.style.maxWidth = '1440px'; // Increased from 1200px to 1440px (20% wider)
-    viewportContainer.style.height = '100vh'; // Increased from 85vh to 95vh (10% higher)
+    viewportContainer.style.height = '95vh'; // Increased from 85vh to 95vh (10% higher)
     viewportContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-    viewportContainer.style.border = '2px solid #45A049';
+    viewportContainer.style.border = '2px solid rgb(255, 255, 255)';
     viewportContainer.style.borderRadius = '10px';
-    viewportContainer.style.boxShadow = '0 0 20px rgba(69, 160, 73, 0.5)';
+    viewportContainer.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.83)';
     viewportContainer.style.zIndex = '1000';
     viewportContainer.style.display = 'flex';
     viewportContainer.style.flexDirection = 'column';
@@ -44,7 +44,7 @@ export function showYearViewport() {
     header.style.justifyContent = 'space-between';
     header.style.alignItems = 'center';
     header.style.padding = '10px 15px';
-    header.style.backgroundColor = '#45A049';
+    header.style.backgroundColor = '#f9a000';
     header.style.color = 'white';
     header.style.borderTopLeftRadius = '8px';
     header.style.borderTopRightRadius = '8px';

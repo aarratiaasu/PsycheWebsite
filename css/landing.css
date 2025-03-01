@@ -111,8 +111,8 @@ canvas {
 
 .mouse-scroll-indicator {
     position: fixed;
-    bottom: 20px;
-    right: 20px; /* Bottom right positioning */
+    bottom: 40px;
+    right: 40px; 
     text-align: center;
     z-index: 1000;
     animation: fadeIn 1s ease-in-out;
@@ -197,4 +197,64 @@ canvas {
 @keyframes fadeOut {
     from { opacity: 1; }
     to { opacity: 0; }
+}
+
+.nav-overlay {
+    position: fixed;
+    top: 25%;
+    left: 0;
+    width: 200px;
+    background-color: #3a3b3c;
+    opacity: 0.2;
+    transform: translateX(-100%);
+    z-index: 10;
+    border-radius: 0 0 15px 0;
+    -webkit-box-shadow: 0px 0px 300px 95px rgba(255, 171, 46, 0.35);
+    -moz-box-shadow: 0px 0px 300px 95px rgba(255, 171, 46, 0.35);
+    box-shadow: 0px 0px 300px 95px rgba(255, 171, 46, 0.35);
+    height: auto;
+    width: auto;
+    min-height: 50px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+#menu-tab {
+    position: absolute;
+    top: 0;
+    right: -40px;
+    width: 40px;
+    height: 70px;
+    background-color: #3a3b3c;
+    border-radius: 0 15px 15px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#nav-menu {
+    list-style: none;
+    padding: 20px; 
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+    gap: 10px; 
+    font-family: 'Roboto', 'Arial', sans-serif;
+}
+
+#nav-menu li {
+    color: orange; 
+    font-size: 1.8em; 
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background 0.3s ease-in-out;
+    font-family: 'Genos', sans-serif;
+}
+
+#nav-menu li:hover {
+    background: rgba(255, 255, 255, 0.1);
 }

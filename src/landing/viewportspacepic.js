@@ -17,12 +17,9 @@ let closeButton = null;
  * Creates and shows the space pic viewport with futuristic animations.
  */
 export function showSpacePicViewport() {
-    // If viewport already exists, just show it and restart futuristic pulses
+    // If viewport already exists, just show it
     if (viewportContainer) {
         viewportContainer.style.display = 'flex';
-        // Restart pulsating animations
-        gsap.to(viewportContainer, { borderColor: "#fff", duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
-        gsap.to(viewportContainer.querySelector('div'), { boxShadow: "0 0 20px 5px #007bff", duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
         return;
     }
 
@@ -98,7 +95,7 @@ export function showSpacePicViewport() {
     viewportContainer.appendChild(iframe);
     document.body.appendChild(viewportContainer);
     
-    // Create futuristic opening animations using a timeline
+    // Create opening animations using a timeline
     const tl = gsap.timeline();
     tl.from(viewportContainer, {
         opacity: 0,
@@ -117,10 +114,6 @@ export function showSpacePicViewport() {
         duration: 0.3,
         ease: "power2.out"
     }, "-=0.1");
-
-    // Apply continuous futuristic pulse effects
-    gsap.to(viewportContainer, { borderColor: "#fff", duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
-    gsap.to(header, { boxShadow: "0 0 20px 5px #007bff", duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
     
     // Add event listener for close button
     closeButton.addEventListener('click', hideSpacePicViewport);
@@ -130,12 +123,12 @@ export function showSpacePicViewport() {
 }
 
 /**
- * Hides the space pic viewport with futuristic closing animation.
+ * Hides the space pic viewport with closing animation.
  */
 export function hideSpacePicViewport() {
     if (!viewportContainer) return;
     
-    // Animate closing with a reverse futuristic effect
+    // Animate closing
     gsap.to(viewportContainer, {
         opacity: 0,
         scale: 0.8,

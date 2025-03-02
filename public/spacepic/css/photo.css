@@ -60,7 +60,7 @@ p {
 }
 
 #drawingCanvas {
-    background: #fff;
+    background: transparent;
     border-radius: 5px;
 }
 

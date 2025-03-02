@@ -79,6 +79,7 @@ export function loadSection1(scene, camera) {
       { text: "Section 5", onClick: () => moveToSection(5) },
       { text: "Section 6", onClick: () => moveToSection(6) },
       { text: "Section 7", onClick: () => moveToSection(7) },
+      { text: "Section 8", onClick: () => moveToSection(8) },
       { text: "References", onClick: () => moveToSection(0) }
     ];
     createMenu(menuItems, mainTextPosition, mainTextRotation, scene);
@@ -87,4 +88,3 @@ export function loadSection1(scene, camera) {
     console.error("Error loading Section 1:", error);
   });
 }
-

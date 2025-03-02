@@ -30,6 +30,7 @@ import { loadSection4 } from './section4.js';
 import { loadSection5 } from './section5.js';
 import { loadSection6 } from './section6.js';
 import { loadSection7, renderSection7 } from './section7.js';
+import { loadSection8, renderSection8 } from './section8.js';
 
 
 /*
@@ -48,7 +49,8 @@ function init() {
     { x: 40, y: 60, z: -200 },   // 4 blank
     { x: 40, y: 100, z: -300 },  // 5 blank  
     { x: 120, y: -60, z: 60 },   // 6 nasa logo
-    { x: 200, y: 300, z: -110 }  // 7 Blank
+    { x: 200, y: 300, z: -110 }, // 7 Space Pic
+    { x: 250, y: 250, z: -150 }  // 8 New Section
     // sections can be added simply by adding a new coordinate to this list
     // the scene will be able to scroll to that section as soon as it is added. 
   ];
@@ -110,6 +112,7 @@ function init() {
     }    
     renderSection3(camera,scene);
     renderSection7(camera,scene);
+    renderSection8(camera,scene);
   }
 
   // Enable text interactivity before loading models
@@ -127,7 +130,8 @@ function init() {
     loadSection4(scene, camera, sections),
     loadSection5(scene, camera),
     loadSection6(scene, camera, sections),
-    loadSection7(scene, camera)
+    loadSection7(scene, camera),
+    loadSection8(scene, camera)
   ]).then(() => {
     console.log("All sections loaded.");
 

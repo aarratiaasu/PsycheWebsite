@@ -58,7 +58,7 @@ main {
 
 #menu-trigger {
     color: orange;
-    font-family: 'Roboto', 'Arial', sans-serif;
+    font-family: 'Genos', sans-serif;
     font-size: 14px;
     font-weight: bold;
     padding: 10px;
@@ -91,7 +91,7 @@ main {
     text-align: center;
     border-top: 1px solid #3a3b3c;
     transition: background-color 0.2s ease;
-    font-family: 'Roboto', 'Arial', sans-serif;
+    font-family: 'Genos', sans-serif;
     font-size: 14px;
 }
 
@@ -111,17 +111,19 @@ canvas {
 
 .mouse-scroll-indicator {
     position: fixed;
-    bottom: 40px;
-    right: 40px; 
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(var(--dynamic-scale, 4)); /* Default scale = 4 */
     text-align: center;
     z-index: 1000;
     animation: fadeIn 1s ease-in-out;
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out, opacity 0.5s ease;
+    transition: transform 1.5s ease-in-out; /* Ensure smooth scaling and movement */
 }
 
-.mouse-scroll-indicator:hover {
-    transform: scale(1.1);
+.mouse-scroll-indicator.moved {
+    /* transform: translate(calc(50vw - 100px), calc(50vh - 130px)) scale(1);  */
+    transform: translate(45vw, 25vh) scale(1); 
+
 }
 
 .mouse {
@@ -199,6 +201,24 @@ canvas {
     to { opacity: 0; }
 }
 
+#scroll-text {
+    font-family: 'Genos', sans-serif;
+    position: fixed;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: orange;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out; 
+    z-index: 10;
+}
+
+#scroll-text.fade-out {
+    opacity: 0;
+}
+
 .nav-overlay {
     position: fixed;
     top: 25%;
@@ -206,7 +226,7 @@ canvas {
     width: 200px;
     background-color: #3a3b3c;
     opacity: 0.2;
-    transform: translateX(-100%);
+    /* transform: translateX(-100%); */
     z-index: 10;
     border-radius: 0 0 15px 0;
     -webkit-box-shadow: 0px 0px 300px 95px rgba(255, 171, 46, 0.35);
@@ -226,12 +246,18 @@ canvas {
     right: -40px;
     width: 40px;
     height: 70px;
-    background-color: #3a3b3c;
+    /* background-color: #3a3b3c; */
+    background-color: white;
+
     border-radius: 0 15px 15px 0;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.navArrow-style {
+    color: orange;
 }
 
 #nav-menu {
@@ -242,7 +268,7 @@ canvas {
     flex-direction: column;
     align-items: flex-start; 
     gap: 10px; 
-    font-family: 'Roboto', 'Arial', sans-serif;
+    font-family: 'Genos', sans-serif;
 }
 
 #nav-menu li {

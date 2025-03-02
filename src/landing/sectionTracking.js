@@ -24,16 +24,16 @@ import * as THREE from 'three';
 let camera, renderer, sections, currentSection = 1, scrollProgress = 1;
 let isAnimating = false; // Scroll lock flag
 
+/*
+* Initializes section tracking by assigning the camera, section list,
+* and renderer. Adds event listeners for scroll, touchmove, and window resize.
+*
+* Parameters:
+* - cam: The Three.js camera to be controlled.
+* - sectionList: Array of section positions for navigation.
+* - rend: The Three.js renderer for viewport updates.
+*/
 export function initSectionTracking(cam, sectionList, rend) {
-  /*
-   * Initializes section tracking by assigning the camera, section list,
-   * and renderer. Adds event listeners for scroll, touchmove, and window resize.
-   *
-   * Parameters:
-   * - cam: The Three.js camera to be controlled.
-   * - sectionList: Array of section positions for navigation.
-   * - rend: The Three.js renderer for viewport updates.
-   */
   camera = cam;
   sections = sectionList;
   renderer = rend;
@@ -42,11 +42,12 @@ export function initSectionTracking(cam, sectionList, rend) {
   window.addEventListener('resize', onResize);
 }
 
+/*
+* Adjusts the camera aspect ratio and updates the renderer size
+* when the window is resized to maintain correct proportions.
+*/
 function onResize() {
-  /*
-   * Adjusts the camera aspect ratio and updates the renderer size
-   * when the window is resized to maintain correct proportions.
-   */
+
   const aspect = window.innerWidth / window.innerHeight;
 
   camera.aspect = aspect;
@@ -58,14 +59,14 @@ function onResize() {
   }
 }
 
+/*
+* Handles scroll and touchmove events to update the camera's scroll progress.
+* Triggers section transitions when crossing section thresholds.
+*
+* Parameters:
+* - event: The scroll or touchmove event triggering navigation.
+*/
 export function onScroll(event) {
-  /*
-   * Handles scroll and touchmove events to update the camera's scroll progress.
-   * Triggers section transitions when crossing section thresholds.
-   *
-   * Parameters:
-   * - event: The scroll or touchmove event triggering navigation.
-   */
   if (isAnimating) return;
   scrollProgress += event.deltaY * 0.005;
   scrollProgress = Math.max(0, Math.min(scrollProgress, sections.length - 1));
@@ -77,15 +78,15 @@ export function onScroll(event) {
   }
 }
 
+/*
+* Smoothly transitions the camera to the specified section using GSAP.
+* Supports optional camera orientation adjustments during movement.
+*
+* Parameters:
+* - sectionIndex: Index of the section to move to.
+* - lookAt: Optional THREE.Vector3 position for the camera to look at.
+*/
 export function moveToSection(sectionIndex, lookAt = null) {
-  /*
-   * Smoothly transitions the camera to the specified section using GSAP.
-   * Supports optional camera orientation adjustments during movement.
-   *
-   * Parameters:
-   * - sectionIndex: Index of the section to move to.
-   * - lookAt: Optional THREE.Vector3 position for the camera to look at.
-   */
   if (sectionIndex < 0 || sectionIndex >= sections.length) return;
   currentSection = sectionIndex;
   scrollProgress = sectionIndex;
@@ -118,7 +119,6 @@ export function moveToSection(sectionIndex, lookAt = null) {
       isAnimating = false;
       console.log("Moved to Section:", currentSection);
 
-      // Log the new camera direction after the move
       const direction = new THREE.Vector3();
       camera.getWorldDirection(direction);
       console.log('Camera is now looking in direction:', direction);
@@ -126,22 +126,22 @@ export function moveToSection(sectionIndex, lookAt = null) {
   });
 }
 
+/*
+* Logs the current camera direction vector to the console.
+* Useful for debugging camera orientation.
+*/
 function logCameraDirection() {
-  /*
-   * Logs the current camera direction vector to the console.
-   * Useful for debugging camera orientation.
-   */
   const direction = new THREE.Vector3();
   camera.getWorldDirection(direction);
   console.log('Camera is looking in direction:', direction);
 }
 
+/*
+* Returns the current section index that the camera is positioned at.
+*
+* Returns:
+* - Number: Index of the current section.
+*/
 export function getCurrentSection() {
-  /*
-   * Returns the current section index that the camera is positioned at.
-   *
-   * Returns:
-   * - Number: Index of the current section.
-   */
   return currentSection;
 }

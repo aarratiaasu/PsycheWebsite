@@ -30,3 +30,16 @@ export function animateScrollIndicator() {
     }, 4500);
 }
 
+export function initOverlayToggle() {
+    document.addEventListener("DOMContentLoaded", function () {
+      const toggleButton = document.getElementById("toggleOverlay");
+      const overlay = document.getElementById("infoOverlay");
+  
+      if (toggleButton && overlay) {
+        toggleButton.addEventListener("click", function () {
+          document.body.classList.toggle("overlay-open");
+        });
+      }
+    });
+  }
+  

@@ -21,7 +21,7 @@ import { enableTextInteractivity, enableModelClick } from './utils.js';
 import { createStarfield, loadSun } from './starfield.js';
 import { initSectionTracking, getCurrentSection } from './sectionTracking.js';
 import { initBackgroundSwitcher } from './backgroundManager.js';
-import { animateScrollIndicator } from './nav.js';
+import { animateScrollIndicator, initOverlayToggle } from './nav.js';
 import { loadSection0 } from './section0.js';
 import { loadSection1 } from './section1.js';
 import { loadSection2 } from './section2.js';
@@ -38,6 +38,7 @@ import { loadSection7 } from './section7.js';
 */
 function init() {
   animateScrollIndicator();
+  initOverlayToggle();
   // Section tracking and camera location presets
   let scrollProgress = 1;
   let currentSection = 1;

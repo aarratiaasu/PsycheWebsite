@@ -9,10 +9,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Genos&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&display=swap">
 </head>
 <body>
-  <header>
-  </header>
+  <header></header>
   <main id="scene-container">
     <div id="canvas-container"></div>
     <div id="debug-panel"></div>
@@ -35,21 +35,17 @@
       <span class="arrow arrow-3"></span>
     </div>   
     <div class="nav-overlay">
-      <div id="nav-menu">
-        <nav>
-          <a href="/html/">HTML</a> |
-          <a href="/css/">CSS</a> |
-          <a href="/js/">JavaScript</a> |
-          <a href="/python/">Python</a>
-        </nav> 
+      <div id="overlay-container">
+        <span id="toggleOverlay" class="material-symbols-outlined overlay-toggle">
+          arrow_right
+        </span>
+        <div id="infoOverlay" class="overlay">
+          <p>Information overlay.</p>
+        </div>
       </div>
     </div>
-    <div id="menu-tab">
-      <img src="/res/icons/navArrowRight.svg" alt="Nav Menu Arrow" class="navArrow-style">
-    </div>
   </main>
-  <footer>
-  </footer>
+  <footer></footer>
   <script type="module" src="/src/landing/landing.js"></script>
 </body>
 </html>

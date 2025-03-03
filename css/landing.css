@@ -219,3 +219,44 @@ canvas {
     opacity: 0;
 }
 
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0; /* Changed from right: 0 to left: 0 */
+    width: 0;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    overflow: hidden;
+    padding: 20px;
+    transition: width 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
+    z-index: 10;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  #toggleOverlay {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    font-weight: lighter;
+    font-size: 1.5em;
+    color: orange;
+    z-index: 20;
+  }
+  
+  .overlay-open .overlay {
+    width: 30%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+  }
+  
+  .overlay-open #toggleOverlay {
+    transform: rotate(360deg);
+  }
+  

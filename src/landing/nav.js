@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+import { moveToSection } from './sectionTracking.js';
 
-let navGroup;
 
 export function animateScrollIndicator() {
     const scrollIndicator = document.querySelector(".mouse-scroll-indicator");
@@ -30,16 +30,48 @@ export function animateScrollIndicator() {
     }, 4500);
 }
 
-export function initOverlayToggle() {
-    document.addEventListener("DOMContentLoaded", function () {
-      const toggleButton = document.getElementById("toggleOverlay");
-      const overlay = document.getElementById("infoOverlay");
+// export function initOverlayToggle() {
+//     document.addEventListener("DOMContentLoaded", function () {
+//       const toggleButton = document.getElementById("toggleOverlay");
+//       const overlay = document.getElementById("infoOverlay");
   
-      if (toggleButton && overlay) {
-        toggleButton.addEventListener("click", function () {
-          document.body.classList.toggle("overlay-open");
+//       if (toggleButton && overlay) {
+//         toggleButton.addEventListener("click", function () {
+//           document.body.classList.toggle("overlay-open");
+//         });
+//       }
+//     });
+//   }
+
+
+  export function setupNavigation(sections) {
+    const overlay = document.getElementById("infoOverlay"); 
+    const toggleButton = document.getElementById("toggleOverlay"); 
+    overlay.innerHTML = "";
+
+    const navList = document.createElement("ul");
+    navList.style.listStyle = "none";
+    navList.style.padding = "0";
+
+    sections.forEach((section, index) => {
+        const listItem = document.createElement("li");
+        listItem.textContent = section.name;
+        listItem.style.cursor = "pointer";
+        listItem.style.padding = "10px";
+        listItem.style.color = "orange";
+        listItem.style.borderBottom = "1px solid rgba(255,255,255,0.3)";
+        
+        listItem.addEventListener("click", () => {
+            moveToSection(index, section.position);
+            document.body.classList.remove("overlay-open"); 
         });
-      }
+
+        navList.appendChild(listItem);
     });
-  }
-  
+
+    overlay.appendChild(navList);
+
+    toggleButton.addEventListener("click", () => {
+        document.body.classList.toggle("overlay-open");
+    });
+}

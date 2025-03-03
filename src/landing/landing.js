@@ -21,11 +21,11 @@ import { enableTextInteractivity, enableModelClick } from './utils.js';
 import { createStarfield, loadSun } from './starfield.js';
 import { initSectionTracking, getCurrentSection } from './sectionTracking.js';
 import { initBackgroundSwitcher } from './backgroundManager.js';
-import { animateScrollIndicator, initOverlayToggle } from './nav.js';
+import { animateScrollIndicator, setupNavigation } from './nav.js';
 import { loadSection0 } from './section0.js';
 import { loadSection1 } from './section1.js';
 import { loadSection2 } from './section2.js';
-import { loadSection3, renderSection3 } from './section3.js';
+import { loadSection3 } from './section3.js';
 import { loadSection4 } from './section4.js';
 import { loadSection5 } from './section5.js';
 import { loadSection6 } from './section6.js';
@@ -38,22 +38,22 @@ import { loadSection7 } from './section7.js';
 */
 function init() {
   animateScrollIndicator();
-  initOverlayToggle();
+  // initOverlayToggle();
   // Section tracking and camera location presets
   let scrollProgress = 1;
   let currentSection = 1;
   const sections = [
-    { x: 0, y: 200, z: -60 },    // 0 references
-    { x: 0, y: 0, z: 13 },       // 1 main section
-    { x: 20, y: 30, z: 10 },     // 2 Psyche Asteroid
-    { x: 40, y: -60, z: -260 },  // 3 Armando's balance game (not functional in this scene)
-    { x: 40, y: 60, z: -200 },   // 4 blank
-    { x: 40, y: 100, z: -300 },  // 5 blank  
-    { x: 120, y: -60, z: 60 },   // 6 nasa logo
-    { x: 200, y: 300, z: -110 }  // 7 Blank
-    // sections can be added simply by adding a new coordinate to this list
-    // the scene will be able to scroll to that section as soon as it is added. 
-  ];
+    { name: "References", position: { x: 0, y: 200, z: -60 } },
+    { name: "Main Section", position: { x: 0, y: 0, z: 13 } },
+    { name: "Asteroid", position: { x: 20, y: 30, z: 10 } },
+    { name: "Balance Game", position: { x: 40, y: -60, z: -260 } },
+    { name: "Empty Space", position: { x: 40, y: 60, z: -200 } },
+    { name: "Deep Space", position: { x: 40, y: 100, z: -300 } },
+    { name: "NASA Logo", position: { x: 120, y: -60, z: 60 } },
+    { name: "Beyond", position: { x: 200, y: 300, z: -110 } }
+];
+
+  setupNavigation(sections);
 
   // Scene setup
   const scene = new THREE.Scene();
@@ -107,7 +107,6 @@ function init() {
     } else {
       renderer.render(scene, camera);
     }    
-    renderSection3(camera,scene);
   }
 
   // Enable text interactivity before loading models

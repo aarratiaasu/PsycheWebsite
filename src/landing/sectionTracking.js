@@ -91,7 +91,7 @@ export function moveToSection(sectionIndex, lookAt = null) {
   currentSection = sectionIndex;
   scrollProgress = sectionIndex;
 
-  const sectionPos = sections[sectionIndex];
+  const sectionPos = sections[sectionIndex].position;
   const duration = 2;
 
   gsap.to(camera.position, {

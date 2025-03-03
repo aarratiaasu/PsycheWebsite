@@ -221,14 +221,14 @@ canvas {
 
 .overlay {
     position: absolute;
-    top: 0;
+    top: 20vh;
     left: 0; /* Changed from right: 0 to left: 0 */
     width: 0;
-    height: 100%;
+    height: auto;
     background-color: rgba(0, 0, 0, 0);
     color: white;
     overflow: hidden;
-    padding: 20px;
+    padding: 10px 15px;
     transition: width 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
     z-index: 10;
     opacity: 0;
@@ -236,27 +236,52 @@ canvas {
     align-items: center;
     justify-content: center;
     text-align: center;
+    border-radius: 0 20px 20px 0;
   }
   
-  #toggleOverlay {
+#toggleOverlay {
     position: absolute;
     top: 20px;
     left: 20px;
     cursor: pointer;
     transition: transform 0.3s ease;
     font-weight: lighter;
-    font-size: 1.5em;
+    font-size: 2em;
     color: orange;
     z-index: 20;
-  }
+}
+
+.overlay ul {
+    list-style: none;
+}
   
-  .overlay-open .overlay {
-    width: 30%;
+.overlay li {
+    font-family: 'Genos', sans-serif;
+    font-size: clamp(0.8rem, 2.5vw, 1.8rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: orange;
+    padding: 15px 15px;
+    cursor: pointer;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    white-space: nowrap; 
+    overflow: hidden;
+}
+
+.overlay li:hover {
+    color: black;
+    background-color: orange;
+    opacity: .1;
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
+.overlay-open .overlay {
+    width: 15vw;
     background-color: rgba(0, 0, 0, 0.5);
     opacity: 1;
-  }
+}
   
-  .overlay-open #toggleOverlay {
-    transform: rotate(360deg);
-  }
+.overlay-open #toggleOverlay {
+    transform: rotate(180deg);
+}
   

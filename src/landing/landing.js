@@ -25,11 +25,11 @@ import { animateScrollIndicator, setupNavigation } from './nav.js';
 import { loadSection0 } from './section0.js';
 import { loadSection1 } from './section1.js';
 import { loadSection2 } from './section2.js';
-import { loadSection3 } from './section3.js';
+import { loadSection3, renderSection3 } from './section3.js';
 import { loadSection4 } from './section4.js';
 import { loadSection5 } from './section5.js';
 import { loadSection6 } from './section6.js';
-import { loadSection7 } from './section7.js';
+import { loadSection8, renderSection8 } from './section8.js';
 
 
 /*
@@ -50,7 +50,8 @@ function init() {
     { name: "Empty Space", position: { x: 40, y: 60, z: -200 } },
     { name: "Deep Space", position: { x: 40, y: 100, z: -300 } },
     { name: "NASA Logo", position: { x: 120, y: -60, z: 60 } },
-    { name: "Beyond", position: { x: 200, y: 300, z: -110 } }
+    { name: "Beyond", position: { x: 200, y: 300, z: -110 } },
+    { name: "SpacePic", position: { x: 250, y: 250, z: -150 } } // 8 Space Pic
 ];
 
   setupNavigation(sections);
@@ -107,6 +108,8 @@ function init() {
     } else {
       renderer.render(scene, camera);
     }    
+    renderSection3(camera,scene);
+    renderSection8(camera,scene);
   }
 
   // Enable text interactivity before loading models
@@ -124,7 +127,7 @@ function init() {
     loadSection4(scene, camera, sections),
     loadSection5(scene, camera),
     loadSection6(scene, camera, sections),
-    loadSection7(scene, camera)
+    loadSection8(scene, camera)
   ]).then(() => {
     console.log("All sections loaded.");
 

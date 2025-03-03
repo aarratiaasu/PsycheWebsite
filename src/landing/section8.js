@@ -1,5 +1,5 @@
 /**
- * Section 7 - Space Pic
+ * Section 8 - Space Pic
  */
 
 import * as THREE from 'three';
@@ -8,10 +8,11 @@ import { makeModelClickable } from './utils.js';
 import gsap from 'gsap';
 import { showSpacePicViewport, hideSpacePicViewport } from './viewportspacepic.js';
 
+let section8Elements = [];
 let spacePicButton;
 let hasShownViewport = false;
 
-export function loadSection7(scene, camera) {
+export function loadSection8(scene, camera) {
     // Create a button for the space pic feature
     const buttonGeometry = new THREE.BoxGeometry(40, 20, 5);
     const buttonMaterial = new THREE.MeshBasicMaterial({
@@ -20,7 +21,9 @@ export function loadSection7(scene, camera) {
     });
     spacePicButton = new THREE.Mesh(buttonGeometry, buttonMaterial);
     spacePicButton.position.set(200, 300, -110);
+    spacePicButton.userData.section8Element = true;
     scene.add(spacePicButton);
+    section8Elements.push(spacePicButton);
     
     // Create a text label for the button
     const canvas = document.createElement('canvas');
@@ -43,15 +46,21 @@ export function loadSection7(scene, camera) {
     const labelGeometry = new THREE.PlaneGeometry(50, 25);
     const label = new THREE.Mesh(labelGeometry, labelMaterial);
     label.position.set(200, 300, -107); // Slightly in front of the button
+    label.userData.section8Element = true;
     scene.add(label);
+    section8Elements.push(label);
     
     // Add lights to enhance the section
     const pointLight = new THREE.PointLight(0xffffff, 2, 200);
     pointLight.position.set(200, 300, -100);
+    pointLight.userData.section8Element = true;
     scene.add(pointLight);
+    section8Elements.push(pointLight);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    ambientLight.userData.section8Element = true;
     scene.add(ambientLight);
+    section8Elements.push(ambientLight);
 
     // Make the button clickable
     makeModelClickable(spacePicButton, () => {
@@ -89,29 +98,26 @@ export function loadSection7(scene, camera) {
         }
     };
 
-    spacePicButton.visible = false;
-    label.visible = false;
+    // Initially hide all section 8 elements
+    section8Elements.forEach(element => {
+        element.visible = false;
+    });
 }
 
-export function renderSection7(camera, scene) {
-    if (!spacePicButton) return;
+export function renderSection8(camera, scene) {
+    if (section8Elements.length === 0) return;
 
     const currentSection = getCurrentSection();
-    const isVisible = currentSection === 7;
+    const isVisible = currentSection === 8;
 
-    // Show/hide the button based on current section
-    if (spacePicButton.visible !== isVisible) {
-        spacePicButton.visible = isVisible;
-        // Also show/hide any other elements in this section
-        for (let i = 0; i < scene.children.length; i++) {
-            const child = scene.children[i];
-            if (child.userData && child.userData.section7Element) {
-                child.visible = isVisible;
-            }
+    // Show/hide the elements based on current section
+    section8Elements.forEach(element => {
+        if (element.visible !== isVisible) {
+            element.visible = isVisible;
         }
-    }
+    });
 
-    // Auto-show viewport when entering section 7
+    // Auto-show viewport when entering section 8
     if (isVisible && !hasShownViewport) {
         // Add a small delay to ensure the section transition is complete
         setTimeout(() => {
@@ -119,7 +125,7 @@ export function renderSection7(camera, scene) {
             hasShownViewport = true;
         }, 500);
     } else if (!isVisible && hasShownViewport) {
-        // Hide viewport when leaving section 7
+        // Hide viewport when leaving section 8
         hideSpacePicViewport();
         hasShownViewport = false;
     }

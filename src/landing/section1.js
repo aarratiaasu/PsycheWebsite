@@ -83,7 +83,6 @@ export function loadSection1(scene, camera) {
     // ];
     // createMenu(menuItems, mainTextPosition, mainTextRotation, scene);
     console.log("section 1 loaded");
-
   })
   .catch((error) => {
     console.error("Error loading Section 1:", error);

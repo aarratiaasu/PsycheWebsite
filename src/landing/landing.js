@@ -27,7 +27,7 @@ import { loadSection1 } from './section1.js';
 import { loadSection2 } from './section2.js';
 import { loadSection3, renderSection3 } from './section3.js';
 import { loadSection4, renderSection4 } from './section4.js';
-import { loadSection5 } from './section5.js';
+import { loadSection5, renderSection5 } from './section5.js';
 import { loadSection6 } from './section6.js';
 import { loadSection7, renderSection7 } from './section7.js';
 import { loadSection8, renderSection8 } from './section8.js';
@@ -49,7 +49,7 @@ function init() {
     { name: "Psyche", position: { x: 20, y: 30, z: 10 } },
     { name: "Balance Game", position: { x: 40, y: -60, z: -260 } },
     { name: "Living on Psyche", position: { x: 40, y: 60, z: -200 } },
-    { name: "Deep Space (empty)", position: { x: 40, y: 100, z: -300 } },
+    { name: "Mythology vs. Metal", position: { x: 40, y: 100, z: -300 } },
     { name: "NASA Logo (empty)", position: { x: 120, y: -60, z: 60 } },
     { name: "Psyche Website", position: { x: 200, y: 300, z: -110 } },
     { name: "SpacePic", position: { x: 250, y: 250, z: -150 } } 
@@ -111,6 +111,7 @@ function init() {
     }    
     renderSection3(camera,scene);
     renderSection4(camera,scene);
+    renderSection5(camera,scene);
     renderSection7(camera,scene);
     renderSection8(camera,scene);
   }

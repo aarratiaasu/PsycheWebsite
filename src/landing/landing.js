@@ -24,7 +24,7 @@ import { initBackgroundSwitcher } from './backgroundManager.js';
 import { animateScrollIndicator, setupNavigation } from './nav.js';
 import { loadSection0 } from './section0.js';
 import { loadSection1 } from './section1.js';
-import { loadSection2 } from './section2.js';
+import { loadSection2, renderSection2 } from './section2.js';
 import { loadSection3, renderSection3 } from './section3.js';
 import { loadSection4, renderSection4 } from './section4.js';
 import { loadSection5, renderSection5 } from './section5.js';
@@ -46,7 +46,7 @@ function init() {
   const sections = [
     { name: "References", position: { x: 0, y: 200, z: -60 } },
     { name: "Welcome", position: { x: 0, y: 0, z: 13 } },
-    { name: "Psyche", position: { x: 20, y: 30, z: 10 } },
+    { name: "Psyche Jr", position: { x: 20, y: 30, z: 10 } },
     { name: "Balance Game", position: { x: 40, y: -60, z: -260 } },
     { name: "Living on Psyche", position: { x: 40, y: 60, z: -200 } },
     { name: "Mythology vs. Metal", position: { x: 40, y: 100, z: -300 } },
@@ -109,6 +109,7 @@ function init() {
     } else {
       renderer.render(scene, camera);
     }    
+    renderSection2(camera,scene);
     renderSection3(camera,scene);
     renderSection4(camera,scene);
     renderSection5(camera,scene);
@@ -126,7 +127,7 @@ function init() {
   Promise.all([
     loadSection0(scene),
     loadSection1(scene, camera),
-    loadSection2(scene, camera, sections),
+    loadSection2(scene, camera),
     loadSection3(scene, camera),
     loadSection4(scene, camera, sections),
     loadSection5(scene, camera),

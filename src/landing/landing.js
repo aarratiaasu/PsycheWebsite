@@ -29,6 +29,7 @@ import { loadSection3, renderSection3 } from './section3.js';
 import { loadSection4, renderSection4 } from './section4.js';
 import { loadSection5 } from './section5.js';
 import { loadSection6 } from './section6.js';
+import { loadSection7, renderSection7 } from './section7.js';
 import { loadSection8, renderSection8 } from './section8.js';
 
 
@@ -109,8 +110,9 @@ function init() {
       renderer.render(scene, camera);
     }    
     renderSection3(camera,scene);
-    renderSection8(camera,scene);
     renderSection4(camera,scene);
+    renderSection7(camera,scene);
+    renderSection8(camera,scene);
   }
 
   // Enable text interactivity before loading models
@@ -128,6 +130,7 @@ function init() {
     loadSection4(scene, camera, sections),
     loadSection5(scene, camera),
     loadSection6(scene, camera, sections),
+    loadSection7(scene, camera),
     loadSection8(scene, camera)
   ]).then(() => {
     console.log("All sections loaded.");

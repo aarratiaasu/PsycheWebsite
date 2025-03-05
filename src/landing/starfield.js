@@ -38,7 +38,7 @@ export function createStarfield(scene) {
   const minDistance = 2000; // Minimum distance from the center
   const maxDistance = 3000; // Maximum distance for star distribution
 
-  for (let i = 0; i < 5000; i++) {
+  for (let i = 0; i < 10000; i++) {
     let x, y, z, distance;
 
     // Generate positions ensuring they are beyond the minDistance
@@ -56,7 +56,7 @@ export function createStarfield(scene) {
 
   const starMaterial = new THREE.PointsMaterial({ 
     color: 0xffffff, 
-    size: 1.5, // Star size
+    size: 7.5, // Star size
     sizeAttenuation: true
   });
 

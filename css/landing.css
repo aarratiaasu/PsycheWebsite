@@ -97,6 +97,7 @@ main {
 
 #background-menu li:hover {
     background-color: #3a3b3c;
+    color: black; /* Change text color to black on hover */
 }
 
 #background-switcher:hover {
@@ -269,9 +270,9 @@ canvas {
 }
 
 .overlay li:hover {
-    color: black;
+    color: black; /* Ensure text color is black on hover */
     background-color: orange;
-    opacity: .1;
+    /* Removed opacity: .1 to prevent fading on hover */
     transform: scale(1.1); /* Slight zoom effect */
 }
 
@@ -284,4 +285,3 @@ canvas {
 .overlay-open #toggleOverlay {
     transform: rotate(180deg);
 }
-  

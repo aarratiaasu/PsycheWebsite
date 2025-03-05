@@ -12,17 +12,26 @@ let starField = null;
 let sun = null;
 let sunLight = null;
 
+let starFieldCreated = false;
+let sunCreated = false; 
+
 export function changeBackground(type, scene, renderer, camera, updateComposer) {
     let newComposer = null; // To hold new composer if needed
 
     // Clear existing starfield and sun
-    if (starField) {
+    // Gets a bit wonky here and the stars and sun are hard to remove when trying
+    // to load a new background. Removing user ability to swap for now. 
+    if (starFieldCreated) {
+        console.log('Removing starfield');
         scene.remove(starField);
         starField.geometry.dispose();
         starField.material.dispose();
         starField = null;
+        console.log('Removing sun');
     }
-    if (sun) {
+
+    if (sunCreated) {
+        console.log('Removing sun');
         scene.remove(sun);
         scene.remove(sunLight);
         sun.geometry.dispose();
@@ -31,33 +40,43 @@ export function changeBackground(type, scene, renderer, camera, updateComposer) 
         sunLight = null;
     }
 
-    switch (type) {
-        case 'starfield':
-            starField = createStarfield(scene);
-            const sunData = loadSun(scene, renderer, camera);
-            sun = sunData.sun;
-            sunLight = sunData.sunLight;
-            newComposer = sunData.composer; // Use bloom composer
-            scene.background = null;
-            break;
+ // Clear the background
+ scene.background = null;
 
-        case 'solidColor':
-            scene.background = new THREE.Color(0x1e1e1e);
-            break;
+ switch (type) {
+     case 'starfield':
+         if (!starFieldCreated) {
+             starField = createStarfield(scene);
+             starFieldCreated = true;
+         }
+         const sunData = loadSun(scene, renderer, camera);
+         sun = sunData.sun;
+         sunLight = sunData.sunLight;
+         newComposer = sunData.composer; // Use bloom composer
+         break;
 
-        // Add more backgrounds as needed
-    }
+     case 'solidColor':
+         scene.background = new THREE.Color('#592651');
+         starFieldCreated = false; 
+         break;
+     
+     case 'gradient':
+         scene.background = new THREE.Color('#a53f5b');
+         starFieldCreated = false; 
+         break;
+     // Add more backgrounds as needed
+ }
 
-    // Update composer in landing.js
-    updateComposer(newComposer);
+ // Update composer in landing.js
+ updateComposer(newComposer);
 }
 
 export function initBackgroundSwitcher(scene, renderer, camera, updateComposer) {
-    document.querySelectorAll('#background-menu li').forEach(item => {
-        item.addEventListener('click', (e) => {
-            const selected = e.target.getAttribute('data-value');
-            console.log(`Background selected: ${selected}`);
-            changeBackground(selected, scene, renderer, camera, updateComposer);
-        });
-    });
+ document.querySelectorAll('#background-menu li').forEach(item => {
+     item.addEventListener('click', (e) => {
+         const selected = e.target.getAttribute('data-value');
+         console.log(`Background selected: ${selected}`);
+         changeBackground(selected, scene, renderer, camera, updateComposer);
+     });
+ });
 }

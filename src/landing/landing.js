@@ -20,7 +20,7 @@ import * as THREE from 'three';
 import { enableTextInteractivity, enableModelClick } from './utils.js';
 import { createStarfield, loadSun } from './starfield.js';
 import { initSectionTracking, getCurrentSection } from './sectionTracking.js';
-import { initBackgroundSwitcher } from './backgroundManager.js';
+//import { initBackgroundSwitcher } from './backgroundManager.js';
 import { animateScrollIndicator, setupNavigation } from './nav.js';
 import { loadSection0 } from './section0.js';
 import { loadSection1 } from './section1.js';
@@ -135,7 +135,7 @@ function init() {
     // add starfield to the background
     createStarfield(scene);
 
-    initBackgroundSwitcher(scene);
+    //initBackgroundSwitcher(scene);
     enableModelClick(camera, renderer);
 
     animate();

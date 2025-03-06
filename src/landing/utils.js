@@ -49,7 +49,7 @@ import gsap from 'gsap';
 /*
  * modelCache (Map): Caches loaded 3D models to optimize performance and resource usage.
  *
- * Purpose:
+ * Purpose:enab
  * - Prevents redundant loading of the same model, reducing network requests and load times.
  * - Maintains a single instance of each loaded model in memory, enhancing memory efficiency.
  * - Enables quick re-adding of cached models to the scene without reloading or reprocessing.
@@ -168,7 +168,6 @@ export function createTextMesh(text, position, rotation, size = 1.5, scene) {
     scene.add(textMesh);
   });
 }
-  
 
 /**
  * Loads a 3D model (GLTF/GLB) into the scene with caching and optional animations.
@@ -345,7 +344,7 @@ export function createMenu(menuItems, referencePosition, referenceRotation, scen
  * - The mesh is registered for hover and click events handled by raycasting.
  * - The `userData` object stores metadata for color changes and click handling.
  */
-export function createMenuItem(text, position, scene, onClick) {
+export function createMenuItem(text, position, scene, onClick, size = 0.5) {
   // Initialize the font loader and text mesh container
   const fontLoader = new FontLoader();
   const textMesh = new THREE.Mesh();
@@ -355,7 +354,7 @@ export function createMenuItem(text, position, scene, onClick) {
     // Create text geometry with beveling and depth for a 3D look
     const textGeometry = new TextGeometry(text, {
       font: font,
-      size: 0.5,            // Font size
+      size: size,            // Font size
       depth: 0.3,           // Depth of extrusion for 3D effect
       curveSegments: 12,    // Smoothness of curves
       bevelEnabled: true,   // Enable bevel for edges

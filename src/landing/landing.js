@@ -30,6 +30,7 @@ import { loadSection4, renderSection4 } from './section4.js';
 import { loadSection5 } from './section5.js';
 import { loadSection6 } from './section6.js';
 import { loadSection8, renderSection8 } from './section8.js';
+import { loadSection7 } from './section7.js';
 
 
 /*
@@ -38,10 +39,10 @@ import { loadSection8, renderSection8 } from './section8.js';
 */
 function init() {
   animateScrollIndicator();
-  // initOverlayToggle();
-  // Section tracking and camera location presets
+
   let scrollProgress = 1;
   let currentSection = 1;
+  
   const sections = [
     { name: "References", position: { x: 0, y: 200, z: -60 } },
     { name: "Welcome", position: { x: 0, y: 0, z: 13 } },
@@ -50,13 +51,12 @@ function init() {
     { name: "Living on Psyche", position: { x: 40, y: 60, z: -200 } },
     { name: "Deep Space (empty)", position: { x: 40, y: 100, z: -300 } },
     { name: "NASA Logo (empty)", position: { x: 120, y: -60, z: 60 } },
-    { name: "Empty", position: { x: 200, y: 300, z: -110 } },
+    { name: "Seven", position: { x: 200, y: 300, z: -110 } },
     { name: "SpacePic", position: { x: 250, y: 250, z: -150 } } 
 ];
 
   setupNavigation(sections);
 
-  // Scene setup
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
 
@@ -69,7 +69,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-  // Lighting setup
+  // Lighting 
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
   scene.add(ambientLight);
 
@@ -77,10 +77,10 @@ function init() {
   directionalLight.position.set(0, 0, 5);
   scene.add(directionalLight);
 
-  // Initialize section tracking
+  // section tracking - handles the camera's moveTo function
   initSectionTracking(camera, sections, renderer);
 
-  // Debug panel for development insights
+  // Debug panel for development. will delete this later
   const debugPanel = document.getElementById('debug-panel');
   /*
   * Updates the debug panel with current section and camera position.
@@ -108,6 +108,7 @@ function init() {
     } else {
       renderer.render(scene, camera);
     }    
+    // need to implement rendering these sections ONLY if they are actively displayed
     renderSection3(camera,scene);
     renderSection8(camera,scene);
     renderSection4(camera,scene);
@@ -119,7 +120,7 @@ function init() {
   // Load the sun effect and composer setup
   const composer = loadSun(scene, renderer, camera);
 
-  // Load all scene sections and initialize starfield
+  // Load all scene sections and initialize background
   Promise.all([
     loadSection0(scene),
     loadSection1(scene, camera),
@@ -128,11 +129,11 @@ function init() {
     loadSection4(scene, camera, sections),
     loadSection5(scene, camera),
     loadSection6(scene, camera, sections),
+    loadSection7(scene, camera, sections),
     loadSection8(scene, camera)
   ]).then(() => {
     console.log("All sections loaded.");
 
-    // add starfield to the background
     createStarfield(scene);
 
     initBackgroundSwitcher(scene);
@@ -144,5 +145,4 @@ function init() {
   });
 }
 
-// Initialize the scene
 init();

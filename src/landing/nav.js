@@ -95,7 +95,7 @@ export function animateScrollIndicator() {
             submenu.style.listStyle = "none";
             submenu.style.padding = "0";
             submenu.style.marginLeft = "20px";
-            submenu.style.display = "none";
+            submenu.style.display = "block"; // Make submenu visible by default
             submenu.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
             submenu.style.borderRadius = "5px";
             submenu.style.overflow = "hidden";

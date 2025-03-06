@@ -44,6 +44,10 @@ function init() {
   // Section tracking and camera location presets
   let scrollProgress = 1;
   let currentSection = 1;
+  
+  // Make menu visible by default
+  document.body.classList.add("overlay-open");
+  
   const sections = [
     { name: "References", position: { x: 0, y: 200, z: -60 } },
     { name: "Welcome", position: { x: 0, y: 0, z: 13 } },

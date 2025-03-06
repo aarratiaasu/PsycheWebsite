@@ -94,7 +94,7 @@ export function showYearViewport() {
     document.addEventListener('keydown', handleKeyDown);
 }
 /**
- * Hides the byear viewport
+ * Hides the year viewport
  */
 export function hideYearViewport() {
     if (!viewportContainer) return;
@@ -109,6 +109,9 @@ export function hideYearViewport() {
             // Reset opacity and scale for next time
             viewportContainer.style.opacity = 1;
             viewportContainer.style.transform = 'translate(-50%, -50%) scale(1)';
+            
+            // Show the menu when viewport is closed
+            document.body.classList.add("overlay-open");
         }
     });
 }

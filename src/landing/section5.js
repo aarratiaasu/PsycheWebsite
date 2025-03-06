@@ -1,10 +1,10 @@
 /**
- * Section 5 - Psyche Name Origin
+ * Section 5 - Website Viewport
  */
 
 import * as THREE from 'three';
 import { getCurrentSection } from './sectionTracking.js';
-import { showPsycheNameViewport, hidePsycheNameViewport } from './psycheNameViewport.js';
+import { showWebsiteViewport, hideWebsiteViewport } from './websiteViewport.js';
 
 let hasShownViewport = false;
 let sectionInitialized = false;
@@ -25,12 +25,12 @@ export function renderSection5(camera, scene) {
     if (isVisible && !hasShownViewport) {
         // Add a small delay to ensure the section transition is complete
         setTimeout(() => {
-            showPsycheNameViewport();
+            showWebsiteViewport();
             hasShownViewport = true;
         }, 500);
     } else if (!isVisible && hasShownViewport) {
         // Hide viewport when leaving section 5
-        hidePsycheNameViewport();
+        hideWebsiteViewport();
         hasShownViewport = false;
     }
 }

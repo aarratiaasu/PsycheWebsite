@@ -1,21 +1,21 @@
 /**
- * Section 4 - Year Metrics
+ * Section 4 - Psyche Name Origin
  */
 
 import * as THREE from 'three';
 import { getCurrentSection } from './sectionTracking.js';
 import { makeModelClickable } from './utils.js';
 import gsap from 'gsap';
-import { showYearViewport, hideYearViewport } from './year.js';
+import { showPsycheNameViewport, hidePsycheNameViewport } from './psycheNameViewport.js';
 
 let yearButton;
 let hasShownViewport = false;
 
 export function loadSection4(scene, camera) {
-    // Create a button for the year metrics
+    // Create a button for the Psyche Name Origin
     const buttonGeometry = new THREE.BoxGeometry(40, 20, 5);
     const buttonMaterial = new THREE.MeshBasicMaterial({
-        color: 0x45a049,
+        color: 0xf9a000,
         transparent: false
     });
     yearButton = new THREE.Mesh(buttonGeometry, buttonMaterial);
@@ -27,13 +27,13 @@ export function loadSection4(scene, camera) {
     canvas.width = 256;
     canvas.height = 128;
     const context = canvas.getContext('2d');
-    context.fillStyle = '#45a049';
+    context.fillStyle = '#f9a000';
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.font = 'bold 24px Arial';
     context.fillStyle = 'white';
     context.textAlign = 'center';
     context.textBaseline = 'middle';
-    context.fillText('Year Metrics', canvas.width / 2, canvas.height / 2);
+    context.fillText('Psyche Name', canvas.width / 2, canvas.height / 2);
     
     const texture = new THREE.CanvasTexture(canvas);
     const labelMaterial = new THREE.MeshBasicMaterial({
@@ -55,12 +55,12 @@ export function loadSection4(scene, camera) {
 
     // Make the button clickable
     makeModelClickable(yearButton, () => {
-        showYearViewport();
+        showPsycheNameViewport();
     });
     
     // Make the label clickable too
     makeModelClickable(label, () => {
-        showYearViewport();
+        showPsycheNameViewport();
     });
 
     // Add hover effect to the button
@@ -68,9 +68,9 @@ export function loadSection4(scene, camera) {
     yearButton.userData.onPointerOver = () => {
         if (!isHovered) {
             gsap.to(yearButton.material.color, {
-                r: 0.271,  // 0x45a049 darker
+                r: 0.976,  // 0xf9a000 darker
                 g: 0.627,
-                b: 0.286,
+                b: 0.0,
                 duration: 0.3
             });
             isHovered = true;
@@ -80,9 +80,9 @@ export function loadSection4(scene, camera) {
     yearButton.userData.onPointerOut = () => {
         if (isHovered) {
             gsap.to(yearButton.material.color, {
-                r: 0.271,  // 0x45a049
+                r: 0.976,  // 0xf9a000
                 g: 0.627,
-                b: 0.286,
+                b: 0.0,
                 duration: 0.3
             });
             isHovered = false;
@@ -111,16 +111,16 @@ export function renderSection4(camera, scene) {
         }
     }
 
-    // Auto-show viewport when entering section 3
+    // Auto-show viewport when entering section 4
     if (isVisible && !hasShownViewport) {
         // Add a small delay to ensure the section transition is complete
         setTimeout(() => {
-            showYearViewport();
+            showPsycheNameViewport();
             hasShownViewport = true;
         }, 500);
     } else if (!isVisible && hasShownViewport) {
-        // Hide viewport when leaving section 3
-        hideYearViewport();
+        // Hide viewport when leaving section 4
+        hidePsycheNameViewport();
         hasShownViewport = false;
     }
 }

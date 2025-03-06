@@ -52,13 +52,10 @@ function init() {
     { name: "References", position: { x: 0, y: 200, z: -60 } },
     { name: "Welcome", position: { x: 0, y: 0, z: 13 } },
     { name: "Psyche Jr", position: { x: 20, y: 30, z: 10 } },
-    { name: "Balance Game", position: { x: 40, y: -60, z: -260 } },
     { name: "Living on Psyche", position: { x: 40, y: 60, z: -200 } },
     { name: "Mythology vs. Metal", position: { x: 40, y: 100, z: -300 } },
-    { name: "Games Section", position: { x: 120, y: -60, z: 60 } },
     { name: "Psyche Website", position: { x: 200, y: 300, z: -110 } },
-    { name: "SpacePic", position: { x: 250, y: 250, z: -150 } },
-    { name: "Escape Velocity", position: { x: 200, y: 300, z: -110 } }
+    { name: "Games Section", position: { x: 120, y: -60, z: 60 } }
 ];
 
   setupNavigation(sections);

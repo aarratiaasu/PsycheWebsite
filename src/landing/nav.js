@@ -30,21 +30,9 @@ export function animateScrollIndicator() {
     }, 4500);
 }
 
-// export function initOverlayToggle() {
-//     document.addEventListener("DOMContentLoaded", function () {
-//       const toggleButton = document.getElementById("toggleOverlay");
-//       const overlay = document.getElementById("infoOverlay");
-  
-//       if (toggleButton && overlay) {
-//         toggleButton.addEventListener("click", function () {
-//           document.body.classList.toggle("overlay-open");
-//         });
-//       }
-//     });
-//   }
+// Commented out code removed as requested
 
-
-  export function setupNavigation(sections) {
+export function setupNavigation(sections) {
     const overlay = document.getElementById("infoOverlay"); 
     const toggleButton = document.getElementById("toggleOverlay"); 
     overlay.innerHTML = "";
@@ -134,55 +122,26 @@ export function animateScrollIndicator() {
                     gameItem.style.color = "#00aaff";
                 });
                 
-                // Add click event to open the game directly
+                // Add click event to open the specific game viewport directly
                 gameItem.addEventListener("click", (e) => {
                     e.stopPropagation(); // Prevent triggering parent click
                     
-                    // First navigate to the games section
-                    moveToSection(index, section.position);
-                    
-                    // Then open the specific game after a short delay
-                    setTimeout(() => {
-                        // Create an iframe for the game
-                        const gameFrame = document.createElement("iframe");
-                        gameFrame.src = game.path;
-                        gameFrame.style.position = "fixed";
-                        gameFrame.style.top = "0";
-                        gameFrame.style.left = "0";
-                        gameFrame.style.width = "100%";
-                        gameFrame.style.height = "100%";
-                        gameFrame.style.border = "none";
-                        gameFrame.style.zIndex = "1000";
-                        
-                        document.body.appendChild(gameFrame);
-                        
-                        // Add a close button
-                        const closeBtn = document.createElement("button");
-                        closeBtn.textContent = "✕";
-                        closeBtn.style.position = "fixed";
-                        closeBtn.style.top = "10px";
-                        closeBtn.style.right = "10px";
-                        closeBtn.style.zIndex = "1001";
-                        closeBtn.style.background = "#007bff";
-                        closeBtn.style.color = "white";
-                        closeBtn.style.border = "none";
-                        closeBtn.style.borderRadius = "50%";
-                        closeBtn.style.width = "30px";
-                        closeBtn.style.height = "30px";
-                        closeBtn.style.cursor = "pointer";
-                        closeBtn.style.fontSize = "16px";
-                        closeBtn.style.display = "flex";
-                        closeBtn.style.alignItems = "center";
-                        closeBtn.style.justifyContent = "center";
-                        
-                        closeBtn.addEventListener("click", () => {
-                            document.body.removeChild(gameFrame);
-                            document.body.removeChild(closeBtn);
+                    // Import and use the appropriate viewport based on the game
+                    if (game.name === "Balance Game") {
+                        import('./balanceViewport.js').then(module => {
+                            module.showBalanceViewport();
                         });
-                        
-                        document.body.appendChild(closeBtn);
-                    }, 500);
+                    } else if (game.name === "Escape Velocity") {
+                        import('./viewportescapevelocity.js').then(module => {
+                            module.showEscapeVelocityViewport();
+                        });
+                    } else if (game.name === "SpacePic") {
+                        import('./viewportspacepic.js').then(module => {
+                            module.showSpacePicViewport();
+                        });
+                    }
                     
+                    // Hide the menu
                     document.body.classList.remove("overlay-open");
                 });
                 

@@ -139,6 +139,9 @@ export function hideEscapeVelocityViewport() {
             // Reset opacity and scale for next time
             viewportContainer.style.opacity = 1;
             viewportContainer.style.transform = 'translate(-50%, -50%) scale(1)';
+            
+            // Show the menu when viewport is closed
+            document.body.classList.add("overlay-open");
         }
     });
 }

@@ -103,7 +103,7 @@ export function animateScrollIndicator() {
             // Add submenu items for each game
             const games = [
                 { name: "Balance Game", path: "../balance/balance.html" },
-                { name: "Escape Velocity", path: "../escapeVelocity/index.html" },
+                { name: "Escape Velocity", path: "../escapeVelocity/escape-velocity.html" },
                 { name: "SpacePic", path: "../spacepic/photo.html" }
                 // Removed Psyche Jr and Name Generator games
             ];

@@ -24,7 +24,7 @@ function animateIframe() {
         iframe.id = "infoFrame";
         iframe.src = './TEST_IFRAME_SECTION7/index.html';  
         iframe.style.position = "fixed";
-        iframe.style.bottom = "-100%";  
+        iframe.style.bottom = "-100%";
         iframe.style.left = "50%";
         iframe.style.transform = "translateX(-50%)";
         iframe.style.width = "80%";
@@ -33,12 +33,13 @@ function animateIframe() {
         iframe.style.borderRadius = "12px";  
         iframe.style.boxShadow = "0px 0px 10px rgba(249, 159, 0, 0.6)";  
         iframe.style.transition = "bottom 0.5s ease-out, opacity 0.5s ease-out"; 
-        iframe.style.opacity = "0"; 
+        iframe.style.opacity = "0";
         document.body.appendChild(iframe);
     }
 
     setTimeout(() => {
-        iframe.style.bottom = "10%"; 
-        iframe.style.opacity = "1";  
+        iframe.style.bottom = "10%";
+        iframe.style.opacity = "1";
     }, 10);
 }
+

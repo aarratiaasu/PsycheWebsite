@@ -452,7 +452,7 @@ function onMouseMove(event, camera, renderer) {
 
       // Update hovered text to the new intersected object
       hoveredText = intersectedText;
-
+      document.body.style.cursor = "pointer";
       // Store the original color if not already stored
       if (!hoveredText.userData.originalColorStored) {
         hoveredText.userData.originalColor = hoveredText.material.color.getHex();
@@ -464,7 +464,7 @@ function onMouseMove(event, camera, renderer) {
         r: 1, g: 0.5, b: 0, // Change color to orange
         duration: 0.3
       });
-      gsap.to(hoveredText.scale, { x: 1.2, y: 1.2, z: 1.2, duration: 0.3 }); // Slight scale-up
+      // gsap.to(hoveredText.scale, { x: 1.2, y: 1.2, z: 1.2, duration: 0.3 }); // Slight scale-up
     }
   } else {
     // If no text is hovered, reset the previously hovered text
@@ -478,6 +478,7 @@ function onMouseMove(event, camera, renderer) {
       gsap.to(hoveredText.scale, { x: 1, y: 1, z: 1, duration: 0.3 });
       hoveredText = null; // Clear hovered state
     }
+    document.body.style.cursor = "default"; 
   }
 }
 

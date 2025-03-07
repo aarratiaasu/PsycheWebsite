@@ -87,6 +87,7 @@ export function onScroll(event) {
 * - lookAt: Optional THREE.Vector3 position for the camera to look at.
 */
 export function moveToSection(sectionIndex, lookAt = null) {
+  console.log("Moving to section!");
   if (sectionIndex < 0 || sectionIndex >= sections.length) return;
   currentSection = sectionIndex;
   scrollProgress = sectionIndex;

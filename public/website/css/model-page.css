@@ -1,6 +1,6 @@
 body { 
     margin: 0; 
-    font-family: 'Courier New', monospace; 
+    font-family: Arial, sans-serif; 
 }
 
 #model-container {
@@ -19,7 +19,7 @@ body {
     border-radius: 5px;
     cursor: pointer;
     z-index: 1000;
-    font-family: 'Courier New', monospace;
+    font-family: Arial, sans-serif;
     font-size: 14px;
     box-shadow: 0 0 10px rgba(173, 255, 47, 0.3);
     transition: all 0.3s ease;
@@ -56,7 +56,7 @@ body {
     border: 1px solid greenyellow;
     border-radius: 5px;
     cursor: pointer;
-    font-family: 'Courier New', monospace;
+    font-family: Arial, sans-serif;
     font-size: 14px;
     transition: all 0.3s ease;
 }
@@ -124,7 +124,7 @@ body {
     border: 1px solid greenyellow;
     padding: 5px 15px;
     cursor: pointer;
-    font-family: 'Courier New', monospace;
+    font-family: Arial, sans-serif;
     border-radius: 3px;
     transition: all 0.3s ease;
 }
@@ -168,7 +168,7 @@ body {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
-    font-family: 'Courier New', monospace;
+    font-family: Arial, sans-serif;
     color: greenyellow;
 }
 
@@ -183,7 +183,7 @@ body {
     padding: 10px 20px;
     margin: 5px;
     cursor: pointer;
-    font-family: 'Courier New', monospace;
+    font-family: Arial, sans-serif;
     border-radius: 3px;
     transition: all 0.3s ease;
 }
@@ -211,7 +211,7 @@ body {
     padding: 15px;
     border: 1px solid greenyellow;
     border-radius: 5px;
-    font-family: 'Courier New', monospace;
+    font-family: Arial, sans-serif;
     z-index: 1000;
     box-shadow: 0 0 10px rgba(173, 255, 47, 0.3);
 }
@@ -247,7 +247,7 @@ body {
     margin: 0 2px;
     border-radius: 3px;
     cursor: pointer;
-    font-family: 'Courier New', monospace;
+    font-family: Arial, sans-serif;
     transition: background 0.3s;
 }
 

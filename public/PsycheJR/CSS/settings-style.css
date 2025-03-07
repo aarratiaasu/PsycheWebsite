@@ -1,4 +1,8 @@
 
+* {
+    font-family: Arial, sans-serif;
+}
+
 .button-container {
     display: flex;
     justify-content: center;

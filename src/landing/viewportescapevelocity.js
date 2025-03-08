@@ -32,9 +32,9 @@ export function showEscapeVelocityViewport() {
     viewportContainer.style.top = '50%';
     viewportContainer.style.left = '50%';
     viewportContainer.style.transform = 'translate(-50%, -50%)';
-    viewportContainer.style.width = '90%';
-    viewportContainer.style.maxWidth = '1200px';
-    viewportContainer.style.height = '90vh';
+    viewportContainer.style.width = '110%';
+    viewportContainer.style.maxWidth = '1440px';
+    viewportContainer.style.height = '100vh';
     viewportContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
     viewportContainer.style.border = '2px solid #007bff';
     viewportContainer.style.borderRadius = '10px';

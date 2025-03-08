@@ -37,9 +37,9 @@ export function createStarfield(scene, options = { density: 1.0 }) {
 
   const minDistance = 2000; // Minimum distance from the center
   const maxDistance = 3000; // Maximum distance for star distribution
-  const starCount = Math.floor(5000 * options.density);
+  const starCount = Math.floor(8000 * options.density);
   
-  for (let i = 0; i < 5000; i++) {
+  for (let i = 0; i < starCount; i++) {
     let x, y, z, distance;
 
     // Generate positions ensuring they are beyond the minDistance

@@ -46,9 +46,10 @@ export function initSectionTracking(cam, sectionList, rend) {
 * Adjusts the camera aspect ratio and updates the renderer size
 * when the window is resized to maintain correct proportions.
 */
-function onResize() {
+export function onResize() {
 
   const aspect = window.innerWidth / window.innerHeight;
+  const viewportWidth = window.innerWidth;
 
   camera.aspect = aspect;
   camera.updateProjectionMatrix();
@@ -57,6 +58,13 @@ function onResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   }
+  if (viewportWidth < 1300) {
+    const fovAdjustment = (1300 - viewportWidth) * 0.039; // Increase scaling factor
+    camera.fov = Math.min(75 + fovAdjustment, 100); // Allow up to FOV 100 for smaller screens
+  } else {
+    camera.fov = 75; // Reset to default when width is normal
+  }
+  camera.updateProjectionMatrix();
 }
 
 /*
@@ -87,7 +95,6 @@ export function onScroll(event) {
 * - lookAt: Optional THREE.Vector3 position for the camera to look at.
 */
 export function moveToSection(sectionIndex, lookAt = null) {
-  console.log("Moving to section!");
   if (sectionIndex < 0 || sectionIndex >= sections.length) return;
   currentSection = sectionIndex;
   scrollProgress = sectionIndex;
@@ -104,7 +111,6 @@ export function moveToSection(sectionIndex, lookAt = null) {
     onUpdate: () => {
       if (lookAt && sectionIndex === 6) {
         // camera.lookAt(lookAt.x, lookAt.y, lookAt.z); // Optional: Look at model in section 6
-        console.log("yay!");
       }
     },
     onComplete: () => {

@@ -19,7 +19,7 @@
 import * as THREE from 'three';
 import { enableTextInteractivity, enableModelClick } from './utils.js';
 import { createStarfield, loadSun } from './starfield.js';
-import { initSectionTracking, getCurrentSection } from './sectionTracking.js';
+import { initSectionTracking, getCurrentSection, onResize } from './sectionTracking.js';
 import { initBackgroundSwitcher } from './backgroundManager.js';
 import { animateScrollIndicator, setupNavigation } from './nav.js';
 import { loadSection0 } from './section0.js';
@@ -82,6 +82,7 @@ function init() {
 
   // Performance based adaptive rendering
   const isLowPerformance = navigator.hardwareConcurrency < 4 || window.devicePixelRatio < 1.5;
+  const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
   const starDensity = isLowPerformance ? 0.5 : 1.0; 
   const bloomStrength = isLowPerformance ? 1.0 : 2.0; 
 
@@ -100,7 +101,8 @@ function init() {
       X: ${camera.position.x.toFixed(2)}<br>
       Y: ${camera.position.y.toFixed(2)}<br>
       Z: ${camera.position.z.toFixed(2)}<br>
-      HW-Concurrency: ${navigator.hardwareConcurrency}<br>
+      Is Mobile: ${ isMobile }<br>
+      Concurrency: ${navigator.hardwareConcurrency}<br>
       PixelRatio: ${window.devicePixelRatio}
     `;
   }
@@ -142,12 +144,13 @@ function init() {
   ]).then(() => {
     console.log("All sections loaded.");
 
-    createStarfield(scene);
+    createStarfield(scene, { density: starDensity });
 
     initBackgroundSwitcher(scene);
     enableModelClick(camera, renderer);
-
     animate();
+    onResize();
+
   }).catch(error => {
     console.error("Error loading sections:", error);
   });

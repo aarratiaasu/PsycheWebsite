@@ -44,7 +44,7 @@ export function setupNavigation(sections) {
         listItem.textContent = section.name;
         listItem.style.cursor = "pointer";
         listItem.style.padding = "10px";
-        listItem.style.color = "orange";
+        listItem.style.color = "black";
         listItem.style.borderBottom = "1px solid rgba(255,255,255,0.3)";
 
         listItem.addEventListener("click", () => {

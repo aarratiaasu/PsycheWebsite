@@ -47,12 +47,12 @@ function init() {
     { name: "References", position: { x: 0, y: 200, z: -60 } },
     { name: "Welcome", position: { x: 0, y: 0, z: 13 } },
     { name: "Psyche", position: { x: 20, y: 30, z: 10 } },
-    { name: "Balance Game", position: { x: 40, y: -60, z: -260 } },
-    { name: "Living on Psyche", position: { x: 40, y: 60, z: -200 } },
-    { name: "Deep Space (empty)", position: { x: 40, y: 100, z: -300 } },
-    { name: "NASA Logo (empty)", position: { x: 120, y: -60, z: 60 } },
-    { name: "Seven", position: { x: 200, y: 300, z: -110 } },
-    { name: "SpacePic", position: { x: 250, y: 250, z: -150 } } 
+    { name: "Balance", position: { x: 40, y: -60, z: -260 } },
+    { name: "Life  on Psyche", position: { x: 40, y: 60, z: -200 } },
+    { name: "Deep Space", position: { x: 40, y: 100, z: -300 } },
+    { name: "Deep Space2", position: { x: 120, y: -60, z: 60 } },
+    { name: "Seven", position: { x: 200, y: 300, z: -110 } },           // 7
+    { name: "SpacePic", position: { x: 250, y: 250, z: -150 } }         // 8
 ];
 
   setupNavigation(sections);
@@ -80,6 +80,12 @@ function init() {
   // section tracking - handles the camera's moveTo function
   initSectionTracking(camera, sections, renderer);
 
+  // Performance based adaptive rendering
+  const isLowPerformance = navigator.hardwareConcurrency < 4 || window.devicePixelRatio < 1.5;
+  const starDensity = isLowPerformance ? 0.5 : 1.0; 
+  const bloomStrength = isLowPerformance ? 1.0 : 2.0; 
+
+
   // Debug panel for development. will delete this later
   const debugPanel = document.getElementById('debug-panel');
   /*
@@ -93,7 +99,9 @@ function init() {
       <strong>Camera Position:</strong><br>
       X: ${camera.position.x.toFixed(2)}<br>
       Y: ${camera.position.y.toFixed(2)}<br>
-      Z: ${camera.position.z.toFixed(2)}
+      Z: ${camera.position.z.toFixed(2)}<br>
+      HW-Concurrency: ${navigator.hardwareConcurrency}<br>
+      PixelRatio: ${window.devicePixelRatio}
     `;
   }
 
@@ -118,7 +126,7 @@ function init() {
   enableTextInteractivity(camera, scene, renderer);
 
   // Load the sun effect and composer setup
-  const composer = loadSun(scene, renderer, camera);
+  const composer = loadSun(scene, renderer, camera, bloomStrength);
 
   // Load all scene sections and initialize background
   Promise.all([

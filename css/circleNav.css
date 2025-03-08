@@ -44,11 +44,13 @@
 
 .cn-wrapper {
     position: fixed;
-    bottom: 100px;
-    left: 30px;
-    width: 200px;
+    bottom: min(10vh, 85px); /* Stops shrinking below 865px */
+    left: 2vw; /* Moves closer to the left dynamically */
+    width: 15vw; /* Adjusts width based on screen size */
+    max-width: 200px;
+    min-width: 135px;
     display: flex;
-    flex-direction: column-reverse; 
+    flex-direction: column-reverse;
     align-items: flex-start;
     transform: scaleY(0);
     transform-origin: bottom;
@@ -69,11 +71,36 @@
 }
 
 .cn-wrapper li {
+    display: block;
+    padding: min(1vh, 10px) min(2vw, 15px); /* Limits scaling at 865px */
+    background: orange;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    border-radius: 30px;
+    margin-bottom: min(1vh, 8px); /* Stops adjusting beyond 865px */
+    
     opacity: 0;
-    transform: translateY(10px) scale(0.9);
-    transition: transform 0.4s ease, opacity 0.3s ease;
+    transform: translateY(1vh) scale(0.9) translateX(0);
     transform-origin: bottom;
-    margin-bottom: 8px;
+    
+    transition: transform 0.4s ease, opacity 0.3s ease, background 0.3s ease;
+}
+
+.opened-nav {
+    opacity: 1;
+    transform: translateY(0) scale(1) translateX(-20px); /* Shift items left */
+}
+
+.opened-nav li {
+    opacity: 1;
+    transform: translateY(0) scale(1) translateX(min(-2vw, -20px));
+}
+
+.cn-wrapper li:hover {
+    background: #FF9800;
+    color: white;
+    transform: scale(1.05);
 }
 
 .opened-nav li:nth-child(9) {
@@ -168,21 +195,4 @@
     transition-delay: 0.45s;
 }
 
-.cn-wrapper a {
-    display: block;
-    padding: 10px 15px;
-    background: #ffffff;
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-    transition: background 0.3s ease, transform 0.3s ease;
-    transform-origin: bottom;
-    border-radius: 30px;
-}
-
-.cn-wrapper a:hover {
-    background: #FF9800;
-    color: white;
-    transform: scale(1.05);
-}
 

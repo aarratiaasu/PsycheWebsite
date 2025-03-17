@@ -21,7 +21,7 @@
 import gsap from 'gsap';
 import * as THREE from 'three';
 
-let camera, renderer, sections, currentSection = 1, scrollProgress = 1;
+let sections, currentSection = 1, scrollProgress = 1;
 let isAnimating = false; // Scroll lock flag
 
 /*
@@ -33,39 +33,42 @@ let isAnimating = false; // Scroll lock flag
 * - sectionList: Array of section positions for navigation.
 * - rend: The Three.js renderer for viewport updates.
 */
-export function initSectionTracking(cam, sectionList, rend) {
-  camera = cam;
+export function initSectionTracking(camera, sectionList, renderer) {
   sections = sectionList;
-  renderer = rend;
   window.addEventListener("wheel", onScroll);
   window.addEventListener("touchmove", onScroll);
-  window.addEventListener('resize', onResize);
+  window.addEventListener('resize', () => onResize(camera, renderer));
 }
 
 /*
 * Adjusts the camera aspect ratio and updates the renderer size
 * when the window is resized to maintain correct proportions.
 */
-export function onResize() {
+export function onResize(camera, renderer) {
+  if (!camera || !renderer) {
+    console.error("onResize called without a valid camera or renderer.");
+    return;
+  }
 
-  const aspect = window.innerWidth / window.innerHeight;
-  const viewportWidth = window.innerWidth;
+  const viewportWidth = Math.max(window.innerWidth, 768); 
+  const aspect = viewportWidth / window.innerHeight;
 
   camera.aspect = aspect;
   camera.updateProjectionMatrix();
 
-  if (renderer) {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  }
+  renderer.setSize(viewportWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
   if (viewportWidth < 1300) {
-    const fovAdjustment = (1300 - viewportWidth) * 0.039; // Increase scaling factor
-    camera.fov = Math.min(75 + fovAdjustment, 100); // Allow up to FOV 100 for smaller screens
+    const fovAdjustment = (1300 - viewportWidth) * 0.048;
+    camera.fov = Math.min(75 + fovAdjustment, 100);
   } else {
-    camera.fov = 75; // Reset to default when width is normal
+    camera.fov = 75;
   }
+
   camera.updateProjectionMatrix();
 }
+
 
 /*
 * Handles scroll and touchmove events to update the camera's scroll progress.

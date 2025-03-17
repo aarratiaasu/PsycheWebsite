@@ -83,6 +83,7 @@ function init() {
   // Performance based adaptive rendering
   const isLowPerformance = navigator.hardwareConcurrency < 4 || window.devicePixelRatio < 1.5;
   const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+  // passed to fx
   const starDensity = isLowPerformance ? 0.5 : 1.0; 
   const bloomStrength = isLowPerformance ? 1.0 : 2.0; 
 
@@ -149,11 +150,20 @@ function init() {
     initBackgroundSwitcher(scene);
     enableModelClick(camera, renderer);
     animate();
-    onResize();
+    onResize(camera, renderer);
 
   }).catch(error => {
     console.error("Error loading sections:", error);
   });
+
+  window.addEventListener('resize', () => {
+    if (camera && renderer) {
+        onResize(camera, renderer);
+    } else {
+        console.warn("Resize event fired, but camera or renderer is not defined.");
+    }
+});
+
 }
 
 init();

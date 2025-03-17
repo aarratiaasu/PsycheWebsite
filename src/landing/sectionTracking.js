@@ -35,29 +35,42 @@ let isAnimating = false; // Scroll lock flag
 */
 export function initSectionTracking(cam, sectionList, rend) {
   camera = cam;
-  sections = sectionList;
   renderer = rend;
+  sections = sectionList;
   window.addEventListener("wheel", onScroll);
   window.addEventListener("touchmove", onScroll);
-  window.addEventListener('resize', onResize);
+  window.addEventListener('resize', () => onResize(camera, renderer));
 }
 
 /*
 * Adjusts the camera aspect ratio and updates the renderer size
 * when the window is resized to maintain correct proportions.
 */
-function onResize() {
+export function onResize(camera, renderer) {
+  if (!camera || !renderer) {
+    console.error("onResize called without a valid camera or renderer.");
+    return;
+  }
 
-  const aspect = window.innerWidth / window.innerHeight;
+  const viewportWidth = Math.max(window.innerWidth, 768); 
+  const aspect = viewportWidth / window.innerHeight;
 
   camera.aspect = aspect;
   camera.updateProjectionMatrix();
 
-  if (renderer) {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(viewportWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  if (viewportWidth < 1300) {
+    const fovAdjustment = (1300 - viewportWidth) * 0.048;
+    camera.fov = Math.min(75 + fovAdjustment, 100);
+  } else {
+    camera.fov = 75;
   }
+
+  camera.updateProjectionMatrix();
 }
+
 
 /*
 * Handles scroll and touchmove events to update the camera's scroll progress.
@@ -103,7 +116,6 @@ export function moveToSection(sectionIndex, lookAt = null) {
     onUpdate: () => {
       if (lookAt && sectionIndex === 6) {
         // camera.lookAt(lookAt.x, lookAt.y, lookAt.z); // Optional: Look at model in section 6
-        console.log("yay!");
       }
     },
     onComplete: () => {

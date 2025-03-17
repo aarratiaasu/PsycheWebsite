@@ -19,8 +19,7 @@
 import * as THREE from 'three';
 import { enableTextInteractivity, enableModelClick } from './utils.js';
 import { createStarfield, loadSun } from './starfield.js';
-import { initSectionTracking, getCurrentSection } from './sectionTracking.js';
-//import { initBackgroundSwitcher } from './backgroundManager.js';
+import { initSectionTracking, getCurrentSection, onResize } from './sectionTracking.js';
 import { animateScrollIndicator, setupNavigation } from './nav.js';
 import { loadSection0 } from './section0.js';
 import { loadSection1 } from './section1.js';
@@ -30,6 +29,7 @@ import { loadSection4, renderSection4 } from './section4.js';
 import { loadSection5 } from './section5.js';
 import { loadSection6 } from './section6.js';
 import { loadSection8, renderSection8 } from './section8.js';
+import { loadSection7 } from './section7.js';
 
 
 /*
@@ -38,25 +38,24 @@ import { loadSection8, renderSection8 } from './section8.js';
 */
 function init() {
   animateScrollIndicator();
-  // initOverlayToggle();
-  // Section tracking and camera location presets
+
   let scrollProgress = 1;
   let currentSection = 1;
+  
   const sections = [
     { name: "References", position: { x: 0, y: 200, z: -60 } },
     { name: "Welcome", position: { x: 0, y: 0, z: 13 } },
     { name: "Psyche", position: { x: 20, y: 30, z: 10 } },
-    { name: "Balance Game", position: { x: 40, y: -60, z: -260 } },
-    { name: "Living on Psyche", position: { x: 40, y: 60, z: -200 } },
-    { name: "Deep Space (empty)", position: { x: 40, y: 100, z: -300 } },
-    { name: "NASA Logo (empty)", position: { x: 120, y: -60, z: 60 } },
-    { name: "Empty", position: { x: 200, y: 300, z: -110 } },
-    { name: "SpacePic", position: { x: 250, y: 250, z: -150 } } 
+    { name: "Balance", position: { x: 40, y: -60, z: -260 } },
+    { name: "Life  on Psyche", position: { x: 40, y: 60, z: -200 } },
+    { name: "Deep Space", position: { x: 40, y: 100, z: -300 } },
+    { name: "Deep Space2", position: { x: 120, y: -60, z: 60 } },
+    { name: "Seven", position: { x: 200, y: 300, z: -110 } },           // 7
+    { name: "SpacePic", position: { x: 250, y: 250, z: -150 } }         // 8
 ];
 
   setupNavigation(sections);
 
-  // Scene setup
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
 
@@ -69,7 +68,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-  // Lighting setup
+  // Lighting 
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
   scene.add(ambientLight);
 
@@ -77,10 +76,18 @@ function init() {
   directionalLight.position.set(0, 0, 5);
   scene.add(directionalLight);
 
-  // Initialize section tracking
+  // section tracking - handles the camera's moveTo function
   initSectionTracking(camera, sections, renderer);
 
-  // Debug panel for development insights
+  // Performance based adaptive rendering
+  const isLowPerformance = navigator.hardwareConcurrency < 4 || window.devicePixelRatio < 1.5;
+  const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+  // passed to fx
+  const starDensity = isLowPerformance ? 0.5 : 1.0; 
+  const bloomStrength = isLowPerformance ? 1.0 : 2.0; 
+
+
+  // Debug panel for development. will delete this later
   const debugPanel = document.getElementById('debug-panel');
   /*
   * Updates the debug panel with current section and camera position.
@@ -93,7 +100,10 @@ function init() {
       <strong>Camera Position:</strong><br>
       X: ${camera.position.x.toFixed(2)}<br>
       Y: ${camera.position.y.toFixed(2)}<br>
-      Z: ${camera.position.z.toFixed(2)}
+      Z: ${camera.position.z.toFixed(2)}<br>
+      Is Mobile: ${ isMobile }<br>
+      Concurrency: ${navigator.hardwareConcurrency}<br>
+      PixelRatio: ${window.devicePixelRatio}
     `;
   }
 
@@ -108,6 +118,7 @@ function init() {
     } else {
       renderer.render(scene, camera);
     }    
+    // need to implement rendering these sections ONLY if they are actively displayed
     renderSection3(camera,scene);
     renderSection8(camera,scene);
     renderSection4(camera,scene);
@@ -117,9 +128,9 @@ function init() {
   enableTextInteractivity(camera, scene, renderer);
 
   // Load the sun effect and composer setup
-  const composer = loadSun(scene, renderer, camera);
+  const composer = loadSun(scene, renderer, camera, bloomStrength);
 
-  // Load all scene sections and initialize starfield
+  // Load all scene sections and initialize background
   Promise.all([
     loadSection0(scene),
     loadSection1(scene, camera),
@@ -128,21 +139,30 @@ function init() {
     loadSection4(scene, camera, sections),
     loadSection5(scene, camera),
     loadSection6(scene, camera, sections),
+    loadSection7(scene, camera, sections),
     loadSection8(scene, camera)
   ]).then(() => {
     console.log("All sections loaded.");
 
-    // add starfield to the background
-    createStarfield(scene);
+    createStarfield(scene, { density: starDensity });
 
     //initBackgroundSwitcher(scene);
     enableModelClick(camera, renderer);
-
     animate();
+    onResize(camera, renderer);
+
   }).catch(error => {
     console.error("Error loading sections:", error);
   });
+
+  window.addEventListener('resize', () => {
+    if (camera && renderer) {
+        onResize(camera, renderer);
+    } else {
+        console.warn("Resize event fired, but camera or renderer is not defined.");
+    }
+});
+
 }
 
-// Initialize the scene
 init();

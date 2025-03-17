@@ -13,3 +13,5 @@
         createStarfield(scene, { density: 0.5 });
         bloomPass.strength = 1.0;
     }
+
+

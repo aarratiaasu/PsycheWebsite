@@ -49,7 +49,7 @@ import gsap from 'gsap';
 /*
  * modelCache (Map): Caches loaded 3D models to optimize performance and resource usage.
  *
- * Purpose:
+ * Purpose:enab
  * - Prevents redundant loading of the same model, reducing network requests and load times.
  * - Maintains a single instance of each loaded model in memory, enhancing memory efficiency.
  * - Enables quick re-adding of cached models to the scene without reloading or reprocessing.
@@ -168,7 +168,6 @@ export function createTextMesh(text, position, rotation, size = 1.5, scene) {
     scene.add(textMesh);
   });
 }
-  
 
 /**
  * Loads a 3D model (GLTF/GLB) into the scene with caching and optional animations.
@@ -345,7 +344,7 @@ export function createMenu(menuItems, referencePosition, referenceRotation, scen
  * - The mesh is registered for hover and click events handled by raycasting.
  * - The `userData` object stores metadata for color changes and click handling.
  */
-export function createMenuItem(text, position, scene, onClick) {
+export function createMenuItem(text, position, scene, onClick, size = 0.5) {
   // Initialize the font loader and text mesh container
   const fontLoader = new FontLoader();
   const textMesh = new THREE.Mesh();
@@ -355,7 +354,7 @@ export function createMenuItem(text, position, scene, onClick) {
     // Create text geometry with beveling and depth for a 3D look
     const textGeometry = new TextGeometry(text, {
       font: font,
-      size: 0.5,            // Font size
+      size: size,            // Font size
       depth: 0.3,           // Depth of extrusion for 3D effect
       curveSegments: 12,    // Smoothness of curves
       bevelEnabled: true,   // Enable bevel for edges
@@ -453,7 +452,7 @@ function onMouseMove(event, camera, renderer) {
 
       // Update hovered text to the new intersected object
       hoveredText = intersectedText;
-
+      document.body.style.cursor = "pointer";
       // Store the original color if not already stored
       if (!hoveredText.userData.originalColorStored) {
         hoveredText.userData.originalColor = hoveredText.material.color.getHex();
@@ -465,7 +464,7 @@ function onMouseMove(event, camera, renderer) {
         r: 1, g: 0.5, b: 0, // Change color to orange
         duration: 0.3
       });
-      gsap.to(hoveredText.scale, { x: 1.2, y: 1.2, z: 1.2, duration: 0.3 }); // Slight scale-up
+      // gsap.to(hoveredText.scale, { x: 1.2, y: 1.2, z: 1.2, duration: 0.3 }); // Slight scale-up
     }
   } else {
     // If no text is hovered, reset the previously hovered text
@@ -479,6 +478,7 @@ function onMouseMove(event, camera, renderer) {
       gsap.to(hoveredText.scale, { x: 1, y: 1, z: 1, duration: 0.3 });
       hoveredText = null; // Clear hovered state
     }
+    document.body.style.cursor = "default"; 
   }
 }
 

@@ -117,7 +117,7 @@ export function renderSection3(camera, scene) {
         setTimeout(() => {
             showBalanceViewport();
             hasShownViewport = true;
-        }, 500);
+        }, 1000);
     } else if (!isVisible && hasShownViewport) {
         // Hide viewport when leaving section 3
         hideBalanceViewport();

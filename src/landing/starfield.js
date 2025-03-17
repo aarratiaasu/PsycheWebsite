@@ -31,14 +31,16 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
  * Parameters:
  * - scene: The Three.js scene where the starfield will be added.
  */
-export function createStarfield(scene) {
+export function createStarfield(scene, options = { density: 1.0 }) {
   const starGeometry = new THREE.BufferGeometry();
   const starVertices = [];
 
-  const minDistance = 2000; // Minimum distance from the center
-  const maxDistance = 3000; // Maximum distance for star distribution
+  const minDistance = 4000; // Minimum distance from the center
+  const maxDistance = 6000; // Maximum distance for star distribution
 
-  for (let i = 0; i < 10000; i++) {
+  const starCount = Math.floor(5000 * options.density);
+  
+  for (let i = 0; i < starCount; i++) {
     let x, y, z, distance;
 
     // Generate positions ensuring they are beyond the minDistance
@@ -55,14 +57,18 @@ export function createStarfield(scene) {
   starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
 
   const starMaterial = new THREE.PointsMaterial({ 
-    color: 0xffffff, 
-    size: 7.5, // Star size
-    sizeAttenuation: true
-  });
+    color: 0xffffcc, 
+    size: 3.0,       
+    sizeAttenuation: true,
+    transparent: true, 
+    opacity: 1.0,     
+    blending: THREE.AdditiveBlending
+});
 
   const starField = new THREE.Points(starGeometry, starMaterial);
   scene.add(starField);
 }
+
 
 /*
  * Adds a glowing sun object to the scene and applies bloom post-processing effects.
@@ -76,8 +82,7 @@ export function createStarfield(scene) {
  * Returns:
  * - EffectComposer: The composer object with post-processing applied.
  */
-export function loadSun(scene, renderer, camera) {
-  // Create sun geometry and material
+export function loadSun(scene, renderer, camera, bloomStrength = 2.0) {
   const sunGeometry = new THREE.SphereGeometry(6, 32, 32);
   const sunMaterial = new THREE.MeshStandardMaterial({
     emissive: new THREE.Color(0xffffcc),
@@ -85,24 +90,23 @@ export function loadSun(scene, renderer, camera) {
     roughness: 0.1,
   });
 
-  // Create and position sun mesh
   const sun = new THREE.Mesh(sunGeometry, sunMaterial);
   sun.position.set(-100, 250, -500);
   scene.add(sun);
 
-  // Add point light at sun's position
+  // point light at sun's position
   const sunLight = new THREE.PointLight(0xffaa00, 10, 500);
   sunLight.position.copy(sun.position);
   scene.add(sunLight);
 
-  // Setup post-processing composer
+  // post-processing composer
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
 
   // Add UnrealBloomPass for glowing effect
   const bloomPass = new UnrealBloomPass(
     new THREE.Vector2(window.innerWidth, window.innerHeight),
-    2.0,  // Intensity
+    bloomStrength, // Intensity
     0.4,  // Spread of glow
     1.2   // Brightness threshold for bloom
   );

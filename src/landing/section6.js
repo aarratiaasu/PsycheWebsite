@@ -13,7 +13,6 @@
  * - loadSection2(): Loads the NASA Logo model into Section 2 and positions it relative to the camera.
  */
 
-import * as THREE from 'three';
 import { loadModel } from './utils.js';
 
 /*

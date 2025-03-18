@@ -15,7 +15,7 @@
  *   and sets up the navigation menu.
  */
 
-import { createTextMesh, loadModel, createMenu, makeModelClickable, createMenuItem } from './utils.js';
+import { createTextMesh, loadModel, makeModelClickable, } from './utils.js';
 import { moveToSection } from './sectionTracking.js';
 
 let asteroidModel = null;

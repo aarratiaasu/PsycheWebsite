@@ -134,7 +134,7 @@ function init() {
   Promise.all([
     loadSection0(scene),
     loadSection1(scene, camera),
-    loadSection2(scene, camera, sections),
+    loadSection2(scene, camera),
     loadSection3(scene, camera),
     loadSection4(scene, camera, sections),
     loadSection5(scene, camera),

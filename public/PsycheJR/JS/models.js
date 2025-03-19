@@ -11,16 +11,21 @@ scene.background = new THREE.Color(0x000);
 const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
 camera.position.set(0, 1, 5);
 
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(container.clientWidth, container.clientHeight);
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setSize(container.offsetWidth * 0.97, container.offsetHeight * 0.97);
+renderer.setPixelRatio(window.devicePixelRatio);
 container.appendChild(renderer.domElement);
 
-// Lights
-const light = new THREE.DirectionalLight(0x7a5f3e, 1);
-light.position.set(5, 5, 5).normalize();
-scene.add(light);
 
-const ambientLight = new THREE.AmbientLight(0x404040, 1); // Soft ambient light
+// Lights
+const light = new THREE.DirectionalLight(0x7a5f3e, 6);
+light.position.set(1, 1, 1);
+light.target.position.set(0, 0, 0); 
+scene.add(light);
+scene.add(light.target);
+
+
+const ambientLight = new THREE.AmbientLight(0x404040, 4); // Soft ambient light
 scene.add(ambientLight);
 
 // Orbit Controls
@@ -31,10 +36,10 @@ controls.dampingFactor = 0.05;
 // Load the Model
 const loader = new GLTFLoader();
 loader.load(
-    'models/Psyche.glb',
+    'models/psyche_new.glb',
     (gltf) => {
         const model = gltf.scene;
-        model.scale.set(0.5, 0.5, 0.5); // Scale the model
+        model.scale.set(0.5,0.5,0.5); // Scale the model
         scene.add(model);
         scene.userData.model = model; // Store for rotation
     },
@@ -56,6 +61,8 @@ window.addEventListener('resize', () => {
 // Animation Loop
 function animate() {
     requestAnimationFrame(animate);
+    light.position.copy(camera.position);
+    light.target.position.copy(camera.position).add(camera.getWorldDirection(new THREE.Vector3()));
 
     // Rotate the model
     if (scene.userData.model) {

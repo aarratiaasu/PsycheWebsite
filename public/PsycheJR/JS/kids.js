@@ -121,7 +121,8 @@ const tl = gsap.timeline()
             y: -300
         },
         {
-            y: 0,
+            y: -200,
+            scale: 0.5,
             duration: 3, 
             ease: Linear.easeNone, 
         }, "<30%"
@@ -178,7 +179,7 @@ const tl = gsap.timeline()
             gsap.to(
                 "#hi",
                 {
-                    y: 300,
+                    y: 100,
                     duration: 1
                 }
             )
@@ -586,13 +587,11 @@ const tl = gsap.timeline()
         ".arrows", 
         {
             color: "white",
-            opacity: 0,
-            fontSize: "40px"
+            opacity: 0
         },
         { 
         opacity: 1, 
         color: "orange",
-        fontSize: "47px",
         duration: 1, 
         repeat: -1, 
         yoyo: true, 
@@ -603,13 +602,11 @@ const tl = gsap.timeline()
         "#findYourAge", 
         {
             color: "white",
-            opacity: 0,
-            fontSize: "40px"
+            opacity: 0
         },
         { 
         opacity: 1, 
         color: "orange",
-        fontSize: "47px",
         duration: 1, 
         repeat: -1, 
         yoyo: true, 
@@ -1123,3 +1120,66 @@ const tl = gsap.timeline()
             ease: "power2.out"
         }, '<'
     )
+
+    const tl7 = gsap.timeline();
+    tl7.fromTo(
+        "#div11-inner",
+        {
+            color: "#54b6ff"
+        },
+        {
+            color: "white",
+            duration: 4,
+            yoyo: true,
+            repeat: -1
+        }
+    )
+
+    tl7.fromTo(
+        ".big-snow",
+        {
+            opacity: 0,
+            scale:3
+        },
+        {
+            opacity: 1,
+            scale: 0,
+            duration: 7,
+            repeat: -1,
+            ease: "power2.inOut",
+            yoyo: true
+        }
+    )
+    tl7.fromTo(
+        ".med-snow",
+        {
+            opacity: 0,
+            scale: 2,
+            y: -100
+        },
+        {
+            opacity: 1,
+            scale: 0,
+            y: 0,
+            duration: 6,
+            repeat: -1,
+            yoyo:true,
+            ease: "power2.inOut"
+        }
+    )
+    tl7.fromTo(
+        ".small-snow",
+        {
+            opacity: 0,
+            scale: 6
+        },
+        {
+            opacity: 1,
+            scale: 0,
+            duration: 5,
+            repeat: -1,
+            ease: "power2.inOut"
+        }
+    )
+
+   

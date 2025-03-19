@@ -12,7 +12,6 @@ body {
     background-size: 1000% 1000%;
     animation: gradient 10s ease infinite;
     height: 100vh;
-    font-family: Arial, sans-serif;
 }
 
 @keyframes gradient {

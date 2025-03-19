@@ -2,7 +2,7 @@ body {
     margin: 0 auto;
     text-align: center;
     overflow-x: hidden;
-    font-family: Arial, sans-serif;
+    
 }
 
 #body-elements {
@@ -181,7 +181,7 @@ main h1.white {
     width: 0; 
     animation: none; 
     border: none;
-    font-family: monospace, Arial, sans-serif;
+    font-family: monospace;
     font-size: 40px;
     text-shadow: 0px 11px #302144;
 }
@@ -247,7 +247,7 @@ main h1.white {
 #sub-one {
     background-color: #592651;
     color: #ff5733;
-    font-family: Arial, 'Courier New', Courier, monospace;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 #last-grid {

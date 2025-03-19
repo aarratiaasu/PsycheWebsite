@@ -49,7 +49,7 @@ export function showBalanceViewport() {
 
     // Create iframe
     iframe = document.createElement('iframe');
-    iframe.src = './balance/balance.html';
+    iframe.src = './PsycheJR/kids.html';
     iframe.style.width = '100%';
     iframe.style.height = '100%';
     iframe.style.border = 'none';

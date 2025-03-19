@@ -145,7 +145,7 @@ export function showKidsViewport() {
     
     // Create iframe to load the kids content
     iframe = document.createElement('iframe');
-    iframe.src = 'public/PsycheJR/kids.html';
+    iframe.src = './PsycheJR/kids.html';
     iframe.style.width = '100%';
     iframe.style.height = '100%';
     iframe.style.border = 'none';

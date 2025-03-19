@@ -69,10 +69,10 @@ export function setupNavigation(sections) {
             
             // Add submenu items for each game
             const games = [
-                { name: "Balance Game", path: "../balance/balance.html" },
+                { name: "PsycheJR", path: "../PsycheJR/kids.html" },
                 { name: "Escape Velocity", path: "../escapeVelocity/escape-velocity.html" },
                 { name: "SpacePic", path: "../spacepic/photo.html" }
-                // Removed Psyche Jr and Name Generator games
+                // Removed Balance Game and Name Generator games
             ];
             
             games.forEach(game => {
@@ -106,9 +106,9 @@ export function setupNavigation(sections) {
                     e.stopPropagation(); // Prevent triggering parent click
                     
                     // Import and use the appropriate viewport based on the game
-                    if (game.name === "Balance Game") {
-                        import('./balanceViewport.js').then(module => {
-                            module.showBalanceViewport();
+                    if (game.name === "PsycheJR") {
+                        import('./kidsViewport.js').then(module => {
+                            module.showKidsViewport();
                         });
                     } else if (game.name === "Escape Velocity") {
                         import('./viewportescapevelocity.js').then(module => {
@@ -177,6 +177,3 @@ export function setupNavigation(sections) {
     menuButton.addEventListener("click", toggleMenu);
     overlay.addEventListener("click", toggleMenu);
 }
-
-
-

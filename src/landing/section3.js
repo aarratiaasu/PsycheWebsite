@@ -1,12 +1,12 @@
 /**
- * Section 3 - Life on Psyche
+ * Section 3 - PsycheJR
  */
 
 import * as THREE from 'three';
 import { getCurrentSection } from './sectionTracking.js';
 import { makeModelClickable } from './utils.js';
 import gsap from 'gsap';
-import { showYearViewport, hideYearViewport } from './year.js';
+import { showKidsViewport, hideKidsViewport } from './kidsViewport.js';
 
 let yearButton;
 let hasShownViewport = false;
@@ -33,7 +33,7 @@ export function loadSection3(scene, camera) {
     context.fillStyle = 'white';
     context.textAlign = 'center';
     context.textBaseline = 'middle';
-    context.fillText('Life on Psyche', canvas.width / 2, canvas.height / 2);
+    context.fillText('PsycheJR', canvas.width / 2, canvas.height / 2);
     
     const texture = new THREE.CanvasTexture(canvas);
     const labelMaterial = new THREE.MeshBasicMaterial({
@@ -55,12 +55,12 @@ export function loadSection3(scene, camera) {
 
     // Make the button clickable
     makeModelClickable(yearButton, () => {
-        showYearViewport();
+        showKidsViewport();
     });
     
     // Make the label clickable too
     makeModelClickable(label, () => {
-        showYearViewport();
+        showKidsViewport();
     });
 
     // Add hover effect to the button
@@ -115,12 +115,12 @@ export function renderSection3(camera, scene) {
     if (isVisible && !hasShownViewport) {
         // Add a small delay to ensure the section transition is complete
         setTimeout(() => {
-            showYearViewport();
+            showKidsViewport();
             hasShownViewport = true;
         }, 1000);
     } else if (!isVisible && hasShownViewport) {
         // Hide viewport when leaving section 3
-        hideYearViewport();
+        hideKidsViewport();
         hasShownViewport = false;
     }
 }

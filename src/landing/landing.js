@@ -46,7 +46,7 @@ function init() {
     { name: "References", position: { x: 0, y: 200, z: -60 } },
     { name: "Welcome", position: { x: 0, y: 0, z: 13 } },
     { name: "Psyche", position: { x: 20, y: 30, z: 10 } },
-    { name: "Balance Game", position: { x: 40, y: -60, z: -260 } },
+    { name: "PyscheJR", position: { x: 40, y: -60, z: -260 } },
     { name: "Living on Psyche", position: { x: 40, y: 60, z: -200 } },
     { name: "Deep Space (empty)", position: { x: 40, y: 100, z: -300 } },
     { name: "NASA Logo (empty)", position: { x: 120, y: -60, z: 60 } },

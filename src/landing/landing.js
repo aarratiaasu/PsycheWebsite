@@ -23,13 +23,13 @@ import { initSectionTracking, getCurrentSection, onResize } from './sectionTrack
 import { animateScrollIndicator, setupNavigation } from './nav.js';
 import { loadSection0 } from './section0.js';
 import { loadSection1 } from './section1.js';
-import { loadSection2 } from './section2.js';
+import { loadSection2, renderSection2 } from './section2.js';
 import { loadSection3, renderSection3 } from './section3.js';
 import { loadSection4, renderSection4 } from './section4.js';
-import { loadSection5 } from './section5.js';
-import { loadSection6 } from './section6.js';
+import { loadSection5, renderSection5 } from './section5.js';
+import { loadSection6, renderSection6 } from './section6.js';
+import { loadSection7, renderSection7 } from './section7.js';
 import { loadSection8, renderSection8 } from './section8.js';
-import { loadSection7 } from './section7.js';
 
 
 /*
@@ -41,17 +41,16 @@ function init() {
 
   let scrollProgress = 1;
   let currentSection = 1;
-  
   const sections = [
     { name: "References", position: { x: 0, y: 200, z: -60 } },
     { name: "Welcome", position: { x: 0, y: 0, z: 13 } },
     { name: "Psyche", position: { x: 20, y: 30, z: 10 } },
-    { name: "Balance-> psyche Junior", position: { x: 40, y: -60, z: -260 } },
-    { name: "Life  on Psyche", position: { x: 40, y: 60, z: -200 } },
-    { name: "Deep Space -> jenny", position: { x: 40, y: 100, z: -300 } },
-    { name: "Deep Space2 - Open", position: { x: 120, y: -60, z: 60 } },
-    { name: "Seven - Open", position: { x: 200, y: 300, z: -110 } },           // 7
-    { name: "Games + SpacePic", position: { x: 250, y: 250, z: -150 } }         // 8
+    { name: "Balance Game", position: { x: 40, y: -60, z: -260 } },
+    { name: "Living on Psyche", position: { x: 40, y: 60, z: -200 } },
+    { name: "Deep Space (empty)", position: { x: 40, y: 100, z: -300 } },
+    { name: "NASA Logo (empty)", position: { x: 120, y: -60, z: 60 } },
+    { name: "Empty", position: { x: 200, y: 300, z: -110 } },
+    { name: "SpacePic", position: { x: 250, y: 250, z: -150 } } 
 ];
 
   setupNavigation(sections);
@@ -118,10 +117,13 @@ function init() {
     } else {
       renderer.render(scene, camera);
     }    
-    // need to implement rendering these sections ONLY if they are actively displayed
     renderSection3(camera,scene);
-    renderSection8(camera,scene);
     renderSection4(camera,scene);
+    renderSection5(camera,scene);
+    renderSection6(camera,scene);
+    renderSection7(camera,scene);
+    renderSection8(camera,scene);
+    renderSection9(camera,scene);
   }
 
   // Enable text interactivity before loading models
@@ -139,7 +141,6 @@ function init() {
     loadSection4(scene, camera, sections),
     loadSection5(scene, camera),
     loadSection6(scene, camera, sections),
-    loadSection7(scene, camera, sections),
     loadSection8(scene, camera)
   ]).then(() => {
     console.log("All sections loaded.");

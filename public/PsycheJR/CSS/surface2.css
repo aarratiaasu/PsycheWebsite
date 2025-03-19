@@ -1,0 +1,174 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    height: 30vh;
+    width: 100%;
+}
+
+div {
+    background-color: white;
+}
+
+#logo {
+    padding-top: 1rem;
+    display: block;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#header-h1 {
+    text-align: center;
+    margin-top: 5%;
+    font-size: 90px;
+    color: transparent;
+    background-image: linear-gradient(#f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144);
+    background-clip: text;
+}
+ #div3, #div4, #div5 {
+    margin-top: 15%;
+    text-align: center;
+    width: 100%;
+
+    h1{
+        font-size: 60px;
+    }
+    p {
+        margin-top: 5%;
+        margin-bottom: 5%;
+        font-size: 40px;
+    }
+}
+
+#materials{
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 25%;
+    background-image: url(/img/psyche-surface.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 3rem;
+}
+
+#inner-materials, #inner-features {
+    padding-top: 15%;
+    padding-bottom: 15%;
+    text-align: center;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #f47c33;
+    border-radius: 3rem;
+    margin-right: auto;
+    margin-left: auto;
+    h1{
+        padding-top: 5%;
+        font-size: 60px;
+    }
+
+    p{
+        width: 80%;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        font-size: 40px;
+    }
+}
+
+#features {
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10%;
+    border-radius: 3rem;
+    background-image: url(/img/craters.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+div h2 {
+    border-bottom: double 10px black;
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 80%;
+}
+
+#div1 p, #div2 p, #div3 p {
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#surface-img, #wide-img, #swiss-flag {
+    margin-right: auto;
+    margin-left: auto;
+    width: 80%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+#div4 h3 {
+    border-bottom: solid 5px red;
+    width: 40%;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 50px;
+}
+
+#div4 h4 {
+    font-size: 40px;
+}
+
+#div5{
+    p {
+        width: 80%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+#psyche-container {
+    border: none !important;
+    height: 500px;
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 30px;
+}
+
+footer {
+    text-align: center;
+}
+
+
+
+@keyframes colorChange{
+    0% {
+        color: gold;
+    }
+    25% {
+        color: goldenrod;
+    }
+    50% {
+        color: gray;
+    }
+    75% {
+        color: goldenrod;
+    }
+    100% {
+        color: gold;
+    }
+}
+
+#background-img {
+}

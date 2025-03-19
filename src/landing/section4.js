@@ -1,19 +1,19 @@
 /**
- * Section 4 - Year Metrics
+ * Section 4 - Psyche Name Origin
  */
 
 import * as THREE from 'three';
 import { getCurrentSection } from './sectionTracking.js';
 import { makeModelClickable } from './utils.js';
 import gsap from 'gsap';
-import { showYearViewport, hideYearViewport } from './year.js';
+import { showPsycheNameViewport, hidePsycheNameViewport } from './psycheNameViewport.js';
 
 let yearButton;
 let label;
 let hasShownViewport = false;
 
 export function loadSection4(scene, camera) {
-    // Create a button for the year metrics
+    // Create a button for the Psyche Name Origin
     const buttonGeometry = new THREE.BoxGeometry(40, 20, 5);
     const buttonMaterial = new THREE.MeshBasicMaterial({
         transparent: true,
@@ -30,6 +30,8 @@ export function loadSection4(scene, camera) {
     const context = canvas.getContext('2d');
     //context.fillStyle = '#45a049';
     //context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = '#f9a000';
+    context.fillRect(0, 0, canvas.width, canvas.height);
     context.font = 'bold 24px Arial';
     context.fillStyle = 'white';
     context.textAlign = 'center';
@@ -57,12 +59,12 @@ export function loadSection4(scene, camera) {
 
     // Make the button clickable
     makeModelClickable(yearButton, () => {
-        showYearViewport();
+        showPsycheNameViewport();
     });
     
     // Make the label clickable 
     makeModelClickable(label, () => {
-        showYearViewport();
+        showPsycheNameViewport();
     });
 
 // Ensure the button is interactive

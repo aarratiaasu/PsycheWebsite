@@ -46,12 +46,12 @@ function init() {
     { name: "References", position: { x: 0, y: 200, z: -60 } },
     { name: "Welcome", position: { x: 0, y: 0, z: 13 } },
     { name: "Psyche", position: { x: 20, y: 30, z: 10 } },
-    { name: "Balance", position: { x: 40, y: -60, z: -260 } },
+    { name: "Balance-> psyche Junior", position: { x: 40, y: -60, z: -260 } },
     { name: "Life  on Psyche", position: { x: 40, y: 60, z: -200 } },
-    { name: "Deep Space", position: { x: 40, y: 100, z: -300 } },
-    { name: "Deep Space2", position: { x: 120, y: -60, z: 60 } },
-    { name: "Seven", position: { x: 200, y: 300, z: -110 } },           // 7
-    { name: "SpacePic", position: { x: 250, y: 250, z: -150 } }         // 8
+    { name: "Deep Space -> jenny", position: { x: 40, y: 100, z: -300 } },
+    { name: "Deep Space2 - Open", position: { x: 120, y: -60, z: 60 } },
+    { name: "Seven - Open", position: { x: 200, y: 300, z: -110 } },           // 7
+    { name: "Games + SpacePic", position: { x: 250, y: 250, z: -150 } }         // 8
 ];
 
   setupNavigation(sections);

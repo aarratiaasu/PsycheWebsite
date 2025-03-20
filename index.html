@@ -14,10 +14,13 @@
 </head>
 <body>
   <header></header>
+  
   <main id="scene-container">
     <div id="canvas-container"></div>
     <div id="debug-panel"></div>
-    <div class="mouse-scroll-indicator">
+
+    <!-- Scroll Indicator -->
+    <div class="mouse-scroll-indicator" aria-hidden="true">
       <span class="arrowUp arrow-3"></span>
       <span class="arrowUp arrow-2"></span>
       <span class="arrowUp arrow-1"></span>
@@ -26,12 +29,21 @@
       <span class="arrow arrow-2"></span>
       <span class="arrow arrow-3"></span>
     </div>   
-    <button class="cn-button" id="cn-button">+</button>
 
-    <div class="cn-wrapper" id="cn-wrapper"></div>
-    <div id="cn-overlay" class="cn-overlay"></div>
+    <!-- Navigation Toggle -->
+    <nav id="navigation">
+      <div id="cn-icon-wrapper" role="button" tabindex="0" aria-label="Open navigation menu">
+          <img id="cn-icon" src="res/img/psyche_badge.svg" alt="Navigation Badge">
+      </div>
+
+      <!-- Navigation Menu -->
+      <div class="cn-wrapper" id="cn-wrapper"></div>
+      <div id="cn-overlay" class="cn-overlay"></div>
+    </nav>
+
 
   <footer></footer>
+
   <script type="module" src="/src/landing/landing.js"></script>
 </body>
 </html>

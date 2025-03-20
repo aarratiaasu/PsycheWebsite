@@ -1,46 +1,32 @@
-
-.cn-button {
+#cn-icon-wrapper {
     position: fixed;
     bottom: 30px;
     left: 30px;
-    width: 60px;
+    width: 60px; 
     height: 60px;
-    border-radius: 50%;
-    background: #FF9800;
-    color: white;
-    border: none;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.3s ease;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
 }
 
-.cn-button:hover {
-    background: #e68900;
+#cn-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none; 
 }
 
-.cn-button::before,
-.cn-button::after {
-    content: "";
-    position: absolute;
-    background: white;
-    transition: transform 0.3s ease;
+#cn-icon-wrapper:hover {
+    transform: rotate(360deg);
 }
 
-.cn-button::before {
-    width: 24px;
-    height: 4px;
+#cn-icon-wrapper.active {
+    transform: rotate(360deg);
+    transition: transform 0.5s ease-in-out;
 }
 
-.cn-button::after {
-    width: 4px;
-    height: 24px;
-}
-
-.cn-button.open::after {
-    transform: rotate(90deg);
-}
 
 .cn-wrapper {
     position: fixed;

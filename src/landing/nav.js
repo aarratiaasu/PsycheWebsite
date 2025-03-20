@@ -107,7 +107,7 @@ export function setupNavigation(sections) {
                     
                     // Import and use the appropriate viewport based on the game
                     if (game.name === "PsycheJR") {
-                        import('./kidsViewport.js').then(module => {
+                        import('../../public/PsycheJR/kidsViewport.js').then(module => {
                             module.showKidsViewport();
                         });
                     } else if (game.name === "Escape Velocity") {

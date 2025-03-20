@@ -173,7 +173,7 @@ export function showKidsViewport() {
 export function hideKidsViewport() {
     if (!viewportContainer) return;
     
-    // Animate closing with a space-themed effect
+    // Animate closing effect
     ViewportStyling.createClosingAnimation(viewportContainer, () => {
         viewportContainer.style.display = 'none';
         // Reset opacity and scale for next time

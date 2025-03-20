@@ -95,6 +95,7 @@ function init() {
   function updateDebugPanel() {
     const currentSection = getCurrentSection();
     debugPanel.innerHTML = `
+      <strong>DEBUG PANEL:</strong><br>
       <strong>Current Section:</strong>
       ${currentSection}<br>
       <strong>Camera Position:</strong><br>

@@ -104,7 +104,7 @@ export function createTextMesh(text, position, rotation, size = 1.5, scene) {
     const textGeometry = new TextGeometry(text, {
       font: font,
       size: size,
-      depth: 0.3,
+      depth: 0.05,
       curveSegments: 12,
       bevelEnabled: true,
       bevelThickness: 0.03,
@@ -355,7 +355,7 @@ export function createMenuItem(text, position, scene, onClick, size = 0.5) {
     const textGeometry = new TextGeometry(text, {
       font: font,
       size: size,            // Font size
-      depth: 0.3,           // Depth of extrusion for 3D effect
+      depth: 0.05,           // Depth of extrusion for 3D effect
       curveSegments: 12,    // Smoothness of curves
       bevelEnabled: true,   // Enable bevel for edges
       bevelThickness: 0.03, // Thickness of bevel

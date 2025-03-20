@@ -10,8 +10,10 @@ import { showBalanceViewport, hideBalanceViewport } from './balanceViewport.js';
 
 let balanceButton;
 let hasShownViewport = false;
+export function loadSection3(scene, camera, sections) {
+    const threeCoords = sections[3]?.position;
 
-export function loadSection3(scene, camera) {
+
     // Create a button for the balance game
     const buttonGeometry = new THREE.BoxGeometry(40, 20, 5);
     const buttonMaterial = new THREE.MeshBasicMaterial({
@@ -19,7 +21,7 @@ export function loadSection3(scene, camera) {
         transparent: false
     });
     balanceButton = new THREE.Mesh(buttonGeometry, buttonMaterial);
-    balanceButton.position.set(40, -60, -360);
+    balanceButton.position.set(threeCoords.x - 30, threeCoords.y + 30, threeCoords.z - 100);
     scene.add(balanceButton);
     
     // Create a text label for the button

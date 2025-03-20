@@ -44,9 +44,9 @@
 
 .cn-wrapper {
     position: fixed;
-    bottom: min(10vh, 85px); /* Stops shrinking below 865px */
-    left: 2vw; /* Moves closer to the left dynamically */
-    width: 15vw; /* Adjusts width based on screen size */
+    bottom: min(10vh, 85px); 
+    left: 2vw; 
+    width: 15vw; 
     max-width: 200px;
     min-width: 135px;
     display: flex;
@@ -71,11 +71,13 @@
 }
 
 .cn-wrapper li {
+    font-family: Arial, sans-serif;
+    font-size: clamp(10px, 1.8vw, 14px);
+
     display: block;
     padding: min(1vh, 10px) min(2vw, 15px); /* Limits scaling at 865px */
-    background: orange;
     text-decoration: none;
-    color: #333;
+    color: orange !important;
     font-weight: bold;
     border-radius: 30px;
     margin-bottom: min(1vh, 8px); /* Stops adjusting beyond 865px */
@@ -85,11 +87,46 @@
     transform-origin: bottom;
     
     transition: transform 0.4s ease, opacity 0.3s ease, background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.cn-wrapper li::before {
+    content: '';
+    position: absolute;
+    top: -150%; 
+    left: -150%; 
+    width: 300%; 
+    height: 300%; 
+    background: linear-gradient(
+        0deg, 
+        transparent, 
+        transparent 30%, 
+        /* rgba(0, 255, 255, 0.3) */
+        rgba(90, 39, 82, 0.5),  /* Dark Purple */
+        rgba(249, 159, 0, 0.4)  /* Golden Yellow */
+    );
+    transform: rotate(-45deg);
+    transition: all 0.5s ease;
+    opacity: 0;
+}
+
+.cn-wrapper li:hover {
+    color: white;
+    transform: scale(1.05);
+    /* box-shadow: 0 0 10px rgba(0,255,255,0.5);  */
+    /* box-shadow: 0 0 10px rgba(249, 159, 0, 0.5), 0 0 5px rgba(90, 39, 82, 0.4); */
+    box-shadow: 0 0 15px rgba(90, 39, 82, 0.6);
+}
+
+.cn-wrapper li:hover::before {
+    opacity: 1;
+    transform: rotate(-45deg) translateY(200%); 
 }
 
 .opened-nav {
     opacity: 1;
-    transform: translateY(0) scale(1) translateX(-20px); /* Shift items left */
+    transform: translateY(0) scale(1) translateX(-20px); 
 }
 
 .opened-nav li {
@@ -98,7 +135,6 @@
 }
 
 .cn-wrapper li:hover {
-    background: #FF9800;
     color: white;
     transform: scale(1.05);
 }

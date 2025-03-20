@@ -146,17 +146,4 @@ export function renderSection4(camera, scene) {
             }
         }
     }
-    // Removing this feature for now. 
-    // // Auto-show viewport when entering section 4
-    // if (isVisible && !hasShownViewport) {
-    //     // Add a small delay to ensure the section transition is complete
-    //     setTimeout(() => {
-    //         showYearViewport();
-    //         hasShownViewport = true;
-    //     }, 500);
-    // } else if (!isVisible && hasShownViewport) {
-    //     // Hide viewport when leaving section 3
-    //     hideYearViewport();
-    //     hasShownViewport = false;
-    // }
 }

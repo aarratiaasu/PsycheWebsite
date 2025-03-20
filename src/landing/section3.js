@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import { getCurrentSection } from './sectionTracking.js';
 import { makeModelClickable } from './utils.js';
 import gsap from 'gsap';
-import { showKidsViewport, hideKidsViewport } from './kidsViewport.js';
+import { showKidsViewport, hideKidsViewport } from '../../public/PsycheJR/kidsViewport.js';
 
 let yearButton;
 let hasShownViewport = false;

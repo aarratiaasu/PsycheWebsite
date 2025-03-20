@@ -11,7 +11,7 @@
  */
 
 import * as THREE from 'three';
-import gsap from 'gsap';
+import * as ViewportStyling from '../../src/landing/viewportStyling.js';
 
 // Keep track of the viewport DOM elements
 let viewportContainer = null;
@@ -94,18 +94,7 @@ export function showKidsViewport() {
     // Create container for the viewport
     viewportContainer = document.createElement('div');
     viewportContainer.id = 'kids-viewport-container';
-    viewportContainer.style.position = 'fixed';
-    viewportContainer.style.top = '50%';
-    viewportContainer.style.left = '50%';
-    viewportContainer.style.transform = 'translate(-50%, -50%)';
-    viewportContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-    viewportContainer.style.border = '2px solid #007bff';
-    viewportContainer.style.borderRadius = '10px';
-    viewportContainer.style.boxShadow = '0 0 20px rgba(0, 123, 255, 0.5)';
-    viewportContainer.style.zIndex = '1000';
-    viewportContainer.style.display = 'flex';
-    viewportContainer.style.flexDirection = 'column';
-    viewportContainer.style.overflow = 'hidden';
+    ViewportStyling.applyViewportContainerStyles(viewportContainer);
     
     // Set responsive dimensions
     const { width, maxWidth, height } = calculateViewportSize();
@@ -115,29 +104,15 @@ export function showKidsViewport() {
     
     // Create header with title and close button
     const header = document.createElement('div');
-    header.style.display = 'flex';
-    header.style.justifyContent = 'space-between';
-    header.style.alignItems = 'center';
-    header.style.padding = '10px 15px';
-    header.style.backgroundColor = '#007bff';
-    header.style.color = 'white';
-    header.style.borderTopLeftRadius = '8px';
-    header.style.borderTopRightRadius = '8px';
+    ViewportStyling.applyHeaderStyles(header);
     
     const title = document.createElement('h2');
-    title.textContent = 'Psyche Jr - Kids Page';
-    title.style.margin = '0';
-    title.style.fontSize = '1.2rem';
+    title.textContent = 'Psyche Jr - Kids Space Explorer';
+    ViewportStyling.applyTitleStyles(title);
     
     closeButton = document.createElement('button');
     closeButton.textContent = '✕';
-    closeButton.style.background = 'none';
-    closeButton.style.border = 'none';
-    closeButton.style.color = 'white';
-    closeButton.style.fontSize = '1.5rem';
-    closeButton.style.cursor = 'pointer';
-    closeButton.style.padding = '0 5px';
-    closeButton.style.lineHeight = '1';
+    ViewportStyling.applyCloseButtonStyles(closeButton);
     
     header.appendChild(title);
     header.appendChild(closeButton);
@@ -145,11 +120,11 @@ export function showKidsViewport() {
     
     // Create iframe to load the kids content
     iframe = document.createElement('iframe');
-    iframe.src = './PsycheJR/kids.html';
-    iframe.style.width = '100%';
-    iframe.style.height = '100%';
-    iframe.style.border = 'none';
-    iframe.style.backgroundColor = '#fff';
+    iframe.src = '/public/PsycheJR/kids.html';  // Use absolute path from project root
+    ViewportStyling.applyIframeStyles(iframe);
+    
+    // Add scrollbar hiding styles
+    ViewportStyling.addScrollbarHidingStyles(document);
     
     // Add event listener for iframe load errors
     iframe.onerror = () => {
@@ -159,30 +134,19 @@ export function showKidsViewport() {
     // Add event listener for iframe load success
     iframe.onload = () => {
         console.log("Kids iframe loaded successfully");
+        ViewportStyling.injectScrollbarHidingStyles(iframe);
     };
     
     viewportContainer.appendChild(iframe);
     document.body.appendChild(viewportContainer);
     
-    // Create opening animations using a timeline
-    const tl = gsap.timeline();
-    tl.from(viewportContainer, {
-        opacity: 0,
-        scale: 0.8,
-        duration: 0.4,
-        ease: "power2.out"
-    });
-    tl.from(header, {
-        y: -50,
-        duration: 0.3,
-        ease: "back.out(1.7)"
-    }, "-=0.2");
-    tl.from(iframe, {
-        opacity: 0,
-        y: 20,
-        duration: 0.3,
-        ease: "power2.out"
-    }, "-=0.1");
+    // Add visual effects
+    ViewportStyling.addShimmerEffect(viewportContainer);
+    ViewportStyling.addStarParticles(viewportContainer);
+    
+    // Create animations
+    ViewportStyling.addOpeningAnimations(viewportContainer, header, iframe);
+    ViewportStyling.addPulsingGlowEffect(viewportContainer);
     
     // Add event listener for close button
     closeButton.addEventListener('click', hideKidsViewport);
@@ -209,18 +173,12 @@ export function showKidsViewport() {
 export function hideKidsViewport() {
     if (!viewportContainer) return;
     
-    // Animate closing
-    gsap.to(viewportContainer, {
-        opacity: 0,
-        scale: 0.8,
-        duration: 0.3,
-        ease: "power2.in",
-        onComplete: () => {
-            viewportContainer.style.display = 'none';
-            // Reset opacity and scale for next time
-            viewportContainer.style.opacity = 1;
-            viewportContainer.style.transform = 'translate(-50%, -50%) scale(1)';
-        }
+    // Animate closing with a space-themed effect
+    ViewportStyling.createClosingAnimation(viewportContainer, () => {
+        viewportContainer.style.display = 'none';
+        // Reset opacity and scale for next time
+        viewportContainer.style.opacity = 1;
+        viewportContainer.style.transform = 'translate(-50%, -50%) scale(1)';
     });
 }
 

@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
+    "build": "vite build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -19,6 +20,7 @@
     "vite-plugin-wasm": "^3.4.1"
   },
   "devDependencies": {
+    "vite-plugin-static-copy": "^2.3.0",
     "vite-plugin-top-level-await": "^1.4.4"
   }
 }

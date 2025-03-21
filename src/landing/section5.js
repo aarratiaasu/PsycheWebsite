@@ -3,7 +3,7 @@
  */
 
 import { getCurrentSection } from './sectionTracking.js';
-import { showWebsiteViewport, hideWebsiteViewport } from './websiteViewport.js';
+import { showWebsiteViewport, hideWebsiteViewport } from '../../public/website/websiteViewport.js';
 
 let hasShownViewport = false;
 let sectionInitialized = false;

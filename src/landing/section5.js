@@ -1,8 +1,7 @@
 /**
- * Section 5 - Website Viewport
+ * Section 5 - Psyche Website Viewport
  */
 
-import * as THREE from 'three';
 import { getCurrentSection } from './sectionTracking.js';
 import { showWebsiteViewport, hideWebsiteViewport } from './websiteViewport.js';
 

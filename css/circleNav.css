@@ -9,6 +9,7 @@
     justify-content: center;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
+    z-index: 1000;
 }
 
 #cn-icon {
@@ -16,6 +17,7 @@
     height: 100%;
     object-fit: contain;
     pointer-events: none; 
+    z-index: 1000;
 }
 
 #cn-icon-wrapper:hover {
@@ -42,7 +44,7 @@
     transform-origin: bottom;
     transition: transform 0.3s ease;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 1000;
 
 }
 

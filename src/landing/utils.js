@@ -76,7 +76,7 @@ const mouse = new THREE.Vector2();
 let hoveredText = null;
 
 const modelMouse = new THREE.Vector2();
-const clickableModels = [];
+export const clickableModels = [];
 
 
 /**
@@ -115,50 +115,48 @@ async function loadShader(url) {
  * - The fragment shader calculates color blending across six defined colors based on UV coordinates.
  */
 export async function createTextMesh(text, position, rotation, size = 1.5, scene) {
-  const fontLoader = new FontLoader();
-  fontLoader.load('/res/font/GenosThin_Regular.json', async (font) => {
-    
-    // Create the geometry for the 3D text
-    const textGeometry = new TextGeometry(text, {
-      font: font,
-      size: size,
-      depth: 0.05,
-      curveSegments: 12,
-      bevelEnabled: true,
-      bevelThickness: 0.03,
-      bevelSize: 0.02,
-      bevelOffset: 0,
-      bevelSegments: 5
-    });
+  return new Promise((resolve, reject) => {
+    const fontLoader = new FontLoader();
+    fontLoader.load('/res/font/GenosThin_Regular.json', async (font) => {
+      try {
+        const textGeometry = new TextGeometry(text, {
+          font: font,
+          size: size,
+          depth: 0.05,
+          curveSegments: 12,
+          bevelEnabled: true,
+          bevelThickness: 0.03,
+          bevelSize: 0.02,
+          bevelOffset: 0,
+          bevelSegments: 5
+        });
 
-    const vertexShader = await loadShader('/res/shaders/textVertexShader.glsl');
-    const fragmentShader = await loadShader('/res/shaders/textFragmentShader.glsl');
+        const vertexShader = await loadShader('/res/shaders/textVertexShader.glsl');
+        const fragmentShader = await loadShader('/res/shaders/textFragmentShader.glsl');
 
-    // ShaderMaterial applies a vertical gradient to the text mesh
-    const textMaterial = new THREE.ShaderMaterial({
-      uniforms: {
-        // color1: { value: new THREE.Color(90 / 255, 39 / 255, 82 / 255) },
-        // color2: { value: new THREE.Color(49 / 255, 33 / 255, 70 / 255) },
-        // color3: { value: new THREE.Color(164 / 255, 64 / 255, 92 / 255) },
-        // color4: { value: new THREE.Color(239 / 255, 89 / 255, 101 / 255) },
-        // color5: { value: new THREE.Color(245 / 255, 124 / 255, 51 / 255) },
-        // color6: { value: new THREE.Color(249 / 255, 159 / 255, 0 / 255) }
-        textColor: { value: new THREE.Color(249 / 255, 159 / 255, 0 / 255) }
-      },
-      // Vertex shader processes geometry and passes UV data to the fragment shader
-      vertexShader: vertexShader,
-      fragmentShader: fragmentShader
-    });
+        const textMaterial = new THREE.ShaderMaterial({
+          uniforms: {
+            textColor: { value: new THREE.Color(249 / 255, 159 / 255, 0 / 255) },
+            opacity: { value: 1.0 }
+          },
+          vertexShader: vertexShader,
+          fragmentShader: fragmentShader,
+          transparent: true
+        });        
 
-    // Create the mesh with geometry and custom material
-    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-    textMesh.position.set(position.x, position.y, position.z);
-    textMesh.rotation.set(rotation.x, rotation.y, rotation.z);
+        const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+        textMesh.position.set(position.x, position.y, position.z);
+        textMesh.rotation.set(rotation.x, rotation.y, rotation.z);
+        scene.add(textMesh);
 
-    // Add the text mesh to the scene
-    scene.add(textMesh);
+        resolve(textMesh);
+      } catch (err) {
+        reject(err);
+      }
+    }, undefined, reject);
   });
 }
+
 
 /**
  * Loads a 3D model (GLTF/GLB) into the scene with caching and optional animations.
@@ -605,6 +603,129 @@ export function enableModelClick(camera, renderer) {
     }
   });
 }
+
+
+/**
+ * Creates a 3D trigger button composed of a gradient-filled text mesh and a transparent hitbox.
+ * Designed for tight interaction zones—slightly larger than the text—for accurate raycasting.
+ *
+ * @param {string} label - The text label displayed on the button.
+ * @param {Object} position - The { x, y, z } position of the button in the scene.
+ * @param {Object} rotation - The { x, y, z } rotation of the button.
+ * @param {number} [size=0.7] - The font size of the label text.
+ * @param {THREE.Scene} scene - The scene to which the button and text are added.
+ * @param {Function} onClick - Callback function to execute when the button is clicked.
+ *
+ * Features:
+ * - Wraps text with a transparent BoxGeometry to increase interactive area.
+ * - Fully raycast-compatible via `makeModelClickable()` for click detection.
+ */
+export async function triggerButton3D(label, position, rotation, size = 0.7, scene, onClick) {
+  return new Promise((resolve, reject) => {
+    const fontLoader = new FontLoader();
+
+    fontLoader.load('/res/font/Roboto_Regular.json', async (font) => {
+      try {
+        const textGeometry = new TextGeometry(label, {
+          font: font,
+          size: size,
+          depth: 0.05,
+          curveSegments: 12,
+          bevelEnabled: true,
+          bevelThickness: 0.03,
+          bevelSize: 0.02,
+          bevelOffset: 0,
+          bevelSegments: 5,
+        });
+
+        textGeometry.computeBoundingBox();
+        textGeometry.center();
+
+        const vertexShader = await loadShader('/res/shaders/textVertexShader.glsl');
+        const fragmentShader = await loadShader('/res/shaders/textFragmentShader.glsl');
+
+        const textMaterial = new THREE.ShaderMaterial({
+          uniforms: {
+            textColor: { value: new THREE.Color(249 / 255, 159 / 255, 0 / 255) }
+          },
+          vertexShader,
+          fragmentShader
+        });
+
+        const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+        textMesh.position.set(position.x, position.y, position.z + 0.02);
+        textMesh.rotation.set(rotation.x, rotation.y, rotation.z);
+        scene.add(textMesh);
+
+        const bounds = textGeometry.boundingBox.getSize(new THREE.Vector3());
+        const padding = 0.3;
+
+        const boxGeometry = new THREE.BoxGeometry(
+          bounds.x + padding,
+          bounds.y + padding,
+          0.2
+        );
+
+        const boxMaterial = new THREE.MeshStandardMaterial({
+          color: 0x000000,
+          transparent: true,
+          opacity: 0.05,
+          emissive: new THREE.Color(0x000000), // default base
+          emissiveIntensity: 1.0
+        });
+
+        const buttonMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+        buttonMesh.position.set(position.x, position.y, position.z);
+        buttonMesh.rotation.set(rotation.x, rotation.y, rotation.z);
+        buttonMesh.name = `button-${label.replace(/\s+/g, '-')}`;
+
+        if (onClick) {
+          makeModelClickable(buttonMesh, onClick);
+        }
+
+        scene.add(buttonMesh);
+
+        resolve({ textMesh, buttonMesh });
+      } catch (err) {
+        reject(err);
+      }
+    }, undefined, reject);
+  });
+}
+
+
+/*
+ * Function: applyGlowEffect
+ * Purpose: Applies an emissive glow to a mesh by modifying its material.
+ * Author(s): 
+ * Date: 21 MAR 2025
+ * Version: 1.0
+ *
+ * Parameters:
+ * - mesh (THREE.Mesh): The mesh to which the glow effect will be applied.
+ * - options (Object): Optional settings for the glow effect.
+ *     - color (string | number): Hex color for the glow (default: '#ff9900').
+ *     - intensity (number): Emissive intensity of the glow (default: 1.5).
+ *
+ * Description:
+ * Checks if the mesh and its material support emissive properties,
+ * then assigns a glow color and intensity. This function is compatible
+ * with MeshStandardMaterial and other emissive-capable materials.
+ */
+export function applyGlowEffect(mesh, options = {}) {
+  if (!mesh || !mesh.material || !('emissive' in mesh.material)) return;
+
+  const {
+    color = '#ff9900',  // default hex color
+    intensity = 1.5
+  } = options;
+
+  mesh.material.emissive = new THREE.Color(color);
+  mesh.material.emissiveIntensity = intensity;
+  mesh.material.needsUpdate = true;
+}
+
+
 
 /**
  * Calculates responsive spacing based on camera FOV, viewport size, and depth.

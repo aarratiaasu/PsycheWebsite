@@ -10,7 +10,7 @@
  * when the user enters this section.
  * 
  * Functions:
- * - loadSection2(): 
+ * - loadSection6(): 
  */
 
 import { loadModel } from './utils.js';

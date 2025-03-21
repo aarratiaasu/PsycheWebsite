@@ -31,7 +31,7 @@ export function showBalanceViewport() {
     viewportContainer.style.transition = 'bottom 0.5s ease-out, opacity 0.5s ease-out';
     viewportContainer.style.opacity = "0";
     viewportContainer.style.overflow = 'hidden';
-    viewportContainer.style.zIndex = '1000';
+    viewportContainer.style.zIndex = '900';
 
     // Create close button
     closeButton = document.createElement('button');

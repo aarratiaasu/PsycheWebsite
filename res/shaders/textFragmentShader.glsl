@@ -1,5 +1,6 @@
 uniform vec3 textColor;
+uniform float opacity;
 
 void main() {
-    gl_FragColor = vec4(textColor, 1.0); // Apply a single solid color
+    gl_FragColor = vec4(textColor, opacity);
 }

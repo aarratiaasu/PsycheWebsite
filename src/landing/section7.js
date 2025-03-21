@@ -1,3 +1,20 @@
+/*
+ * File: section7.js
+ * Purpose: Loads and initializes the "Welcom/Year On Psyche" section within the Three.js scene.
+ * Author(s): 
+ * Date: 20 FEB 2025
+ * Version: 1.0
+ *
+ * Description:
+ * This script sets up the "Year on Psyche" section by adding title text, loading the asteroid model,
+ * and creating an interactive menu. It enables interactivity on the asteroid model and includes
+ * section navigation using the moveToSection function.
+ *
+ * Functions:
+ * - loadSection1(): Loads the "Year on Psyche" section, adds a rotating asteroid model,
+ *   and sets up the navigation menu.
+ */
+
 import { createMenuItem } from './utils.js';
 
 export function loadSection7(scene, camera, sections) {

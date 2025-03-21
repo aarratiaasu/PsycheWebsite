@@ -77,7 +77,7 @@ export function showGamesViewport() {
     iframe = document.createElement('iframe');
     
     // We'll create a games.html page that will contain the game selector
-    iframe.src = 'public/games/games.html';
+    iframe.src = '/games/games.html';
     iframe.style.width = '100%';
     iframe.style.height = '100%';
     iframe.style.border = 'none';

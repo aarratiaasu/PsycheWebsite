@@ -75,7 +75,7 @@ export function showWebsiteViewport() {
     
     // Create iframe to load the website content
     iframe = document.createElement('iframe');
-    iframe.src = 'public/website/index.html';
+    iframe.src = '/website/index.html';
     iframe.style.width = '100%';
     iframe.style.height = '100%';
     iframe.style.border = 'none';

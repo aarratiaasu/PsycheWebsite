@@ -43,18 +43,33 @@ function calculateViewportSize() {
         width = '90%';
         maxWidth = '2000px';
         height = '90vh';
+    } else if (screenWidth >= 2000) {
+        // Extra large screens (2000px-2560px)
+        width = '85%';
+        maxWidth = '2400px';
+        height = '85vh';
+    } else if (screenWidth >= 1600) {
+        // Very large screens (1600px-2000px)
+        width = '88%';
+        maxWidth = '1900px';
+        height = '88vh';
     } else if (screenWidth >= 1200) {
-        // Large screens
+        // Large screens (1200px-1600px)
         width = '90%';
-        maxWidth = '1600px';
+        maxWidth = '1500px';
         height = '90vh';
+    } else if (screenWidth >= 992) {
+        // Medium-large screens (992px-1200px)
+        width = '92%';
+        maxWidth = '1150px';
+        height = '92vh';
     } else if (screenWidth >= 768) {
-        // Medium screens (tablets)
+        // Medium screens (tablets) (768px-992px)
         width = '95%';
-        maxWidth = '1200px';
+        maxWidth = '950px';
         height = '95vh';
     } else {
-        // Small screens (phones)
+        // Small screens (phones) (<768px)
         width = '98%';
         maxWidth = '100%';
         height = '98vh';
@@ -76,6 +91,47 @@ function updateViewportSize() {
     viewportContainer.style.height = height;
     
     console.log(`Viewport resized to: width=${width}, maxWidth=${maxWidth}, height=${height}`);
+    
+    // Inject CSS to ensure container1 with astronautcar scales properly
+    if (iframe && iframe.contentDocument) {
+        try {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            const container1 = iframeDoc.getElementById('container1');
+            
+            if (container1) {
+                // Apply scaling based on viewport width
+                const scale = Math.min(1, window.innerWidth / 1920); // Base scale on a 1920px reference
+                
+                // Create or update the style element for responsive adjustments
+                let styleEl = iframeDoc.getElementById('responsive-scaling');
+                if (!styleEl) {
+                    styleEl = iframeDoc.createElement('style');
+                    styleEl.id = 'responsive-scaling';
+                    iframeDoc.head.appendChild(styleEl);
+                }
+                
+                // Update the scaling styles
+                styleEl.textContent = `
+                    #container1 {
+                        transform: scale(${scale});
+                        transform-origin: center top;
+                        width: calc(100% / ${scale});
+                        margin-left: auto;
+                        margin-right: auto;
+                    }
+                    
+                    #astronautCar {
+                        max-width: 100%;
+                        height: auto;
+                    }
+                `;
+                
+                console.log(`Applied responsive scaling: ${scale}`);
+            }
+        } catch (e) {
+            console.error("Could not modify iframe content:", e);
+        }
+    }
 }
 
 /**
@@ -135,6 +191,26 @@ export function showKidsViewport() {
     iframe.onload = () => {
         console.log("Kids iframe loaded successfully");
         ViewportStyling.injectScrollbarHidingStyles(iframe);
+        
+        // Apply responsive scaling to container1 after iframe loads
+        updateViewportSize();
+        
+        // Add a MutationObserver to detect changes in the iframe content
+        try {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            const observer = new MutationObserver(() => {
+                // Re-apply responsive scaling when DOM changes
+                updateViewportSize();
+            });
+            
+            // Start observing the iframe document
+            observer.observe(iframeDoc.body, { 
+                childList: true, 
+                subtree: true 
+            });
+        } catch (e) {
+            console.error("Could not set up MutationObserver:", e);
+        }
     };
     
     viewportContainer.appendChild(iframe);
@@ -232,6 +308,25 @@ window.setKidsViewportSize = function(width, height) {
     
     // Center the viewport
     viewportContainer.style.transform = 'translate(-50%, -50%)';
+    
+    // Apply responsive scaling to container1
+    if (iframe && iframe.contentDocument) {
+        try {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            const container1 = iframeDoc.getElementById('container1');
+            
+            if (container1) {
+                // Apply scaling based on viewport width
+                const scale = Math.min(1, width / 1920); // Base scale on a 1920px reference
+                container1.style.transform = `scale(${scale})`;
+                container1.style.transformOrigin = 'center top';
+                container1.style.width = `calc(100% / ${scale})`;
+                console.log(`Applied manual scaling: ${scale}`);
+            }
+        } catch (e) {
+            console.error("Could not modify iframe content:", e);
+        }
+    }
     
     return `Viewport size set to ${width}x${height}`;
 };

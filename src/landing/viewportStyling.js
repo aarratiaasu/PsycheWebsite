@@ -335,8 +335,4 @@ export function createClosingAnimation(container, onComplete) {
     }, "-=0.1");
     
     return tl;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> josh-Sprint10

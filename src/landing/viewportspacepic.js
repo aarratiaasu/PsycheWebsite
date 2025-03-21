@@ -32,14 +32,14 @@ export function showSpacePicViewport() {
     viewportContainer.style.top = '50%';
     viewportContainer.style.left = '50%';
     viewportContainer.style.transform = 'translate(-50%, -50%)';
-    viewportContainer.style.width = '90%';
+    viewportContainer.style.width = '80%';
     viewportContainer.style.maxWidth = '1200px';
-    viewportContainer.style.height = '90vh';
+    viewportContainer.style.height = '80vh';
     viewportContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
     viewportContainer.style.border = '2px solid #007bff';
     viewportContainer.style.borderRadius = '10px';
     viewportContainer.style.boxShadow = '0 0 20px rgba(0, 123, 255, 0.5)';
-    viewportContainer.style.zIndex = '1000';
+    viewportContainer.style.zIndex = '900';
     viewportContainer.style.display = 'flex';
     viewportContainer.style.flexDirection = 'column';
     viewportContainer.style.overflow = 'hidden';

@@ -45,13 +45,13 @@ function init() {
   const sections = [
     { name: "REFERENCES", position: { x: 0, y: 200, z: -60 } },
     { name: "WELCOME", position: { x: 0, y: 0, z: 13 } },
-    { name: "PSYCHE", position: { x: 20, y: 30, z: 10 } },
+    { name: "16 PSYCHE", position: { x: 20, y: 30, z: 10 } },
     { name: "PSYCHE Jr", position: { x: 40, y: -60, z: -260 } },
     { name: "LIFE ON PSYCHE", position: { x: 40, y: 60, z: -200 } },
-    { name: "DEEP SPACE", position: { x: 40, y: 100, z: -300 } },
-    { name: "DEEP SPACE2", position: { x: 120, y: -60, z: 60 } },
+    { name: "MISSION", position: { x: 40, y: 100, z: -300 } },
+    { name: "GAMES", position: { x: 120, y: -60, z: 60 } },
     { name: "SEVEN", position: { x: 200, y: 300, z: -110 } },
-    { name: "GAMES", position: { x: 250, y: 250, z: -150 } } 
+    { name: "IDK", position: { x: 250, y: 250, z: -150 } } 
 ];
 
   setupNavigation(sections);
@@ -88,7 +88,7 @@ function init() {
 
 
   // Debug panel for development. will delete this later
-  // const debugPanel = document.getElementById('debug-panel');
+  const debugPanel = document.getElementById('debug-panel');
   /*
   * Updates the debug panel with current section and camera position.
   */  
@@ -113,7 +113,7 @@ function init() {
   */
   function animate() {
     requestAnimationFrame(animate);
-    // updateDebugPanel();
+    updateDebugPanel();
     if (composer) {
       composer.render();
     } else {
@@ -136,8 +136,8 @@ function init() {
   // Load all scene sections and initialize background
   Promise.all([
     loadSection0(scene),
-    loadSection1(scene, camera),
-    loadSection2(scene, camera),
+    loadSection1(scene, camera, sections),
+    loadSection2(scene, camera, sections, renderer),
     loadSection3(scene, camera, sections),
     loadSection4(scene, camera, sections),
     loadSection5(scene, camera),

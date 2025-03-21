@@ -20,9 +20,22 @@
 
 import gsap from 'gsap';
 import * as THREE from 'three';
+// import iframe destroy functions to destroy iframes if user navigates away from a section
+import { destroyPsycheNameViewport } from './psycheNameViewport.js';
+import { destroyGamesViewport } from './gamesViewport.js';
+
 
 let camera, renderer, sections, currentSection = 1, scrollProgress = 1;
 let isAnimating = false; // Scroll lock flag
+
+const destroyHandlers = {   // format = sectionNumver: functionName
+  2: destroyPsycheNameViewport,
+  6: destroyGamesViewport,
+  // add others =
+};
+
+let lastSection = currentSection;
+
 
 /*
 * Initializes section tracking by assigning the camera, section list,
@@ -101,6 +114,13 @@ export function onScroll(event) {
 */
 export function moveToSection(sectionIndex, lookAt = null) {
   if (sectionIndex < 0 || sectionIndex >= sections.length) return;
+  if (destroyHandlers[lastSection]) {
+    destroyHandlers[lastSection]();
+  }
+
+  currentSection = sectionIndex;
+  scrollProgress = sectionIndex;
+  lastSection = sectionIndex;
   currentSection = sectionIndex;
   scrollProgress = sectionIndex;
 

@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Physics Scene</title>
+  <title>Year On Psyche</title>
+  <link rel="icon" type="image/svg+xml" href="/res/img/psyche_badge.svg">
   <link rel="stylesheet" href="/css/landing.css">
   <link rel="stylesheet" href="/css/circleNav.css">
+  <link rel="stylesheet" href="/css/loadingScreen.css"> 
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,10 +16,13 @@
 </head>
 <body>
   <header></header>
+
   <main id="scene-container">
     <div id="canvas-container"></div>
     <div id="debug-panel"></div>
-    <div class="mouse-scroll-indicator">
+
+    <!-- Scroll Indicator -->
+    <div class="mouse-scroll-indicator" aria-hidden="true">
       <span class="arrowUp arrow-3"></span>
       <span class="arrowUp arrow-2"></span>
       <span class="arrowUp arrow-1"></span>
@@ -26,12 +31,21 @@
       <span class="arrow arrow-2"></span>
       <span class="arrow arrow-3"></span>
     </div>   
-    <button class="cn-button" id="cn-button">+</button>
 
-    <div class="cn-wrapper" id="cn-wrapper"></div>
-    <div id="cn-overlay" class="cn-overlay"></div>
+    <!-- Navigation Toggle -->
+    <nav id="navigation">
+      <div id="cn-icon-wrapper" role="button" tabindex="0" aria-label="Open navigation menu">
+          <img id="cn-icon" src="res/img/psyche_badge.svg" alt="Navigation Badge">
+      </div>
+
+      <!-- Navigation Menu -->
+      <div class="cn-wrapper" id="cn-wrapper"></div>
+      <div id="cn-overlay" class="cn-overlay"></div>
+    </nav>
+  </main>
 
   <footer></footer>
+
   <script type="module" src="/src/landing/landing.js"></script>
 </body>
 </html>

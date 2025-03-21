@@ -43,15 +43,15 @@ function init() {
   let scrollProgress = 1;
   let currentSection = 1;
   const sections = [
-    { name: "References", position: { x: 0, y: 200, z: -60 } },
-    { name: "Welcome", position: { x: 0, y: 0, z: 13 } },
-    { name: "Psyche", position: { x: 20, y: 30, z: 10 } },
-    { name: "PyscheJR", position: { x: 40, y: -60, z: -260 } },
-    { name: "Year on Psyche", position: { x: 40, y: 60, z: -200 } },
-    { name: "Deep Space (empty)", position: { x: 40, y: 100, z: -300 } },
-    { name: "NASA Logo (empty)", position: { x: 120, y: -60, z: 60 } },
-    { name: "Empty", position: { x: 200, y: 300, z: -110 } },
-    { name: "SpacePic", position: { x: 250, y: 250, z: -150 } } 
+    { name: "REFERENCES", position: { x: 0, y: 200, z: -60 } },
+    { name: "WELCOME", position: { x: 0, y: 0, z: 13 } },
+    { name: "PSYCHE", position: { x: 20, y: 30, z: 10 } },
+    { name: "PSYCHE Jr", position: { x: 40, y: -60, z: -260 } },
+    { name: "LIFE ON PSYCHE", position: { x: 40, y: 60, z: -200 } },
+    { name: "DEEP SPACE", position: { x: 40, y: 100, z: -300 } },
+    { name: "DEEP SPACE2", position: { x: 120, y: -60, z: 60 } },
+    { name: "SEVEN", position: { x: 200, y: 300, z: -110 } },
+    { name: "GAMES", position: { x: 250, y: 250, z: -150 } } 
 ];
 
   setupNavigation(sections);
@@ -73,7 +73,7 @@ function init() {
   scene.add(ambientLight);
 
   const directionalLight = new THREE.DirectionalLight(0x7a5f3e, 10);
-  directionalLight.position.set(1, 1, 5);
+  directionalLight.position.set(-15, 5, 5);
   scene.add(directionalLight);
 
   // section tracking - handles the camera's moveTo function
@@ -95,6 +95,7 @@ function init() {
   function updateDebugPanel() {
     const currentSection = getCurrentSection();
     debugPanel.innerHTML = `
+      <strong>DEBUG PANEL:</strong><br>
       <strong>Current Section:</strong>
       ${currentSection}<br>
       <strong>Camera Position:</strong><br>
@@ -137,7 +138,7 @@ function init() {
     loadSection0(scene),
     loadSection1(scene, camera),
     loadSection2(scene, camera),
-    loadSection3(scene, camera),
+    loadSection3(scene, camera, sections),
     loadSection4(scene, camera, sections),
     loadSection5(scene, camera),
     loadSection6(scene, camera, sections),

@@ -28,18 +28,21 @@ export function animateScrollIndicator() {
 }
 
 export function setupNavigation(sections) {
-    const menuButton = document.getElementById("cn-button");
+    const iconWrapper = document.getElementById("cn-icon-wrapper");
     const menuWrapper = document.getElementById("cn-wrapper");
     const overlay = document.getElementById("cn-overlay");
     const navList = document.createElement("ul");
     navList.style.listStyle = "none";
     navList.style.padding = "0";
+
     let isOpen = false;
+    let wasClicked = false;
+    let closeTimeout = null;
+    let hoverTimeout = null;
 
     navList.innerHTML = "";
 
     sections.forEach((section, index) => {
-        console.log("section: ", section, "Index: ", index);
         const listItem = document.createElement("li");
         listItem.textContent = section.name;
         listItem.style.cursor = "pointer";
@@ -49,7 +52,7 @@ export function setupNavigation(sections) {
 
         listItem.addEventListener("click", () => {
             moveToSection(index, section.position);
-            toggleMenu();
+            closeMenu();
         });
 
         navList.appendChild(listItem);
@@ -156,24 +159,80 @@ export function setupNavigation(sections) {
 
     menuWrapper.appendChild(navList);
 
-    function toggleMenu() {
-        isOpen = !isOpen;
+    function openMenu() {
+        clearTimeout(closeTimeout); // Reset any pending close event
+        clearTimeout(hoverTimeout);
 
-        if (isOpen) {
-            menuWrapper.classList.remove("closing");
-            menuWrapper.classList.add("opened-nav");
-        } else {
-            menuWrapper.classList.add("closing");
-            setTimeout(() => {
-                menuWrapper.classList.remove("opened-nav");
-                menuWrapper.classList.remove("closing");
-            }, 300);
-        }
+        isOpen = true;
+        wasClicked = true;
 
-        overlay.classList.toggle("active", isOpen);
-        menuButton.classList.toggle("open", isOpen);
+        menuWrapper.classList.remove("closing");
+        menuWrapper.classList.add("opened-nav");
+        overlay.classList.add("active");
+        iconWrapper.classList.add("active");
+
+        // Ensure full 360° rotation
+        iconWrapper.style.transition = "transform 0.5s ease-in-out";
+        iconWrapper.style.transform = "rotate(360deg)";
     }
 
-    menuButton.addEventListener("click", toggleMenu);
-    overlay.addEventListener("click", toggleMenu);
+    function closeMenu() {
+        if (!isOpen) return;
+
+        isOpen = false;
+        wasClicked = false;
+        menuWrapper.classList.add("closing");
+
+        closeTimeout = setTimeout(() => {
+            menuWrapper.classList.remove("opened-nav");
+            menuWrapper.classList.remove("closing");
+        }, 300);
+
+        overlay.classList.remove("active");
+        iconWrapper.classList.remove("active");
+
+        // Reverse rotate back
+        iconWrapper.style.transition = "transform 0.5s ease-in-out";
+        iconWrapper.style.transform = "rotate(0deg)";
+    }
+
+    function toggleMenu() {
+        if (isOpen) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    }
+
+    function delayedClose() {
+        if (wasClicked) return; // Prevent hover delay from closing if explicitly clicked
+
+        hoverTimeout = setTimeout(() => {
+            closeMenu();
+        }, 250); // Short delay before closing after leaving hover
+    }
+
+    // Hover opens menu
+    iconWrapper.addEventListener("mouseenter", () => {
+        if (!wasClicked) openMenu();
+    });
+
+    menuWrapper.addEventListener("mouseenter", () => {
+        if (!wasClicked) openMenu();
+    });
+
+    // Add delay before closing when hover is removed
+    iconWrapper.addEventListener("mouseleave", delayedClose);
+    menuWrapper.addEventListener("mouseleave", delayedClose);
+
+    // Click toggles menu open/close
+    iconWrapper.addEventListener("click", toggleMenu);
+
+    // Click outside should close the menu
+    overlay.addEventListener("click", closeMenu);
+    document.addEventListener("click", (event) => {
+        if (!menuWrapper.contains(event.target) && !iconWrapper.contains(event.target)) {
+            closeMenu();
+        }
+    });
 }

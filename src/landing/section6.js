@@ -1,8 +1,16 @@
-/**
- * Section 6 - Games Selector
- * 
+/*
+ * File: section6.js - Games Selector
+ * Purpose: Loads and initializes Section 6, 
+ * Author(s): 
+ * Date: 20 FEB 2025
+ * Version: 1.0
+ *
+ * Description:
  * This section displays a game controller model and opens a games selector viewport
  * when the user enters this section.
+ * 
+ * Functions:
+ * - loadSection2(): 
  */
 
 import { loadModel } from './utils.js';

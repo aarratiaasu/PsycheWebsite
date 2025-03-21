@@ -19,7 +19,7 @@ export function applyViewportContainerStyles(container, options = {}) {
         borderWidth = '2px',
         borderRadius = '10px',
         boxShadow = '0 0 25px rgba(255, 255, 204, 0.6)',
-        zIndex = '1000'
+        zIndex = '900'
     } = options;
     
     container.style.position = 'fixed';
@@ -335,4 +335,8 @@ export function createClosingAnimation(container, onComplete) {
     }, "-=0.1");
     
     return tl;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> josh-Sprint10

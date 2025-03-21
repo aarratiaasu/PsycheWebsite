@@ -78,6 +78,24 @@ let hoveredText = null;
 const modelMouse = new THREE.Vector2();
 const clickableModels = [];
 
+
+/**
+ * Asynchronously loads a GLSL shader file and returns its contents as a string.
+ * Used to fetch external vertex and fragment shaders for Three.js ShaderMaterial.
+ *
+ * @param {string} url - The path to the shader file.
+ * @returns {Promise<string>} A promise that resolves to the shader source code as a string.
+ *
+ * How it works:
+ * - Uses the Fetch API to retrieve the shader file from the given URL.
+ * - Reads the response and converts it to text.
+ * - Returns the shader source code as a resolved promise.
+ */
+async function loadShader(url) {
+  const response = await fetch(url);
+  return await response.text();
+}
+
 /**
  * Creates a 3D text mesh with a custom gradient shader and adds it to the scene.
  * Utilizes Three.js's FontLoader and TextGeometry for 3D text creation, and a custom shader
@@ -96,9 +114,9 @@ const clickableModels = [];
  * - The vertex shader handles positioning and UV mapping.
  * - The fragment shader calculates color blending across six defined colors based on UV coordinates.
  */
-export function createTextMesh(text, position, rotation, size = 1.5, scene) {
+export async function createTextMesh(text, position, rotation, size = 1.5, scene) {
   const fontLoader = new FontLoader();
-  fontLoader.load('/res/font/GenosThin_Regular.json', (font) => {
+  fontLoader.load('/res/font/GenosThin_Regular.json', async (font) => {
     
     // Create the geometry for the 3D text
     const textGeometry = new TextGeometry(text, {
@@ -113,50 +131,23 @@ export function createTextMesh(text, position, rotation, size = 1.5, scene) {
       bevelSegments: 5
     });
 
+    const vertexShader = await loadShader('/res/shaders/textVertexShader.glsl');
+    const fragmentShader = await loadShader('/res/shaders/textFragmentShader.glsl');
+
     // ShaderMaterial applies a vertical gradient to the text mesh
     const textMaterial = new THREE.ShaderMaterial({
       uniforms: {
-        color1: { value: new THREE.Color(90 / 255, 39 / 255, 82 / 255) },
-        color2: { value: new THREE.Color(49 / 255, 33 / 255, 70 / 255) },
-        color3: { value: new THREE.Color(164 / 255, 64 / 255, 92 / 255) },
-        color4: { value: new THREE.Color(239 / 255, 89 / 255, 101 / 255) },
-        color5: { value: new THREE.Color(245 / 255, 124 / 255, 51 / 255) },
-        color6: { value: new THREE.Color(249 / 255, 159 / 255, 0 / 255) },
+        // color1: { value: new THREE.Color(90 / 255, 39 / 255, 82 / 255) },
+        // color2: { value: new THREE.Color(49 / 255, 33 / 255, 70 / 255) },
+        // color3: { value: new THREE.Color(164 / 255, 64 / 255, 92 / 255) },
+        // color4: { value: new THREE.Color(239 / 255, 89 / 255, 101 / 255) },
+        // color5: { value: new THREE.Color(245 / 255, 124 / 255, 51 / 255) },
+        // color6: { value: new THREE.Color(249 / 255, 159 / 255, 0 / 255) }
+        textColor: { value: new THREE.Color(249 / 255, 159 / 255, 0 / 255) }
       },
       // Vertex shader processes geometry and passes UV data to the fragment shader
-      vertexShader: `
-        varying vec2 vUv;
-        void main() {
-          vUv = uv; // Pass UV coordinates to fragment shader
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      /* 
-        * Fragment shader creates a vertical gradient using six color stops.
-        * The 'vUv.y' value determines where in the gradient the pixel lies.
-        * Colors are blended smoothly between stops using linear interpolation (mix function).
-        */
-      fragmentShader: `
-        varying vec2 vUv;
-        uniform vec3 color1, color2, color3, color4, color5, color6;
-
-        void main() {
-          vec3 gradient;
-          if (vUv.y < 0.2) 
-            gradient = mix(color1, color2, vUv.y / 0.2);  // Blend between color1 and color2
-          else if (vUv.y < 0.4) 
-            gradient = mix(color2, color3, (vUv.y - 0.2) / 0.2); // Blend color2 -> color3
-          else if (vUv.y < 0.6) 
-            gradient = mix(color3, color4, (vUv.y - 0.4) / 0.2); // Blend color3 -> color4
-          else if (vUv.y < 0.8) 
-            gradient = mix(color4, color5, (vUv.y - 0.6) / 0.2); // Blend color4 -> color5
-          else 
-            gradient = mix(color5, color6, (vUv.y - 0.8) / 0.2); // Blend color5 -> color6
-          
-          gradient *= 0.8; // Slightly darken the final color for better contrast
-          gl_FragColor = vec4(gradient, 1.0); // Apply final gradient color
-        }
-      `,
+      vertexShader: vertexShader,
+      fragmentShader: fragmentShader
     });
 
     // Create the mesh with geometry and custom material

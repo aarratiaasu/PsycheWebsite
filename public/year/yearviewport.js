@@ -4,8 +4,6 @@
  * This module handles loading the year.html content in an iframe
  * that appears on top of the Three.js scene
  */
-import * as THREE from 'three';
-import gsap from 'gsap';
 import {
     applyViewportContainerStyles,
     applyHeaderStyles,

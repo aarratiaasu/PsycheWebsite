@@ -88,7 +88,7 @@ function init() {
 
 
   // Debug panel for development. will delete this later
-  const debugPanel = document.getElementById('debug-panel');
+  // const debugPanel = document.getElementById('debug-panel');
   /*
   * Updates the debug panel with current section and camera position.
   */  
@@ -113,7 +113,7 @@ function init() {
   */
   function animate() {
     requestAnimationFrame(animate);
-    updateDebugPanel();
+    // updateDebugPanel();
     if (composer) {
       composer.render();
     } else {

@@ -149,8 +149,10 @@ export function showKidsViewport() {
     ViewportStyling.addPulsingGlowEffect(viewportContainer);
     
     // Add event listener for close button
-    closeButton.addEventListener('click', hideKidsViewport);
-    
+    closeButton.addEventListener('click', () => {
+        ViewportStyling.createClosingAnimation(viewportContainer, destroyKidsViewport);
+    });
+        
     // Add event listener for Escape key
     document.addEventListener('keydown', handleKeyDown);
     
@@ -187,7 +189,7 @@ export function hideKidsViewport() {
  */
 function handleKeyDown(e) {
     if (e.key === 'Escape') {
-        hideKidsViewport();
+        ViewportStyling.createClosingAnimation(viewportContainer, destroyKidsViewport);
     }
 }
 

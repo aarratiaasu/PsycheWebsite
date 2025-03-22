@@ -134,10 +134,10 @@ export function hidePsycheNameViewport() {
         ease: "power2.in",
         onComplete: () => {
             destroyPsycheNameViewport();
-            document.body.classList.add("overlay-open");
         }
     });
 }
+
 
 
 /**

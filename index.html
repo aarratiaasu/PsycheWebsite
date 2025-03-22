@@ -15,8 +15,17 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&display=swap">
 </head>
 <body>
-  <header></header>
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="wrapper">
+    <div class="image-container">
+      <img src="/res/img/psyche_badge.svg" alt="Loading" class="rotating-image">
+    </div>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+  </div>
 
+  <!-- Three.js Canvas -->
   <main id="scene-container">
     <div id="canvas-container"></div>
     <div id="debug-panel"></div>

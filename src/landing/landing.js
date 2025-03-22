@@ -38,10 +38,14 @@ import { loadSection9, renderSection9 } from './section9.js';
 * Sets up lighting, navigation, interactivity, and loads all scene sections.
 */
 function init() {
+  const loadingScreen = document.getElementById('loading-screen');
+  const progressBar = document.getElementById('progress-bar');
+
   animateScrollIndicator();
 
   let scrollProgress = 1;
   let currentSection = 1;
+
   const sections = [
     { name: "REFERENCES", position: { x: 0, y: 200, z: -60 } },
     { name: "WELCOME", position: { x: 0, y: 0, z: 13 } },
@@ -134,30 +138,49 @@ function init() {
   const composer = loadSun(scene, renderer, camera, bloomStrength);
 
   // Load all scene sections and initialize background
-  Promise.all([
+  const loaders = [
     loadSection0(scene),
     loadSection1(scene, camera, sections),
     loadSection2(scene, camera, sections, renderer),
-    loadSection3(scene, camera, sections),
-    loadSection4(scene, camera, sections),
-    loadSection5(scene, camera),
+    loadSection3(scene, camera, sections,renderer),
+    loadSection4(scene, camera, sections, renderer),
+    loadSection5(scene, camera, sections, renderer),
     loadSection6(scene, camera, sections),
     loadSection7(scene, camera, sections),
     loadSection8(scene, camera),
     loadSection9(scene, camera)
-  ]).then(() => {
+  ];
+
+  let loadedCount = 0;
+
+  // loaders.forEach(p => {
+  //   p.then(() => {
+  //     loadedCount++;
+  //     const progress = (loadedCount / loaders.length) * 100;
+  //     progressBar.style.width = `${progress}%`;
+  //   });
+  // });
+  loaders.forEach((p, i) => {
+    if (!p || typeof p.then !== 'function') {
+      console.error(`Loader at index ${i} is not a Promise:`, p);
+    }
+  });
+  
+  Promise.all(loaders).then(() => {
     console.log("All sections loaded.");
-
     createStarfield(scene, { density: starDensity });
-
-    //initBackgroundSwitcher(scene);
     enableModelClick(camera, renderer);
     animate();
     onResize(camera, renderer);
 
+    // Fade out and remove loading screen
+    loadingScreen.style.transition = 'opacity 0.5s ease';
+    loadingScreen.style.opacity = '0';
+    setTimeout(() => loadingScreen.remove(), 500);
   }).catch(error => {
     console.error("Error loading sections:", error);
   });
+
 
   window.addEventListener('resize', () => {
     if (camera && renderer) {

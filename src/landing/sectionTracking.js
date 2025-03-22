@@ -22,7 +22,7 @@ import gsap from 'gsap';
 import * as THREE from 'three';
 // import iframe destroy functions to destroy iframes if user navigates away from a section
 import { destroyPsycheNameViewport } from './psycheNameViewport.js';
-import { destroyGamesViewport } from './gamesViewport.js';
+import { destroyGamesViewport } from '../../public/games/gamesViewport.js';
 
 
 let camera, renderer, sections, currentSection = 1, scrollProgress = 1;

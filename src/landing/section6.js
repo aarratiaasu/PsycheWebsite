@@ -15,7 +15,7 @@
 
 import { loadModel } from './utils.js';
 import { getCurrentSection } from './sectionTracking.js';
-import { showGamesViewport, hideGamesViewport } from './gamesViewport.js';
+import { showGamesViewport, hideGamesViewport } from '../../public/games/gamesViewport.js';
 
 let hasShownViewport = false;
 let sectionInitialized = false;

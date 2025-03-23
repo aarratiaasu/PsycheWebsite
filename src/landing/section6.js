@@ -16,6 +16,7 @@
 import { loadModel } from './utils.js';
 import { getCurrentSection } from './sectionTracking.js';
 import { showGamesViewport, hideGamesViewport } from '../../public/games/gamesViewport.js';
+// Note: balanceViewport.js, viewportescapevelocity.js, and viewportspacepic.js have been moved to public/games/
 
 let hasShownViewport = false;
 let sectionInitialized = false;

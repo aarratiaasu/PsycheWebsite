@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import { getCurrentSection } from './sectionTracking.js';
 import { makeModelClickable } from './utils.js';
 import gsap from 'gsap';
-import { showEscapeVelocityViewport, hideEscapeVelocityViewport } from './viewportescapevelocity.js';
+import { showEscapeVelocityViewport, hideEscapeVelocityViewport } from '../../public/games/viewportescapevelocity.js';
 
 let section9Elements = [];
 let escapeVelocityButton;

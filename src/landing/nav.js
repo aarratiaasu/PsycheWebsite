@@ -114,11 +114,11 @@ export function setupNavigation(sections) {
                             module.showKidsViewport();
                         });
                     } else if (game.name === "Escape Velocity") {
-                        import('./viewportescapevelocity.js').then(module => {
+                        import('../../public/games/viewportescapevelocity.js').then(module => {
                             module.showEscapeVelocityViewport();
                         });
                     } else if (game.name === "SpacePic") {
-                        import('./viewportspacepic.js').then(module => {
+                        import('../../public/games/viewportspacepic.js').then(module => {
                             module.showSpacePicViewport();
                         });
                     }

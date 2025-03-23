@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import { getCurrentSection } from './sectionTracking.js';
 import { makeModelClickable } from './utils.js';
 import gsap from 'gsap';
-import { showSpacePicViewport, hideSpacePicViewport } from './viewportspacepic.js';
+import { showSpacePicViewport, hideSpacePicViewport } from '../../public/games/viewportspacepic.js';
 
 let section8Elements = [];
 let spacePicButton;

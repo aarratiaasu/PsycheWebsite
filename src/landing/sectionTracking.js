@@ -21,7 +21,7 @@
 import gsap from 'gsap';
 import * as THREE from 'three';
 // import iframe destroy functions to destroy iframes if user navigates away from a section
-import { destroyPsycheNameViewport } from './psycheNameViewport.js';
+import { destroyNameViewport } from './psycheNameViewport.js';
 import { destroyGamesViewport } from './gamesViewport.js';
 
 
@@ -29,7 +29,7 @@ let camera, renderer, sections, currentSection = 1, scrollProgress = 1;
 let isAnimating = false; // Scroll lock flag
 
 const destroyHandlers = {   // format = sectionNumver: functionName
-  2: destroyPsycheNameViewport,
+  2: destroyNameViewport,
   6: destroyGamesViewport,
   // add others =
 };

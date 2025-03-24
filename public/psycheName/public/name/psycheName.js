@@ -80,6 +80,16 @@ export function showNameViewport() {
     iframe.onload = () => {
         console.log("Iframe loaded successfully");
     };
+    iframe.onerror = () => {
+        console.error("Failed to load iframe content");
+        iframe.style.backgroundColor = '#444'; // Show a dark background or message
+    };
+    closeButton.addEventListener('mouseover', () => {
+        closeButton.style.transform = 'scale(1.2)';
+    });
+    closeButton.addEventListener('mouseout', () => {
+        closeButton.style.transform = 'scale(1)';
+    });
     viewportContainer.appendChild(iframe);
     document.body.appendChild(viewportContainer);
     // Add animation for opening
@@ -154,7 +164,7 @@ export function hideNameViewport() {
     // Animate closing
     gsap.to(viewportContainer, {
         opacity: 0,
-       scale: 0.8,
+        scale: 0.8,
         duration: 0.3,
         ease: "power2.in",
         onComplete: () => {

@@ -23,7 +23,7 @@ import { createTextMesh, loadModel, createMenu, loadBadge } from './utils.js';
  * - scene: The Three.js scene where the section elements will be added.
  */
 export function loadSection0(scene) {
-  const mainTextPosition = { x: -12, y: 206, z: -73 };
+  const mainTextPosition = { x: -155, y: -148, z: 3 };
   const mainTextRotation = { x: 0, y: 0.1, z: 0 };
 
   // Create main section title text

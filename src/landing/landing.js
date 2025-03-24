@@ -43,15 +43,15 @@ function init() {
   let scrollProgress = 1;
   let currentSection = 1;
   const sections = [
-    { name: "REFERENCES", position: { x: 0, y: 200, z: -60 } },
+    { name: "REFERENCES", position: { x: -150, y: -150, z: 13 } },
     { name: "WELCOME", position: { x: 0, y: 0, z: 13 } },
     { name: "16 PSYCHE", position: { x: 20, y: 30, z: 10 } },
-    { name: "PSYCHE Jr", position: { x: 40, y: -60, z: -260 } },
-    { name: "LIFE ON PSYCHE", position: { x: 40, y: 60, z: -200 } },
-    { name: "MISSION", position: { x: 40, y: 100, z: -300 } },
-    { name: "GAMES", position: { x: 120, y: -60, z: 60 } },
-    { name: "SEVEN", position: { x: 200, y: 300, z: -110 } },
-    { name: "IDK", position: { x: 250, y: 250, z: -150 } } 
+    { name: "PSYCHE Jr", position: { x: -150, y: 150, z: 13 } },
+    { name: "COSMIC COMPARISON", position: { x: 0, y: 300, z: 13 } },
+    { name: "MISSION", position: { x: 150, y: 150, z: 13 } },
+    { name: "GAMES", position: { x: 300, y: 0, z: 13 } },
+    { name: "SEVEN", position: { x: 150, y: -150, z: 13 } },
+    { name: "IDK", position: { x: 0, y: -300, z: 13 } } 
 ];
 
   setupNavigation(sections);
@@ -138,12 +138,12 @@ function init() {
     loadSection0(scene),
     loadSection1(scene, camera, sections),
     loadSection2(scene, camera, sections, renderer),
-    loadSection3(scene, camera, sections),
-    loadSection4(scene, camera, sections),
-    loadSection5(scene, camera),
-    loadSection6(scene, camera, sections),
+    loadSection3(scene, camera, sections, renderer),
+    loadSection4(scene, camera, sections, renderer),
+    loadSection5(scene, camera, sections, renderer),
+    loadSection6(scene, camera, sections, renderer),
     loadSection7(scene, camera, sections),
-    loadSection8(scene, camera),
+    loadSection8(scene, camera, sections, renderer),
     loadSection9(scene, camera)
   ]).then(() => {
     console.log("All sections loaded.");

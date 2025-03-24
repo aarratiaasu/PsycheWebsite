@@ -186,7 +186,7 @@ const rotation = { x: 0.2, y: 0, z: 0 };
 return new Promise((resolve, reject) => {
   try {
     const { buttonMesh } = triggerButton3D(
-      "Explor the Psyche Jr Kids Experience",
+      "Explore the Psyche Jr Kids Experience",
       buttonPos,
       rotation,
       0.7,

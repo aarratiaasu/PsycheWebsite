@@ -12,6 +12,7 @@
 
 import gsap from 'gsap';
 import * as ViewportStyling from '../../src/landing/viewportStyling.js';
+import { showTemperatureGameViewport } from './viewporttemperaturegame.js';
 
 // Keep track of the viewport DOM elements
 let viewportContainer = null;
@@ -109,7 +110,11 @@ export function showGamesViewport() {
     // Create container for the viewport
     viewportContainer = document.createElement('div');
     viewportContainer.id = 'games-viewport-container';
-    ViewportStyling.applyViewportContainerStyles(viewportContainer);
+    ViewportStyling.applyViewportContainerStyles(viewportContainer, {
+        backgroundColor: 'rgba(0, 0, 0, 0.05)', // Very transparent background
+        borderColor: 'rgba(122, 95, 62, 0.3)',  // Semi-transparent border
+        boxShadow: '0 0 15px rgba(122, 95, 62, 0.3)' // Subtle glow
+    });
     
     // Set responsive dimensions
     const { width, maxWidth, height } = calculateViewportSize();
@@ -119,7 +124,11 @@ export function showGamesViewport() {
     
     // Create header with title and close button
     const header = document.createElement('div');
-    ViewportStyling.applyHeaderStyles(header);
+    ViewportStyling.applyHeaderStyles(header, {
+        backgroundColor: 'rgba(10, 10, 20, 0.2)',
+        gradientStart: 'rgba(10, 10, 20, 0.2)',
+        gradientEnd: 'rgba(20, 20, 40, 0.2)'
+    });
     
     const title = document.createElement('h2');
     title.textContent = 'Psyche Mission Games';
@@ -136,7 +145,9 @@ export function showGamesViewport() {
     // Create iframe to load the games content
     iframe = document.createElement('iframe');
     iframe.src = '/public/games/games.html';  // Use absolute path from project root
-    ViewportStyling.applyIframeStyles(iframe);
+    ViewportStyling.applyIframeStyles(iframe, {
+        backgroundColor: 'rgba(0, 0, 0, 0.0)' // Completely transparent background
+    });
     
     // Add scrollbar hiding styles
     ViewportStyling.addScrollbarHidingStyles(document);

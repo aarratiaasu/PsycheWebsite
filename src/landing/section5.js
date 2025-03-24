@@ -5,7 +5,6 @@
 import * as THREE from 'three';
 import { getCurrentSection } from './sectionTracking.js';
 import { showWebsiteViewport, hideWebsiteViewport } from '../../public/website/websiteViewport.js';
-import { showWebsiteViewport, hideWebsiteViewport } from './websiteViewport.js';
 import { triggerButton3D, clickableModels, applyGlowEffect } from './utils.js';
 
 let hasShownViewport = false;

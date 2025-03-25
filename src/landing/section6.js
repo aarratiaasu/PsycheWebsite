@@ -30,46 +30,26 @@ let gameControllerModel = null;
  * - sections: Array containing camera positions for each section.
  */
 export function loadSection6(scene, camera, sections) {
-  const cameraPosition = sections[6];
-  const modelOffset = 30;
+  return new Promise((resolve, reject) => {
+      // Assuming 'cameraPosition' still needs to be set from 'sections'
+      const cameraPosition = sections[6];
+      const modelOffset = 30;
 
-  // Position the model slightly in front of the camera
-  const modelPosition = {
-    x: cameraPosition.x,
-    y: cameraPosition.y,
-    z: cameraPosition.z - modelOffset
-  };
+      // Position the model slightly in front of the camera
+      const modelPosition = {
+          x: cameraPosition.x,
+          y: cameraPosition.y,
+          z: cameraPosition.z - modelOffset
+      };
 
-  // Load the NASA Logo model into the scene (can be replaced with a game controller model if available)
-  loadModel(
-    "nasaLogo",                          // Model name
-    "/res/models/nasaLogo.glb",          // Model file path
-    modelPosition,                       // Position in the scene
-    1,                                   // Scale factor
-    { x: 0, y: 0, z: 0 },                // Initial rotation
-    null,                                // No animation for now
-    scene, 
-    (model) => {
-      console.log("Game section model loaded into Section 6");
-      gameControllerModel = model;
-
-      // Enable frustum culling for performance
-      model.frustumCulled = true;
-
-      // Ensure bounding spheres exist for all meshes within the model
-      model.traverse((child) => {
-        if (child.isMesh && child.geometry) { 
-          if (!child.geometry.boundingSphere) {
-            child.geometry.computeBoundingSphere();
-            console.log("added bounding sphere to", child.name);
-          }
-        }
-      });
+      // Here, you can perform any operations needed, or if there are none, resolve immediately
+      console.log("Section 6 setup completed without model loading.");
       
-      sectionInitialized = true;
-    }
-  );
+      // Assuming there are no further asynchronous operations, we directly resolve the Promise
+      resolve();
+  });
 }
+
 
 /**
  * Renders Section 6 and handles viewport display logic.

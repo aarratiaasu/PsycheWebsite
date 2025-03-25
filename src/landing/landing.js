@@ -153,10 +153,10 @@ function init() {
     loadSection3(scene, camera, sections,renderer),
     loadSection4(scene, camera, sections, renderer),
     loadSection5(scene, camera, sections, renderer),
-    loadSection6(scene, camera, sections),
-    loadSection7(scene, camera, sections),
-    loadSection8(scene, camera),
-    loadSection9(scene, camera)
+    loadSection6(scene, camera, sections, renderer),
+    loadSection7(scene, camera, sections, renderer),
+    loadSection8(scene, camera, sections, renderer),
+    loadSection9(scene, camera, sections, renderer)
   ];
 
   let loadedCount = 0;
@@ -172,7 +172,8 @@ function init() {
               // Additional actions after all sections are loaded
               createStarfield(scene, { density: starDensity });
               enableModelClick(camera, renderer);
-              animateScrollIndicator(); // Assume this starts some scrolling animation
+              animateScrollIndicator(); 
+              animate();
               fadeOutLoadingScreen();
           }
       }).catch(error => {

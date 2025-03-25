@@ -13,96 +13,99 @@ let spacePicButton;
 let hasShownViewport = false;
 
 export function loadSection8(scene, camera) {
-    // Create a button for the space pic feature
-    const buttonGeometry = new THREE.BoxGeometry(40, 20, 5);
-    const buttonMaterial = new THREE.MeshBasicMaterial({
-        color: 0x007bff,
-        transparent: false
-    });
-    spacePicButton = new THREE.Mesh(buttonGeometry, buttonMaterial);
-    spacePicButton.position.set(200, 300, -110);
-    spacePicButton.userData.section8Element = true;
-    scene.add(spacePicButton);
-    section8Elements.push(spacePicButton);
-    
-    // Create a text label for the button
-    const canvas = document.createElement('canvas');
-    canvas.width = 256;
-    canvas.height = 128;
-    const context = canvas.getContext('2d');
-    context.fillStyle = '#007bff';
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    context.font = 'bold 24px Arial';
-    context.fillStyle = 'white';
-    context.textAlign = 'center';
-    context.textBaseline = 'middle';
-    context.fillText('Space Pic', canvas.width / 2, canvas.height / 2);
-    
-    const texture = new THREE.CanvasTexture(canvas);
-    const labelMaterial = new THREE.MeshBasicMaterial({
-        map: texture,
-        transparent: true
-    });
-    const labelGeometry = new THREE.PlaneGeometry(50, 25);
-    const label = new THREE.Mesh(labelGeometry, labelMaterial);
-    label.position.set(200, 300, -107); // Slightly in front of the button
-    label.userData.section8Element = true;
-    scene.add(label);
-    section8Elements.push(label);
-    
-    // Add lights to enhance the section
-    const pointLight = new THREE.PointLight(0xffffff, 2, 200);
-    pointLight.position.set(200, 300, -100);
-    pointLight.userData.section8Element = true;
-    scene.add(pointLight);
-    section8Elements.push(pointLight);
-
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    ambientLight.userData.section8Element = true;
-    scene.add(ambientLight);
-    section8Elements.push(ambientLight);
-
-    // Make the button clickable
-    makeModelClickable(spacePicButton, () => {
-        showSpacePicViewport();
-    });
-    
-    // Make the label clickable too
-    makeModelClickable(label, () => {
-        showSpacePicViewport();
-    });
-
-    // Add hover effect to the button
-    let isHovered = false;
-    spacePicButton.userData.onPointerOver = () => {
-        if (!isHovered) {
-            gsap.to(spacePicButton.material.color, {
-                r: 0,      // #0056b3 darker
-                g: 0.337,
-                b: 0.702,
-                duration: 0.3
+    return new Promise((resolve, reject) => {
+        try {
+            // Create a button for the space pic feature
+            const buttonGeometry = new THREE.BoxGeometry(40, 20, 5);
+            const buttonMaterial = new THREE.MeshBasicMaterial({
+                color: 0x007bff,
+                transparent: false
             });
-            isHovered = true;
-        }
-    };
+            const spacePicButton = new THREE.Mesh(buttonGeometry, buttonMaterial);
+            spacePicButton.position.set(200, 300, -110);
+            spacePicButton.userData.section8Element = true;
+            scene.add(spacePicButton);
 
-    spacePicButton.userData.onPointerOut = () => {
-        if (isHovered) {
-            gsap.to(spacePicButton.material.color, {
-                r: 0,      // #007bff
-                g: 0.482,
-                b: 1,
-                duration: 0.3
+            // Create a text label for the button
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 128;
+            const context = canvas.getContext('2d');
+            context.fillStyle = '#007bff';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            context.font = 'bold 24px Arial';
+            context.fillStyle = 'white';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText('Space Pic', canvas.width / 2, canvas.height / 2);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const labelMaterial = new THREE.MeshBasicMaterial({
+                map: texture,
+                transparent: true
             });
-            isHovered = false;
-        }
-    };
+            const labelGeometry = new THREE.PlaneGeometry(50, 25);
+            const label = new THREE.Mesh(labelGeometry, labelMaterial);
+            label.position.set(200, 300, -107); // Slightly in front of the button
+            label.userData.section8Element = true;
+            scene.add(label);
 
-    // Initially hide all section 8 elements
-    section8Elements.forEach(element => {
-        element.visible = false;
+            // Add lights to enhance the section
+            const pointLight = new THREE.PointLight(0xffffff, 2, 200);
+            pointLight.position.set(200, 300, -100);
+            pointLight.userData.section8Element = true;
+            scene.add(pointLight);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            ambientLight.userData.section8Element = true;
+            scene.add(ambientLight);
+
+            // Make the button and label clickable
+            makeModelClickable(spacePicButton, () => {
+                showSpacePicViewport();
+            });
+            makeModelClickable(label, () => {
+                showSpacePicViewport();
+            });
+
+            // Add hover effect to the button
+            let isHovered = false;
+            spacePicButton.userData.onPointerOver = () => {
+                if (!isHovered) {
+                    gsap.to(spacePicButton.material.color, {
+                        r: 0,      // #0056b3 darker
+                        g: 0.337,
+                        b: 0.702,
+                        duration: 0.3
+                    });
+                    isHovered = true;
+                }
+            };
+            spacePicButton.userData.onPointerOut = () => {
+                if (isHovered) {
+                    gsap.to(spacePicButton.material.color, {
+                        r: 0,      // #007bff
+                        g: 0.482,
+                        b: 1,
+                        duration: 0.3
+                    });
+                    isHovered = false;
+                }
+            };
+
+            // Initially hide all section 8 elements
+            const section8Elements = [spacePicButton, label, pointLight, ambientLight];
+            section8Elements.forEach(element => {
+                element.visible = false;
+            });
+
+            resolve(); // Resolve promise after setup is complete
+        } catch (error) {
+            reject(error); // Reject promise if any errors occur during setup
+        }
     });
 }
+
 
 export function renderSection8(camera, scene) {
     if (section8Elements.length === 0) return;

@@ -58,6 +58,7 @@ canvas {
     z-index: 990;
     animation: fadeIn 1s ease-in-out;
     transition: transform 1.5s ease-in-out; 
+    display: none;
 }
 
 .mouse-scroll-indicator.moved {

@@ -41,8 +41,6 @@ function init() {
   const loadingScreen = document.getElementById('loading-screen');
   const progressBar = document.getElementById('progress-bar');
 
-  animateScrollIndicator();
-
   let scrollProgress = 1;
   let currentSection = 1;
 
@@ -152,34 +150,33 @@ function init() {
   ];
 
   let loadedCount = 0;
+  const totalSections = loaders.length;
 
-  // loaders.forEach(p => {
-  //   p.then(() => {
-  //     loadedCount++;
-  //     const progress = (loadedCount / loaders.length) * 100;
-  //     progressBar.style.width = `${progress}%`;
-  //   });
-  // });
-  loaders.forEach((p, i) => {
-    if (!p || typeof p.then !== 'function') {
-      console.error(`Loader at index ${i} is not a Promise:`, p);
-    }
+  loaders.forEach(p => {
+      p.then(() => {
+          loadedCount++;
+          const progress = (loadedCount / totalSections) * 100;
+          progressBar.style.width = `${progress}%`;
+          if (loadedCount === totalSections) {
+              console.log("All sections loaded.");
+              // Additional actions after all sections are loaded
+              createStarfield(scene, { density: starDensity });
+              enableModelClick(camera, renderer);
+              animateScrollIndicator(); // Assume this starts some scrolling animation
+              fadeOutLoadingScreen();
+          }
+      }).catch(error => {
+          console.error("Error loading a section:", error);
+      });
   });
-  
-  Promise.all(loaders).then(() => {
-    console.log("All sections loaded.");
-    createStarfield(scene, { density: starDensity });
-    enableModelClick(camera, renderer);
-    animate();
-    onResize(camera, renderer);
+}
 
-    // Fade out and remove loading screen
-    loadingScreen.style.transition = 'opacity 0.5s ease';
-    loadingScreen.style.opacity = '0';
-    setTimeout(() => loadingScreen.remove(), 500);
-  }).catch(error => {
-    console.error("Error loading sections:", error);
-  });
+function fadeOutLoadingScreen() {
+  const loadingScreen = document.getElementById('loading-screen');
+  loadingScreen.style.transition = 'opacity 0.5s ease';
+  loadingScreen.style.opacity = '0';
+  setTimeout(() => loadingScreen.remove(), 500);
+}
 
 
   window.addEventListener('resize', () => {
@@ -190,6 +187,5 @@ function init() {
     }
 });
 
-}
 
 init();

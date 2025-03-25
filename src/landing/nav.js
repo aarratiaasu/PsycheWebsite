@@ -2,6 +2,9 @@ import { moveToSection } from './sectionTracking.js';
 
 
 export function animateScrollIndicator() {
+    const smi = document.getElementById("mouse-scroll-indicator");
+    smi.style.display = "block";
+    
     const scrollIndicator = document.querySelector(".mouse-scroll-indicator");
 
     if (!scrollIndicator) return;
@@ -20,7 +23,7 @@ export function animateScrollIndicator() {
     setTimeout(() => {
         scrollIndicator.classList.add("moved");
         scrollText.classList.add("fade-out");
-    }, 4000);
+    }, 3000);
 
     setTimeout(() => {
         scrollText.remove();

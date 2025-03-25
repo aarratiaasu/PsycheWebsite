@@ -1,6 +1,5 @@
 import { moveToSection } from './sectionTracking.js';
 
-
 export function animateScrollIndicator() {
     const scrollIndicator = document.querySelector(".mouse-scroll-indicator");
 
@@ -44,17 +43,74 @@ export function setupNavigation(sections) {
 
     sections.forEach((section, index) => {
         const listItem = document.createElement("li");
-        listItem.textContent = section.name;
+
+        // Was broken; must fix:
+        // titleWrapper.textContent.section.name -> titleWrapper.textContent = section.name;
+        // We'll leave the titleWrapper in place, although we won't fully use it:
+        const titleWrapper = document.createElement("div");
+        titleWrapper.textContent = section.name;
+
+        // This arrow only applies if subsections exist
+        const arrow = document.createElement("span");
+        arrow.textContent = "►";
+        arrow.style.cursor = "pointer";
+        arrow.style.marginLeft = "15px";
+        
         listItem.style.cursor = "pointer";
         listItem.style.padding = "10px";
         listItem.style.color = "black";
         listItem.style.borderBottom = "1px solid rgba(255,255,255,0.3)";
 
+        // Original line setting textContent:
+        listItem.textContent = section.name;
+
+        // Clicking the main listItem itself moves to that section
         listItem.addEventListener("click", () => {
             moveToSection(index, section.position);
             closeMenu();
         });
 
+        // If there are subsections, create the subList and add toggle logic
+        if (section.subsections && section.subsections.length > 0) {
+            // Re-append the arrow so it appears after setting listItem.textContent
+            listItem.appendChild(arrow);
+            // Create another <ul> for subsections, hidden by default
+            const subList = document.createElement("ul");
+            subList.style.listStyle = "none";
+            subList.style.marginLeft = "5px";
+            subList.style.display = "none"; // Hidden until arrow is clicked
+
+            section.subsections.forEach((sub) => {
+                const subItem = document.createElement("li");
+                subItem.textContent = sub.name;
+                subItem.style.cursor = "pointer";
+
+                subItem.addEventListener("click", (evt) => {
+                    evt.stopPropagation();  // Prevent the parent’s click
+                    moveToSection(index, sub.position);
+                    closeMenu();
+                });
+
+                subList.appendChild(subItem);
+            });
+
+            // Toggle show/hide when arrow is clicked
+            arrow.addEventListener("click", (evt) => {
+                evt.stopPropagation(); // Prevent also triggering listItem's click
+                if (subList.style.display === "none") {
+                    subList.style.display = "block";
+                    arrow.classList.toggle("arrow-rotated");
+                } else {
+                    subList.style.display = "none";
+                    arrow.classList.toggle("arrow-rotated");
+                }
+            });
+
+            // Append subList to the main listItem
+            listItem.appendChild(subList);
+        }
+
+        // Add each main listItem to the navigation list
         navList.appendChild(listItem);
     });
 
@@ -91,7 +147,6 @@ export function setupNavigation(sections) {
 
         overlay.classList.remove("active");
         iconWrapper.classList.remove("active");
-
         // Reverse rotate back
         iconWrapper.style.transition = "transform 0.5s ease-in-out";
         iconWrapper.style.transform = "rotate(0deg)";
@@ -106,11 +161,12 @@ export function setupNavigation(sections) {
     }
 
     function delayedClose() {
-        if (wasClicked) return; // Prevent hover delay from closing if explicitly clicked
+        // Prevent hover delay from closing if explicitly clicked
+        if (wasClicked) return; 
 
         hoverTimeout = setTimeout(() => {
             closeMenu();
-        }, 250); // Short delay before closing after leaving hover
+        }, 250); 
     }
 
     // Hover opens menu
@@ -125,10 +181,8 @@ export function setupNavigation(sections) {
     // Add delay before closing when hover is removed
     iconWrapper.addEventListener("mouseleave", delayedClose);
     menuWrapper.addEventListener("mouseleave", delayedClose);
-
     // Click toggles menu open/close
     iconWrapper.addEventListener("click", toggleMenu);
-
     // Click outside should close the menu
     overlay.addEventListener("click", closeMenu);
     document.addEventListener("click", (event) => {

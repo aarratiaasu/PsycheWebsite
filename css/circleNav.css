@@ -127,6 +127,13 @@
     transform: scale(1.05);
 }
 
+.arrow-rotated {
+    display: inline-block;
+    transform: rotate(90deg);
+    transition: transform 0.2s ease;
+  }
+  
+
 .opened-nav li:nth-child(9) {
     opacity: 1;
     transform: translateY(0) scale(1);

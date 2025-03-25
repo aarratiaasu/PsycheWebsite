@@ -17,7 +17,7 @@ import {
     addOpeningAnimations,
     addPulsingGlowEffect,
     createClosingAnimation
-} from '../../src/landing/viewportStyling';
+} from '../../src/landing/viewportStyling.js';
 
 // Keep track of the viewport DOM elements
 let viewportContainer = null;
@@ -51,7 +51,7 @@ export function showYearViewport() {
         boxShadow: '0 0 20px rgba(255, 255, 204, 0.6)',
         width: '80%',
         maxWidth: '1440px',
-        height: '80vh'
+        height: '95vh'
     });
     
     // Create header with title and close button

@@ -1,36 +1,67 @@
-import { createTextMesh } from './utils.js'
+/*
+ * File: section2.js
+ * Purpose: Loads and initializes 3D text on the Psyche model section within the Three.js scene.
+ * Author(s): 
+ * Date: 20 FEB 2025
+ * Version: 1.0
+ *
+ * Description:
+ * Displays a more focused view of the Psyche asteroid model with a welcome text
+ *
+ * Functions:
+ * - loadSection2(): Creates 3D text mesh to display a message
+ */
 
-export function loadSection2(scene, camera) {
-    const mainTextPosition = { x: 10, y: 38, z: -3 }; 
-    const mainTextRotation = { x: 0.20, y: 0, z: 0 };    
-    return new Promise((resolve, reject) => {
-        try {
-            const psycheText = 
-                "16 Psyche is a giant asteroid in our solar system!\n" +
-                "    Explore this page to learn about 16 Psyche,\n" +
-                "     its orbit, origin, and what makes it unique!\n";        
-            createTextMesh(psycheText, mainTextPosition, mainTextRotation, .75, scene);
-            resolve();
-        } catch (error) {
-            reject(error);
+import { triggerButton3D, clickableModels } from './utils.js';
+import { showPsycheNameViewport } from './psycheNameViewport.js'
+import * as THREE from 'three';
+
+export function loadSection2(scene, camera, sections, renderer) {
+  const section2Coords = sections[2]?.position;
+  if (!section2Coords) {
+    console.error("Section 2 position not found.");
+    return Promise.reject("Section 2 position not found.");
+  }
+
+  const buttonPos = {
+    x: section2Coords.x,
+    y: section2Coords.y + 6,
+    z: section2Coords.z - 12,
+  };
+
+  const rotation = { x: 0.2, y: 0, z: 0 };
+
+  return new Promise((resolve, reject) => {
+    try {
+      const { buttonMesh } = triggerButton3D(
+        "Origin Of A Name",
+        buttonPos,
+        rotation,
+        0.7,
+        scene,
+        () => {
+          showPsycheNameViewport();
+          console.log("Origin button clicked.");
         }
-    })
-    .then(() => {
-        console.log("Section 2 loaded successfully.");
-    })
-    .catch((error) => {
-        console.error("Error loading Section 2:", error);
-    });
+      );
+
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
+
+      window.addEventListener("mousemove", (event) => {
+        const rect = renderer.domElement.getBoundingClientRect();
+        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(clickableModels);
+
+        renderer.domElement.style.cursor = intersects.length > 0 ? "pointer" : "default";
+      });
+
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
 }
-
-
-
-/* 
-Psyche is a giant asteroid in our solar system, about three times farther from the Sun than Earth. 
-Research shows Psyche may be a mix of rock and metal, with metal making up 30-60% of its volume. 
-It has a bumpy, cratered surface and might be the leftover core of an early planet, 
-helping us learn how rocky planets like Earth formed. 
-
-It orbits the Sun between Mars and Jupiter, taking five years to go around once and spinning every four hours. 
-NASA’s Psyche mission will be the first to explore this mysterious asteroid up close!
-*/

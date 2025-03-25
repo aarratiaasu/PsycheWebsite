@@ -15,3 +15,18 @@
     }
 
 
+    Real-Device Testing will be conducted through the use of developer accessible devices, confirming real-world usability, proper interaction with touch gestures, scrolling behavior, and dynamic content adjustments. Testing will be conducted on developer owned devices to include:
+Desktop Monitors: A 27", 32", and ultrawide 49" screen
+Tablets: Samsung Tab S8 Ultra (large tablet) and iPad Pro 11"
+Laptops: 14" and 16" models
+Smartphones:
+iPhone Models: a variant of the iPhone Mini, iPhone Pro, and iPhone Pro Max
+Android Models: Samsung Galaxy S24 Ultra and S23 SE
+
+
+screen sizes 912 to 2560
+balance > psyche jr
+deep space > jennys
+deep space >surface 2
+next 7 ithink > location2
+Spacepic > games

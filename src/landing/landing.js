@@ -26,10 +26,11 @@ import { loadSection1 } from './section1.js';
 import { loadSection2 } from './section2.js';
 import { loadSection3, renderSection3 } from './section3.js';
 import { loadSection4, renderSection4 } from './section4.js';
-import { loadSection5 } from './section5.js';
-import { loadSection6 } from './section6.js';
-import { loadSection8, renderSection8 } from './section8.js';
+import { loadSection5, renderSection5 } from './section5.js';
+import { loadSection6, renderSection6 } from './section6.js';
 import { loadSection7 } from './section7.js';
+import { loadSection8, renderSection8 } from './section8.js';
+import { loadSection9, renderSection9 } from './section9.js';
 
 
 /*
@@ -37,11 +38,12 @@ import { loadSection7 } from './section7.js';
 * Sets up lighting, navigation, interactivity, and loads all scene sections.
 */
 function init() {
-  animateScrollIndicator();
+  const loadingScreen = document.getElementById('loading-screen');
+  const progressBar = document.getElementById('progress-bar');
 
   let scrollProgress = 1;
   let currentSection = 1;
-  
+
   const sections = [
     { name: "REFERENCES", position: { x: -150, y: -150, z: 13 } },
     { name: "WELCOME", position: { x: 0, y: 0, z: 13 } },
@@ -129,10 +131,12 @@ function init() {
     } else {
       renderer.render(scene, camera);
     }    
-    // need to implement rendering these sections ONLY if they are actively displayed
     renderSection3(camera,scene);
-    renderSection8(camera,scene);
     renderSection4(camera,scene);
+    renderSection5(camera,scene);
+    renderSection6(camera,scene);
+    renderSection8(camera,scene);
+    renderSection9(camera,scene);
   }
 
   // Enable text interactivity before loading models
@@ -142,29 +146,48 @@ function init() {
   const composer = loadSun(scene, renderer, camera, bloomStrength);
 
   // Load all scene sections and initialize background
-  Promise.all([
+  const loaders = [
     loadSection0(scene),
-    loadSection1(scene, camera),
-    loadSection2(scene, camera),
-    loadSection3(scene, camera, sections),
-    loadSection4(scene, camera, sections),
-    loadSection5(scene, camera),
+    loadSection1(scene, camera, sections),
+    loadSection2(scene, camera, sections, renderer),
+    loadSection3(scene, camera, sections,renderer),
+    loadSection4(scene, camera, sections, renderer),
+    loadSection5(scene, camera, sections, renderer),
     loadSection6(scene, camera, sections),
     loadSection7(scene, camera, sections),
-    loadSection8(scene, camera)
-  ]).then(() => {
-    console.log("All sections loaded.");
+    loadSection8(scene, camera),
+    loadSection9(scene, camera)
+  ];
 
-    createStarfield(scene, { density: starDensity });
+  let loadedCount = 0;
+  const totalSections = loaders.length;
 
-    //initBackgroundSwitcher(scene);
-    enableModelClick(camera, renderer);
-    animate();
-    onResize(camera, renderer);
-
-  }).catch(error => {
-    console.error("Error loading sections:", error);
+  loaders.forEach(p => {
+      p.then(() => {
+          loadedCount++;
+          const progress = (loadedCount / totalSections) * 100;
+          progressBar.style.width = `${progress}%`;
+          if (loadedCount === totalSections) {
+              console.log("All sections loaded.");
+              // Additional actions after all sections are loaded
+              createStarfield(scene, { density: starDensity });
+              enableModelClick(camera, renderer);
+              animateScrollIndicator(); // Assume this starts some scrolling animation
+              fadeOutLoadingScreen();
+          }
+      }).catch(error => {
+          console.error("Error loading a section:", error);
+      });
   });
+}
+
+function fadeOutLoadingScreen() {
+  const loadingScreen = document.getElementById('loading-screen');
+  loadingScreen.style.transition = 'opacity 0.5s ease';
+  loadingScreen.style.opacity = '0';
+  setTimeout(() => loadingScreen.remove(), 500);
+}
+
 
   window.addEventListener('resize', () => {
     if (camera && renderer) {
@@ -174,6 +197,5 @@ function init() {
     }
 });
 
-}
 
 init();

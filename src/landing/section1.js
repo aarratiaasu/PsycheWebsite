@@ -1,6 +1,6 @@
 /*
  * File: section1.js
- * Purpose: Loads and initializes the "Year on Psyche" section within the Three.js scene.
+ * Purpose: Loads and initializes the "Welcom/Year On Psyche" section within the Three.js scene.
  * Author(s): 
  * Date: 20 FEB 2025
  * Version: 1.0
@@ -15,39 +15,59 @@
  *   and sets up the navigation menu.
  */
 
-import { createTextMesh, loadModel, makeModelClickable, } from './utils.js';
+import { createTextMesh, loadModel, makeModelClickable } from './utils.js';
 import { moveToSection } from './sectionTracking.js';
+import { gsap } from 'gsap';
 
 let asteroidModel = null;
 const psycheModelPosition = { x: 20, y: 16, z: -45 };
 
-/*
- * Loads and initializes the "Year on Psyche" section in the Three.js scene.
- * Adds title text, loads an asteroid model, and creates an interactive menu.
- * The asteroid model is made clickable to trigger section navigation.
- *
- * Parameters:
- * - scene: The Three.js scene where the section elements will be added.
- * - camera: The camera used for user interactions and view manipulation.
- *
- * Returns:
- * - Promise: Resolves when the asteroid model is loaded and clickable.
- */
-export function loadSection1(scene, camera) {
-  const mainTextPosition = { x: -12, y: 3, z: 0 };
+export function loadSection1(scene, camera, sections) {
+  const section1Coords = sections[1]?.position;
+  if (!section1Coords) {
+    console.error("Section 1 position not found.");
+    return Promise.reject("Section 1 position not found.");
+  }
+
+  const mainTextPosition = {
+    x: section1Coords.x - 12,
+    y: section1Coords.y + 3,
+    z: section1Coords.z - 13
+  };
+
   const mainTextRotation = { x: 0, y: Math.PI / 12, z: 0 };
 
-  return new Promise((resolve, reject) => { 
-    // Add section title text
-    createTextMesh("YEAR ON PSYCHE", mainTextPosition, mainTextRotation, 1.5, scene);
+  const psycheTextPosition = {
+    x: section1Coords.x - 11,
+    y: section1Coords.y - 2,
+    z: section1Coords.z - 13
+  };
 
-    // Load asteroid model with position, scale, and animation
+  const psycheTextRotation = { x: 0, y: Math.PI / 12, z: 0 };
+
+  return new Promise(async (resolve, reject) => {
+    createTextMesh("YEAR ON PSYCHE", mainTextPosition, mainTextRotation, 1.5, scene);
+  
+    const psycheText = 
+      "16 Psyche is a giant asteroid in our solar system!\n" +
+      "    Explore this site to learn about 16 Psyche,\n" +
+      "     its origin, orbit, and what makes it unique!\n";
+  
+    const textMesh = await createTextMesh(psycheText, psycheTextPosition, psycheTextRotation, 0.5, scene);
+    textMesh.material.uniforms.opacity.value = 0;
+  
+    gsap.to(textMesh.material.uniforms.opacity, {
+      value: 1,
+      duration: 2.5,
+      delay: 4
+    });  
+
     loadModel(
-      "asteroid",                     
-      "/res/models/psyche_new.glb",     // Model path
-      { x: 80, y: 60, z: 20 },        // Initial position
-      6,                              // Scale factor
-      { x: 0, y: 0, z: 0 },           // Initial rotation
+      "asteroid",
+      "/res/models/psyche_new.glb",
+      { x: 80, y: 60, z: 20 },
+      6,
+      { x: 0, y: 0, z: 0 },
       {
         position: { x: 20, y: 16, z: -45, duration: 3, ease: "power2.out" },
         rotation: { y: -6.28319, z: 6.28319, duration: 45, ease: "linear", repeat: -1 }
@@ -55,18 +75,14 @@ export function loadSection1(scene, camera) {
       scene, 
       (model) => { 
         asteroidModel = model;
-
-        // Make the asteroid clickable to move to Psyche section
         makeModelClickable(asteroidModel, () => {
           console.log("asteroid clicked");
           moveToSection(2, psycheModelPosition);
         });
-
         resolve();
       }, camera
     );
 
-    // Timeout if model fails to load within 10 seconds
     setTimeout(() => reject("Model load timeout"), 10000); 
   })
   .then(() => {

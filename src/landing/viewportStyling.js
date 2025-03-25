@@ -16,7 +16,7 @@ export function applyViewportContainerStyles(container, options = {}) {
     const {
         backgroundColor = 'rgba(0, 0, 0, 0.125)',
         borderColor = '#ffffcc',
-        borderWidth = '0px',
+        borderWidth = '2px',
         borderRadius = '10px',
         boxShadow = '0 0 25px rgba(255, 255, 204, 0.6)',
         zIndex = '900'

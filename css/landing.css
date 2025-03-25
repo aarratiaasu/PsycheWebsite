@@ -55,15 +55,15 @@ canvas {
     left: 50%;
     transform: translate(-50%, -50%) scale(var(--dynamic-scale, 4)); 
     text-align: center;
-    z-index: 1000;
+    z-index: 990;
     animation: fadeIn 1s ease-in-out;
     transition: transform 1.5s ease-in-out; 
+    display: none;
 }
 
 .mouse-scroll-indicator.moved {
     /* transform: translate(calc(50vw - 100px), calc(50vh - 130px)) scale(1);  */
     transform: translate(45vw, 25vh) scale(1); 
-
 }
 
 .mouse {

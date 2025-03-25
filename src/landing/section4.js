@@ -5,9 +5,8 @@
  * that appears on top of the Three.js scene
  */
 import * as THREE from 'three';
-import gsap from 'gsap';
 import { getCurrentSection } from './sectionTracking.js';
-import { makeModelClickable } from './utils.js';
+import { triggerButton3D, clickableModels } from './utils.js';
 import {
     applyViewportContainerStyles,
     applyHeaderStyles,
@@ -74,7 +73,7 @@ export function showYearViewport() {
     });
     
     titleElement = document.createElement('h2');
-    titleElement.textContent = 'Year on Psyche';  // Changed from 'Life on Psyche' to 'Year on Psyche'
+    titleElement.textContent = 'Life on Psyche';  
     applyTitleStyles(titleElement);
     
     closeButton = document.createElement('button');
@@ -198,89 +197,57 @@ export function destroyYearViewport() {
  * @param {THREE.Camera} camera - The camera
  * @param {Array} sections - Array of section data
  */
-export function loadSection4(scene, camera, sections) {
-    // Create a button for the year viewport
-    const buttonGeometry = new THREE.BoxGeometry(40, 20, 5);
-    const buttonMaterial = new THREE.MeshBasicMaterial({
-        color: 0xf9a000, // Match year viewport color
-        transparent: false
-    });
-    yearButton = new THREE.Mesh(buttonGeometry, buttonMaterial);
-    yearButton.position.set(40, 60, -200); // Position from sections array
-    scene.add(yearButton);
-    
-    // Create a text label for the button
-    const canvas = document.createElement('canvas');
-    canvas.width = 256;
-    canvas.height = 128;
-    const context = canvas.getContext('2d');
-    context.fillStyle = '#f9a000'; // Match year viewport color
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    context.font = 'bold 24px Arial';
-    context.fillStyle = 'white';
-    context.textAlign = 'center';
-    context.textBaseline = 'middle';
-    context.fillText('Year on Psyche', canvas.width / 2, canvas.height / 2);
-    
-    const texture = new THREE.CanvasTexture(canvas);
-    const labelMaterial = new THREE.MeshBasicMaterial({
-        map: texture,
-        transparent: true
-    });
-    const labelGeometry = new THREE.PlaneGeometry(50, 25);
-    yearLabel = new THREE.Mesh(labelGeometry, labelMaterial);
-    yearLabel.position.set(40, 60, -197); // Slightly in front of the button
-    scene.add(yearLabel);
-    
-    // Add lights to enhance the section
-    const pointLight = new THREE.PointLight(0xffffff, 2, 200);
-    pointLight.position.set(40, 60, -190);
-    scene.add(pointLight);
+export function loadSection4(scene, camera, sections, renderer) {
+  const section4Coords = sections[4]?.position;
+  if (!section4Coords) {
+    console.error("Section 4 position not found.");
+    return Promise.reject("Section 4 position not found.");
+  }
 
-    // Make the button clickable
-    makeModelClickable(yearButton, () => {
-        showYearViewport();
-    });
-    
-    // Make the label clickable too
-    makeModelClickable(yearLabel, () => {
-        showYearViewport();
-    });
+  const buttonPos = {
+    x: section4Coords.x,
+    y: section4Coords.y + 6,
+    z: section4Coords.z - 12,
+  };
 
-    // Add hover effect to the button
-    let isHovered = false;
-    yearButton.userData.onPointerOver = () => {
-        if (!isHovered) {
-            gsap.to(yearButton.material.color, {
-                r: 0.976,  // #f9a000 darker
-                g: 0.627,
-                b: 0.0,
-                duration: 0.3
-            });
-            isHovered = true;
+  const rotation = { x: 0.2, y: 0, z: 0 };
+
+  return new Promise((resolve, reject) => {
+    try {
+      const { buttonMesh } = triggerButton3D(
+        "Life on Psyche",
+        buttonPos,
+        rotation,
+        0.7,
+        scene,
+        () => {
+          showYearViewport();
+          console.log("Life button clicked.");
         }
-    };
+      );
 
-    yearButton.userData.onPointerOut = () => {
-        if (isHovered) {
-            gsap.to(yearButton.material.color, {
-                r: 0.976,  // #f9a000
-                g: 0.627,
-                b: 0.0,
-                duration: 0.3
-            });
-            isHovered = false;
-        }
-    };
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
 
-    // Mark these elements as part of section 4
-    yearButton.userData.section4Element = true;
-    yearLabel.userData.section4Element = true;
-    
-    // Initially hide the button
-    yearButton.visible = false;
-    yearLabel.visible = false;
+      window.addEventListener("mousemove", (event) => {
+        const rect = renderer.domElement.getBoundingClientRect();
+        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(clickableModels);
+
+        renderer.domElement.style.cursor = intersects.length > 0 ? "pointer" : "default";
+      });
+
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
 }
+
+
 
 /**
  * Renders the Year on Psyche section
@@ -297,8 +264,7 @@ export function renderSection4(camera, scene) {
     if (yearButton.visible !== isVisible) {
         yearButton.visible = isVisible;
         yearLabel.visible = isVisible;
-        
-        // Also show/hide any other elements in this section
+
         for (let i = 0; i < scene.children.length; i++) {
             const child = scene.children[i];
             if (child.userData && child.userData.section4Element) {
@@ -306,17 +272,5 @@ export function renderSection4(camera, scene) {
             }
         }
     }
-
-    // Auto-show viewport when entering section 4
-    if (isVisible && !hasShownViewport) {
-        // Add a small delay to ensure the section transition is complete
-        setTimeout(() => {
-            showYearViewport();
-            hasShownViewport = true;
-        }, 1000);
-    } else if (!isVisible && hasShownViewport) {
-        // Hide viewport when leaving section 4
-        hideYearViewport();
-        hasShownViewport = false;
-    }
 }
+

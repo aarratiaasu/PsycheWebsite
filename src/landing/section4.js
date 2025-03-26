@@ -206,7 +206,7 @@ export function loadSection4(scene, camera, sections, renderer) {
 
   const buttonPos = {
     x: section4Coords.x,
-    y: section4Coords.y + 6,
+    y: section4Coords.y + 2,
     z: section4Coords.z - 12,
   };
 

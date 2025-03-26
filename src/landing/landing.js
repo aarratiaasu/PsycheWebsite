@@ -147,7 +147,7 @@ function init() {
 
   // Load all scene sections and initialize background
   const loaders = [
-    loadSection0(scene),
+    loadSection0(scene, camera, sections),
     loadSection1(scene, camera, sections),
     loadSection2(scene, camera, sections, renderer),
     loadSection3(scene, camera, sections,renderer),

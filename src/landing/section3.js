@@ -64,5 +64,5 @@ export function loadSection3(scene, camera, sections, renderer) {
     const currentSection = getCurrentSection();
     const isVisible = currentSection === 3;
   
-    // You can still toggle visibility for any section3-specific objects here 
+    // toggle visibility for any section3-specific objects here 
   }

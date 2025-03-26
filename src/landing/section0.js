@@ -15,12 +15,21 @@
 
 import { createTextMesh, loadModel, createMenu, loadBadge } from './utils.js';
 
-export function loadSection0(scene) {
+export function loadSection0(scene, camera, sections) {
   return new Promise(resolve => {
+    const refCoords = sections[0]?.position;
+
+    const textMeshPosition = {
+      x: refCoords.x - 12,
+      y: refCoords.y + 6, 
+      z: refCoords.z - 13
+    }
+    console.log("TMP", textMeshPosition);
+
     const mainTextPosition = { x: -12, y: 206, z: -73 };
     const mainTextRotation = { x: 0, y: 0.1, z: 0 };
 
-    createTextMesh("REFERENCES", mainTextPosition, mainTextRotation, 1, scene);
+    createTextMesh("REFERENCES", textMeshPosition, mainTextRotation, 1, scene);
 
     const menuItems = [
       { text: "Development Team", onClick: () => console.log("DevTeam Clicked") },
@@ -29,7 +38,7 @@ export function loadSection0(scene) {
       { text: "Images", onClick: () => console.log("Surface Clicked") }
     ];
 
-    createMenu(menuItems, mainTextPosition, mainTextRotation, scene);
+    createMenu(menuItems, textMeshPosition, mainTextRotation, scene);
     loadBadge(scene);
 
     resolve(); // Done

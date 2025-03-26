@@ -21,9 +21,9 @@ let resizeHandler;
  */
 function calculateResponsiveValues() {
     const screenWidth = window.innerWidth;
-    let posX = 40;
-    let posY = -60;
-    let posZ = -360;
+    let posX ;
+    let posY ;
+    let posZ ;
     let buttonScale = 1;
     let labelScale = 1;
     
@@ -74,9 +74,9 @@ export function loadSection3(scene, camera, sections, renderer) {
       const { posX, posY, posZ, buttonScale, labelScale } = calculateResponsiveValues();
 
       const buttonPos = {
-          x: posX,
-          y: posY + 2,
-          z: posZ,
+        x: section3Coords.x,
+        y: section3Coords.y + 2,
+        z: section3Coords.z - 12,
       };
 
       const rotation = { x: 0.2, y: 0, z: 0 };

@@ -75,7 +75,7 @@ export function showPsycheNameViewport() {
     
     // Create iframe to load the psycheName content
     iframe = document.createElement('iframe');
-    iframe.src = 'public/psycheName/public/name/psycheName.html';
+    iframe.src = '/psycheName/public/name/psycheName.html';
     iframe.style.width = '100%';
     iframe.style.height = '100%';
     iframe.style.border = 'none';
@@ -134,10 +134,10 @@ export function hidePsycheNameViewport() {
         ease: "power2.in",
         onComplete: () => {
             destroyPsycheNameViewport();
-            document.body.classList.add("overlay-open");
         }
     });
 }
+
 
 
 /**

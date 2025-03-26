@@ -55,15 +55,15 @@ canvas {
     left: 50%;
     transform: translate(-50%, -50%) scale(var(--dynamic-scale, 4)); 
     text-align: center;
-    z-index: 1000;
+    z-index: 990;
     animation: fadeIn 1s ease-in-out;
     transition: transform 1.5s ease-in-out; 
+    display: none;
 }
 
 .mouse-scroll-indicator.moved {
     /* transform: translate(calc(50vw - 100px), calc(50vh - 130px)) scale(1);  */
     transform: translate(45vw, 25vh) scale(1); 
-
 }
 
 .mouse {
@@ -158,3 +158,25 @@ canvas {
 #scroll-text.fade-out {
     opacity: 0;
 }
+
+.switch-view-button {
+    font-family: Arial, Helvetica, sans-serif;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 999;
+    background-color: #333; 
+    color: orange; 
+    border: none;
+    padding: 10px 20px; 
+    border-radius: 15px; 
+    box-shadow: 0 0 5px 2px #007bff; 
+    cursor: pointer; 
+    transition: background-color 0.3s, box-shadow 0.3s; 
+  }
+  
+  .switch-view-button:hover {
+    background-color: #555; 
+    box-shadow: 0 0 8px 3px #007bff;
+  }
+  

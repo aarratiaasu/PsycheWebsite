@@ -58,7 +58,7 @@ export function loadSection1(scene, camera, sections) {
   
     gsap.to(textMesh.material.uniforms.opacity, {
       value: 1,
-      duration: 1.5,
+      duration: 2.5,
       delay: 4
     });  
 

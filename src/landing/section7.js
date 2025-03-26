@@ -18,19 +18,31 @@
 import { createMenuItem } from './utils.js';
 
 export function loadSection7(scene, camera, sections) {
-    const sevenCoords = sections[7]?.position;
-    if (!sevenCoords) {
-        console.error("Error: Section 7 position not found.");
-        return Promise.reject("Section 7 position not found.");
-    }
+    return new Promise((resolve, reject) => {
+        const sevenCoords = sections[7]?.position;
+        if (!sevenCoords) {
+            console.error("Error: Section 7 position not found.");
+            reject("Section 7 position not found.");
+            return;
+        }
 
-    const triggerCoords = {
-        x: sevenCoords.x + 5,
-        y: sevenCoords.y + 10,
-        z: sevenCoords.z - 20
-    };
+        const triggerCoords = {
+            x: sevenCoords.x + 5,
+            y: sevenCoords.y + 10,
+            z: sevenCoords.z - 20
+        };
 
-    scene.add(createMenuItem("Trigger Text", triggerCoords, scene, animateIframe, 1.5));
+        try {
+            // Assuming createMenuItem is a synchronous function that adds items to the scene
+            // You may need to adjust this if createMenuItem is asynchronous
+            const menuItem = createMenuItem("Trigger Text", triggerCoords, scene, animateIframe, 1.5);
+            scene.add(menuItem);
+            resolve(); // Resolve the promise after adding the menu item
+        } catch (error) {
+            console.error("Error adding menu item in Section 7:", error);
+            reject(error); // Reject the promise if an error occurs
+        }
+    });
 }
 
 function animateIframe() {

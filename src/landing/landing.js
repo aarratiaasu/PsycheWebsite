@@ -38,10 +38,12 @@ import { loadSection9, renderSection9 } from './section9.js';
 * Sets up lighting, navigation, interactivity, and loads all scene sections.
 */
 function init() {
-  animateScrollIndicator();
+  const loadingScreen = document.getElementById('loading-screen');
+  const progressBar = document.getElementById('progress-bar');
 
   let scrollProgress = 1;
   let currentSection = 1;
+
   const sections = [
     { name: "REFERENCES", position: { x: -150, y: -150, z: 13 } },
     { name: "WELCOME", position: { x: 0, y: 0, z: 13 } },
@@ -49,13 +51,23 @@ function init() {
     { name: "PSYCHE Jr", position: { x: -150, y: 150, z: 13 } },
     { name: "COSMIC COMPARISON", position: { x: 0, y: 300, z: 13 } },
     { name: "MISSION", position: { x: 150, y: 150, z: 13 } },
-    { name: "GAMES", position: { x: 300, y: 0, z: 13 } },
+    {
+      name: "GAMES",
+      position: { x: 300, y: 0, z: 13 },
+      subsections: [
+        { name: "Temperature Control", position: { x: 300, y: 0, z: 13 } },
+        { name: "Balance Game",        position: { x: 300, y: 0, z: 13 } },
+        { name: "Escape Velocity",     position: { x: 300, y: 0, z: 13 } },
+        { name: "SpacePic",            position: { x: 300, y: 0, z: 13 } }
+      ]
+    },
     { name: "SEVEN", position: { x: 150, y: -150, z: 13 } },
-    { name: "IDK", position: { x: 0, y: -300, z: 13 } } 
-];
+    { name: "IDK", position: { x: 0, y: -300, z: 13 } }
+  ];
+  
 
   setupNavigation(sections);
-
+  
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
 
@@ -134,30 +146,49 @@ function init() {
   const composer = loadSun(scene, renderer, camera, bloomStrength);
 
   // Load all scene sections and initialize background
-  Promise.all([
-    loadSection0(scene),
+  const loaders = [
+    loadSection0(scene, camera, sections),
     loadSection1(scene, camera, sections),
     loadSection2(scene, camera, sections, renderer),
-    loadSection3(scene, camera, sections, renderer),
+    loadSection3(scene, camera, sections,renderer),
     loadSection4(scene, camera, sections, renderer),
     loadSection5(scene, camera, sections, renderer),
     loadSection6(scene, camera, sections, renderer),
-    loadSection7(scene, camera, sections),
+    loadSection7(scene, camera, sections, renderer),
     loadSection8(scene, camera, sections, renderer),
-    loadSection9(scene, camera)
-  ]).then(() => {
-    console.log("All sections loaded.");
+    loadSection9(scene, camera, sections, renderer)
+  ];
 
-    createStarfield(scene, { density: starDensity });
+  let loadedCount = 0;
+  const totalSections = loaders.length;
 
-    //initBackgroundSwitcher(scene);
-    enableModelClick(camera, renderer);
-    animate();
-    onResize(camera, renderer);
-
-  }).catch(error => {
-    console.error("Error loading sections:", error);
+  loaders.forEach(p => {
+      p.then(() => {
+          loadedCount++;
+          const progress = (loadedCount / totalSections) * 100;
+          progressBar.style.width = `${progress}%`;
+          if (loadedCount === totalSections) {
+              console.log("All sections loaded.");
+              // Additional actions after all sections are loaded
+              createStarfield(scene, { density: starDensity });
+              enableModelClick(camera, renderer);
+              animateScrollIndicator(); 
+              animate();
+              fadeOutLoadingScreen();
+          }
+      }).catch(error => {
+          console.error("Error loading a section:", error);
+      });
   });
+}
+
+function fadeOutLoadingScreen() {
+  const loadingScreen = document.getElementById('loading-screen');
+  loadingScreen.style.transition = 'opacity 0.5s ease';
+  loadingScreen.style.opacity = '0';
+  setTimeout(() => loadingScreen.remove(), 500);
+}
+
 
   window.addEventListener('resize', () => {
     if (camera && renderer) {
@@ -167,6 +198,5 @@ function init() {
     }
 });
 
-}
 
 init();

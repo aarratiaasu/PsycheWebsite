@@ -12,7 +12,7 @@
  * - loadSection2(): Creates 3D text mesh to display a message
  */
 
-import { createTextMesh, triggerButton3D, clickableModels, applyGlowEffect } from './utils.js';
+import { triggerButton3D, clickableModels } from './utils.js';
 import { showPsycheNameViewport } from './psycheNameViewport.js'
 import * as THREE from 'three';
 
@@ -44,11 +44,6 @@ export function loadSection2(scene, camera, sections, renderer) {
           console.log("Origin button clicked.");
         }
       );
-
-      applyGlowEffect(buttonMesh, {
-        color: '#ff9900',
-        intensity: 2.0
-      });
 
       const raycaster = new THREE.Raycaster();
       const mouse = new THREE.Vector2();

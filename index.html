@@ -56,10 +56,21 @@
       <div class="cn-wrapper" id="cn-wrapper"></div>
       <div id="cn-overlay" class="cn-overlay"></div>
     </nav>
+
+    <button id="switch-to-html" class="switch-view-button"      
+      style="position: absolute; top: 10px; left: 10px; z-index: 999;">
+      2D VIEW
+    </button>
   </main>
 
   <footer></footer>
-
+  <script>
+    const switchButton = document.getElementById('switch-to-html');
+    switchButton.addEventListener('click', () => {
+      window.location.href = "/website/index.html"; 
+    });
+  </script>
+  
   <script type="module" src="/src/landing/landing.js"></script>
 </body>
 </html>

@@ -1,21 +1,20 @@
 /*
  * File: section7.js
- * Purpose: Loads and initializes the "Welcom/Year On Psyche" section within the Three.js scene.
+ * Purpose: Loads and initializes the "Surface of Psyche" section within the Three.js scene.
  * Author(s): 
  * Date: 20 FEB 2025
- * Version: 1.0
+ * Version: 1.1
  *
  * Description:
- * This script sets up the "Year on Psyche" section by adding title text, loading the asteroid model,
- * and creating an interactive menu. It enables interactivity on the asteroid model and includes
- * section navigation using the moveToSection function.
+ * This script sets up the "Surface of Psyche" section by adding title text and creating an
+ * interactive menu that displays the surface2.html content in a styled viewport.
  *
  * Functions:
- * - loadSection1(): Loads the "Year on Psyche" section, adds a rotating asteroid model,
- *   and sets up the navigation menu.
+ * - loadSection7(): Loads the "Surface of Psyche" section and sets up the navigation menu.
  */
 
 import { createMenuItem } from './utils.js';
+import { showSurface2Viewport } from '../../public/PsycheJR/surface2Viewport.js';
 
 export function loadSection7(scene, camera, sections) {
     const sevenCoords = sections[7]?.position;
@@ -30,33 +29,5 @@ export function loadSection7(scene, camera, sections) {
         z: sevenCoords.z - 20
     };
 
-    scene.add(createMenuItem("Trigger Text", triggerCoords, scene, animateIframe, 1.5));
+    scene.add(createMenuItem("Surface of Psyche", triggerCoords, scene, showSurface2Viewport, 1.5));
 }
-
-function animateIframe() {
-    let iframe = document.getElementById("infoFrame");
-
-    if (!iframe) {
-        iframe = document.createElement("iframe");
-        iframe.id = "infoFrame";
-        iframe.src = './TEST_IFRAME_SECTION7/index.html';  
-        iframe.style.position = "fixed";
-        iframe.style.bottom = "-100%";
-        iframe.style.left = "50%";
-        iframe.style.transform = "translateX(-50%)";
-        iframe.style.width = "80%";
-        iframe.style.height = "80%";
-        iframe.style.border = "none";
-        iframe.style.borderRadius = "12px";  
-        iframe.style.boxShadow = "0px 0px 10px rgba(249, 159, 0, 0.6)";  
-        iframe.style.transition = "bottom 0.5s ease-out, opacity 0.5s ease-out"; 
-        iframe.style.opacity = "0";
-        document.body.appendChild(iframe);
-    }
-
-    setTimeout(() => {
-        iframe.style.bottom = "10%";
-        iframe.style.opacity = "1";
-    }, 10);
-}
-

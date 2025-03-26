@@ -50,8 +50,8 @@ function init() {
     { name: "COSMIC COMPARISON", position: { x: 0, y: 300, z: 13 } },
     { name: "MISSION", position: { x: 150, y: 150, z: 13 } },
     { name: "GAMES", position: { x: 300, y: 0, z: 13 } },
-    { name: "SEVEN", position: { x: 150, y: -150, z: 13 } },
-    { name: "IDK", position: { x: 0, y: -300, z: 13 } } 
+    { name: "SURFACE OF PSYCHE", position: { x: 150, y: -150, z: 13 } },
+    { name: "LOCATION OF PSYCHE", position: { x: 0, y: -300, z: 13 } } 
 ];
 
   setupNavigation(sections);

@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import { getCurrentSection } from './sectionTracking.js';
 import { triggerButton3D, clickableModels, applyGlowEffect } from './utils.js';
 import gsap from 'gsap';
-import { showSpacePicViewport, hideSpacePicViewport } from '../../public/games/viewportspacepic.js';
+import { showLocation2Viewport, hideLocation2Viewport } from '../../public/PsycheJR/location2Viewport.js';
 
 //let section8Elements = [];
 //let spacePicButton;
@@ -116,14 +116,14 @@ export function loadSection8(scene, camera, sections, renderer) {
     return new Promise((resolve, reject) => {
       try {
         const { buttonMesh } = triggerButton3D(
-          "Capture a Cosmic Picture!",
+          "Explore Psyche's Location!",
           buttonPos,
           rotation,
           0.7,
           scene,
           () => {
-            showSpacePicViewport();
-            console.log("Pc button clicked.");
+            showLocation2Viewport();
+            console.log("Location button clicked.");
           }
         );
     
@@ -176,12 +176,12 @@ export function renderSection8(camera, scene) {
     // if (isVisible && !hasShownViewport) {
     //     // Add a small delay to ensure the section transition is complete
     //     setTimeout(() => {
-    //         showSpacePicViewport();
+    //         showLocation2Viewport();
     //         hasShownViewport = true;
     //     }, 500);
     // } else if (!isVisible && hasShownViewport) {
     //     // Hide viewport when leaving section 8
-    //     hideSpacePicViewport();
+    //     hideLocation2Viewport();
     //     hasShownViewport = false;
     // }
 }

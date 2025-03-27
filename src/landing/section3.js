@@ -82,7 +82,7 @@ export function loadSection3(scene, camera, sections, renderer) {
       const rotation = { x: 0.2, y: 0, z: 0 };
 
       try {
-          const buttonMesh = triggerButton3D(
+          triggerButton3D(
               "Explore the Psyche Jr Kids Experience",
               buttonPos,
               rotation,
@@ -92,25 +92,37 @@ export function loadSection3(scene, camera, sections, renderer) {
                   showKidsViewport();
                   console.log("Psyche Jr button clicked.");
               }
-          );
+          ).then(({ textMesh, buttonMesh }) => {
+              // Store original material properties to restore when not hovering
+              const originalEmissive = buttonMesh.material.emissive.clone();
+              const originalEmissiveIntensity = buttonMesh.material.emissiveIntensity;
+              
+              const raycaster = new THREE.Raycaster();
+              const mouse = new THREE.Vector2();
 
-          applyGlowEffect(buttonMesh, {
-              color: '#ff9900',
-              intensity: 2.0
-          });
+              window.addEventListener("mousemove", (event) => {
+                  const rect = renderer.domElement.getBoundingClientRect();
+                  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
-          const raycaster = new THREE.Raycaster();
-          const mouse = new THREE.Vector2();
+                  raycaster.setFromCamera(mouse, camera);
+                  const intersects = raycaster.intersectObjects([buttonMesh]);
 
-          window.addEventListener("mousemove", (event) => {
-              const rect = renderer.domElement.getBoundingClientRect();
-              mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-              mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-              raycaster.setFromCamera(mouse, camera);
-              const intersects = raycaster.intersectObjects([buttonMesh]);
-
-              renderer.domElement.style.cursor = intersects.length > 0 ? "pointer" : "default";
+                  if (intersects.length > 0) {
+                      // Apply glow effect on hover
+                      applyGlowEffect(buttonMesh, {
+                          color: '#ff9900',
+                          intensity: 2.0
+                      });
+                      renderer.domElement.style.cursor = "pointer";
+                  } else {
+                      // Remove glow effect when not hovering
+                      buttonMesh.material.emissive = originalEmissive;
+                      buttonMesh.material.emissiveIntensity = originalEmissiveIntensity;
+                      buttonMesh.material.needsUpdate = true;
+                      renderer.domElement.style.cursor = "default";
+                  }
+              });
           });
 
           resolve(); // Resolve the promise when setup is complete

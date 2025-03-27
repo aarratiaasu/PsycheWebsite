@@ -215,7 +215,7 @@ export function loadSection4(scene, camera, sections, renderer) {
   return new Promise((resolve, reject) => {
     try {
       const { buttonMesh } = triggerButton3D(
-        "Explore the Cosmic Comparison between Earth and Psyche",
+        "Explore the Cosmic Comparison\nbetween Earth and Psyche",
         buttonPos,
         rotation,
         0.7,

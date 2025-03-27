@@ -2,7 +2,7 @@
  * Section 5 - Psyche Website Viewport
  */
 
-import { triggerButton3D, clickableModels } from './utils.js';
+import { triggerButton3D, clickableModels, loadModel } from './utils.js';
 import { showWebsiteViewport } from './websiteViewport.js';
 import * as THREE from 'three';
 
@@ -21,11 +21,30 @@ export function loadSection5(scene, camera, sections, renderer) {
       y: section5Coords.y + 2,
       z: section5Coords.z - 12,
     };
+
+    const modelPosition = {
+      x: section5Coords.x,
+      y: section5Coords.y - 3,
+      z: section5Coords.z - 20,
+    };
     
     const rotation = { x: 0.2, y: 0, z: 0 };
-    
+    const objRotation = { x: 0.2, y: 0, z: 0 };
+
     return new Promise((resolve, reject) => {
       try {
+        loadModel(
+          "probe",
+          "/res/models/nasaLogo.glb",
+          modelPosition, // position
+          .7, // scale
+          objRotation, // rotation
+          null, // animation
+          scene, // scene
+          () => {  // callback fx
+            console.log("loaded model");
+          });
+        
         const { buttonMesh } = triggerButton3D(
           "Explore the Mission Website",
           buttonPos,

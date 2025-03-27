@@ -31,5 +31,7 @@ export function loadSection7(scene, camera, sections) {
             z: sevenCoords.z - 20
         };
 
-    scene.add(createMenuItem("Surface of Psyche", triggerCoords, scene, showSurface2Viewport, 1.5));
+        scene.add(createMenuItem("Surface of Psyche", triggerCoords, scene, showSurface2Viewport, 1.5));
+        resolve();
+    });
 }

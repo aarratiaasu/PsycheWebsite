@@ -1,5 +1,17 @@
 /**
- * Section 8 - Space Pic
+ * File: section8.js
+ * Purpose: Loads and initializes the "Psyche's Location" section within the Three.js scene.
+ * Author(s): 
+ * Date: 20 FEB 2025
+ * Version: 1.0
+ *
+ * Description:
+ * This script sets up the "Psyche's Location" section by adding an interactive button
+ * that displays the location2.html content in a styled viewport.
+ *
+ * Functions:
+ * - loadSection8(): Loads the "Psyche's Location" section and sets up the interactive button.
+ * - renderSection8(): Handles visibility of section elements based on current section.
  */
 
 import * as THREE from 'three';
@@ -65,7 +77,11 @@ export function loadSection8(scene, camera, sections, renderer) {
     });
 }
 
+// Array to store section 8 elements for visibility control
+const section8Elements = [];
+
 export function renderSection8(camera, scene) {
+    // Skip if no elements to render
     if (section8Elements.length === 0) return;
 
     const currentSection = getCurrentSection();
@@ -78,17 +94,19 @@ export function renderSection8(camera, scene) {
         }
     });
 
-    // Removing for now
-    // // Auto-show viewport when entering section 8
-    // if (isVisible && !hasShownViewport) {
-    //     // Add a small delay to ensure the section transition is complete
-    //     setTimeout(() => {
-    //         showLocation2Viewport();
-    //         hasShownViewport = true;
-    //     }, 500);
-    // } else if (!isVisible && hasShownViewport) {
-    //     // Hide viewport when leaving section 8
-    //     hideLocation2Viewport();
-    //     hasShownViewport = false;
-    // }
+    // Auto-show viewport functionality is currently disabled
+    // Uncomment below to re-enable automatic viewport display when entering section 8
+    /*
+    if (isVisible && !hasShownViewport) {
+        // Add a small delay to ensure the section transition is complete
+        setTimeout(() => {
+            showLocation2Viewport();
+            hasShownViewport = true;
+        }, 500);
+    } else if (!isVisible && hasShownViewport) {
+        // Hide viewport when leaving section 8
+        hideLocation2Viewport();
+        hasShownViewport = false;
+    }
+    */
 }

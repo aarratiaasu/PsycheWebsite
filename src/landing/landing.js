@@ -31,6 +31,7 @@ import { loadSection6, renderSection6 } from './section6.js';
 import { loadSection7 } from './section7.js';
 import { loadSection8, renderSection8 } from './section8.js';
 import { loadSection9, renderSection9 } from './section9.js';
+import { initGalleryFilters } from '../gallery-filters.js'; // Import the new function
 
 
 /*
@@ -175,6 +176,7 @@ function init() {
               animateScrollIndicator(); 
               animate();
               fadeOutLoadingScreen();
+              initGalleryFilters(); // Call the function after loading
           }
       }).catch(error => {
           console.error("Error loading a section:", error);

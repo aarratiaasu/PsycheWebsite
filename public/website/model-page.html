@@ -33,9 +33,13 @@
         directionalLight.position.set(5, 5, 5);
         scene.add(directionalLight);
 
-        // Create Sun mesh for visual representation (a bright emissive sphere)
+        // Create Sun mesh for visual representation (a bright sphere)
         const sunGeometry = new THREE.SphereGeometry(1.5, 32, 32);
-        const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffee88, emissive: 0xffee88 });
+        const sunMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0xffee88, 
+            emissive: 0xffee88,
+            emissiveIntensity: 1.0
+        });
         const sunMesh = new THREE.Mesh(sunGeometry, sunMaterial);
         // Position the sun at a distance along the light's direction
         sunMesh.position.copy(directionalLight.position.clone().normalize().multiplyScalar(50));
@@ -373,6 +377,6 @@
             }
         });
     </script>
-    <script src="JS/temperature-game.js"></script>
+    <script src="js/temperature-game.js" type="text/javascript"></script>
 </body>
 </html>

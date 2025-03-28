@@ -175,6 +175,7 @@ function init() {
               animateScrollIndicator(); 
               animate();
               fadeOutLoadingScreen();
+              document.getElementById("cn-icon-wrapper").style.display = "flex";
           }
       }).catch(error => {
           console.error("Error loading a section:", error);

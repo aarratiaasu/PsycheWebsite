@@ -16,9 +16,8 @@
 
 import * as THREE from 'three';
 import { getCurrentSection } from './sectionTracking.js';
-import { triggerButton3D, clickableModels, applyGlowEffect, makeModelClickable } from './utils.js';
-import gsap from 'gsap';
-import { showLocation2Viewport, hideLocation2Viewport } from '../../public/PsycheJR/location2Viewport.js';
+import { triggerButton3D, clickableModels, applyGlowEffect, loadModel } from './utils.js';
+import { showLocation2Viewport } from '../../public/PsycheJR/location2Viewport.js';
 
 let hasShownViewport = false;
 
@@ -35,10 +34,30 @@ export function loadSection8(scene, camera, sections, renderer) {
       z: section8Coords.z - 12,
     };
     
+    const modelPosition = {
+      x:section8Coords.x,
+      y:section8Coords.y - 3,
+      z:section8Coords.z - 12
+    }
+    console.log("map pin location: ", modelPosition);
     const rotation = { x: 0.2, y: 0, z: 0 };
-    
+    const objRotation = { x: -0.02, y: 0.5, z: 0 };
+
     return new Promise((resolve, reject) => {
       try {
+        loadModel(
+          "controller",
+          "/res/models/navigation_pin.glb",
+          modelPosition, // position
+          1, // scale
+          objRotation, // rotation
+          {
+            rotation: { x: 0, y: -40, z: 0, duration: 45, ease: "linear", repeat: -1 }
+          },          
+          scene, // scene
+          () => {  // callback fx
+            console.log("loaded model");
+          });
         const { buttonMesh } = triggerButton3D(
           "Explore Psyche's Location!",
           buttonPos,
@@ -93,20 +112,4 @@ export function renderSection8(camera, scene) {
             element.visible = isVisible;
         }
     });
-
-    // Auto-show viewport functionality is currently disabled
-    // Uncomment below to re-enable automatic viewport display when entering section 8
-    /*
-    if (isVisible && !hasShownViewport) {
-        // Add a small delay to ensure the section transition is complete
-        setTimeout(() => {
-            showLocation2Viewport();
-            hasShownViewport = true;
-        }, 500);
-    } else if (!isVisible && hasShownViewport) {
-        // Hide viewport when leaving section 8
-        hideLocation2Viewport();
-        hasShownViewport = false;
-    }
-    */
 }

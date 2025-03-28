@@ -10,6 +10,7 @@ html, body {
     overflow: hidden; 
     display: flex;
     flex-direction: column;
+    overscroll-behavior: none; 
 }
 
 main {
@@ -164,7 +165,7 @@ canvas {
     position: absolute;
     top: 10px;
     left: 10px;
-    z-index: 999;
+    z-index: 800;
     background-color: #333; 
     color: orange; 
     border: none;
@@ -174,9 +175,15 @@ canvas {
     cursor: pointer; 
     transition: background-color 0.3s, box-shadow 0.3s; 
   }
+
+  #switch-to-html {
+    z-index: 800;
+  }
   
   .switch-view-button:hover {
     background-color: #555; 
     box-shadow: 0 0 8px 3px #007bff;
+    z-index: 800;
+
   }
   

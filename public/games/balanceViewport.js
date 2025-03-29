@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import gsap from 'gsap';
+import { handleReturnToGames, monkeyPatchReturnButtons } from '../../src/landing/viewportStyling.js';
 
 let viewportContainer = null;
 let iframe = null;
@@ -33,19 +34,66 @@ export function showBalanceViewport() {
     viewportContainer.style.overflow = 'hidden';
     viewportContainer.style.zIndex = '900';
 
+    // Create a header with title
+    const header = document.createElement('div');
+    header.style.position = 'absolute';
+    header.style.top = '0';
+    header.style.left = '0';
+    header.style.right = '0';
+    header.style.display = 'flex';
+    header.style.justifyContent = 'space-between';
+    header.style.alignItems = 'center';
+    header.style.padding = '10px 15px';
+    header.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    header.style.zIndex = '1001';
+    
+    // Create title
+    const title = document.createElement('h2');
+    title.textContent = 'Balance Game';
+    title.style.margin = '0';
+    title.style.fontSize = '1.2rem';
+    title.style.color = 'white';
+    
+    // Create a container for the buttons
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.style.display = 'flex';
+    buttonsContainer.style.alignItems = 'center';
+    buttonsContainer.style.gap = '10px';
+    
+    // Create return button
+    const returnButton = document.createElement('button');
+    returnButton.textContent = '↩';
+    returnButton.style.background = 'none';
+    returnButton.style.border = 'none';
+    returnButton.style.color = 'white';
+    returnButton.style.fontSize = '1.2rem';
+    returnButton.style.cursor = 'pointer';
+    returnButton.style.padding = '0 5px';
+    returnButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        // Change the title to Games
+        title.textContent = 'Psyche Mission Games';
+        
+        // Load the games HTML in the iframe
+        iframe.src = './games/games.html';
+        console.log("Loading games HTML in balance viewport");
+    });
+    
     // Create close button
     closeButton = document.createElement('button');
     closeButton.textContent = '✕';
-    closeButton.style.position = 'absolute';
-    closeButton.style.top = '10px';
-    closeButton.style.right = '15px';
     closeButton.style.background = 'none';
     closeButton.style.border = 'none';
     closeButton.style.color = 'white';
     closeButton.style.fontSize = '1.5rem';
     closeButton.style.cursor = 'pointer';
-    closeButton.style.zIndex = '1001';
     closeButton.addEventListener('click', hideBalanceViewport);
+    
+    // Add buttons to container
+    buttonsContainer.appendChild(returnButton);
+    buttonsContainer.appendChild(closeButton);
 
     // Create iframe
     iframe = document.createElement('iframe');
@@ -57,7 +105,12 @@ export function showBalanceViewport() {
     iframe.style.backgroundColor = '#222';
     iframe.style.boxShadow = '0px 0px 10px rgba(249, 159, 0, 0.6)';
 
-    viewportContainer.appendChild(closeButton);
+    // Add title to header and buttons to container
+    header.appendChild(title);
+    header.appendChild(buttonsContainer);
+    
+    // Add header to viewport
+    viewportContainer.appendChild(header);
     viewportContainer.appendChild(iframe);
     document.body.appendChild(viewportContainer);
 
@@ -66,6 +119,9 @@ export function showBalanceViewport() {
         viewportContainer.style.bottom = "10%";
         viewportContainer.style.opacity = "1";
     }, 10);
+    
+    // Run the monkey patch to ensure the return button works
+    setTimeout(monkeyPatchReturnButtons, 100);
 }
 
 /**

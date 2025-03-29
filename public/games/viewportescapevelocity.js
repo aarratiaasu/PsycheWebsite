@@ -7,6 +7,7 @@
 
 import * as THREE from 'three';
 import gsap from 'gsap';
+import { handleReturnToGames, monkeyPatchReturnButtons } from '../../src/landing/viewportStyling.js';
 
 // Keep track of the viewport DOM elements
 let viewportContainer = null;
@@ -60,6 +61,24 @@ export function showEscapeVelocityViewport() {
     title.style.margin = '0';
     title.style.fontSize = '1.2rem';
     
+    // Create a container for the buttons
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.style.display = 'flex';
+    buttonsContainer.style.alignItems = 'center';
+    buttonsContainer.style.gap = '10px'; // Space between buttons
+    
+    // Create return button
+    const returnButton = document.createElement('button');
+    returnButton.textContent = '↩';
+    returnButton.style.background = 'none';
+    returnButton.style.border = 'none';
+    returnButton.style.color = 'white';
+    returnButton.style.fontSize = '1.2rem';
+    returnButton.style.cursor = 'pointer';
+    returnButton.style.padding = '0 5px';
+    returnButton.style.lineHeight = '1';
+    returnButton.style.marginRight = '5px';
+    
     closeButton = document.createElement('button');
     closeButton.textContent = '✕';
     closeButton.style.background = 'none';
@@ -70,8 +89,12 @@ export function showEscapeVelocityViewport() {
     closeButton.style.padding = '0 5px';
     closeButton.style.lineHeight = '1';
     
+    // Add buttons to container
+    buttonsContainer.appendChild(returnButton);
+    buttonsContainer.appendChild(closeButton);
+    
     header.appendChild(title);
-    header.appendChild(closeButton);
+    header.appendChild(buttonsContainer);
     viewportContainer.appendChild(header);
     
     // Create iframe to load the escape-velocity.html content
@@ -118,8 +141,24 @@ export function showEscapeVelocityViewport() {
     // Add event listener for close button
     closeButton.addEventListener('click', hideEscapeVelocityViewport);
     
+    // Add event listener for return button to load games HTML in the current iframe
+    returnButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        // Change the title to Games
+        title.textContent = 'Psyche Mission Games';
+        
+        // Load the games HTML in the iframe
+        iframe.src = './games/games.html';
+        console.log("Loading games HTML in escape velocity viewport");
+    });
+    
     // Add event listener for Escape key
     document.addEventListener('keydown', handleKeyDown);
+    
+    // Run the monkey patch to ensure the return button works
+    setTimeout(monkeyPatchReturnButtons, 100);
 }
 
 /**

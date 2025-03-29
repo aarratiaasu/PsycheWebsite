@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import gsap from 'gsap';
+import { handleReturnToGames, monkeyPatchReturnButtons } from '../../src/landing/viewportStyling.js';
 
 // Keep track of the viewport DOM elements
 let viewportContainer = null;
@@ -75,6 +76,35 @@ export function showTemperatureGameViewport() {
     title.style.fontWeight = '600';
     title.style.fontFamily = '"Orbitron", sans-serif'; // Use a sci-fi font if available
 
+    // Create a container for the buttons
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.style.display = 'flex';
+    buttonsContainer.style.alignItems = 'center';
+    buttonsContainer.style.gap = '10px'; // Space between buttons
+    
+    // Create return button
+    const returnButton = document.createElement('button');
+    returnButton.innerHTML = '↩'; // Return arrow
+    returnButton.style.background = 'rgba(255, 255, 255, 0.1)'; // Subtle background
+    returnButton.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+    returnButton.style.color = 'white';
+    returnButton.style.fontSize = '1.2rem';
+    returnButton.style.cursor = 'pointer';
+    returnButton.style.padding = '0px 8px'; // Adjust padding
+    returnButton.style.borderRadius = '50%'; // Make it circular
+    returnButton.style.lineHeight = '1';
+    returnButton.style.width = '30px'; // Fixed size
+    returnButton.style.height = '30px';
+    returnButton.style.display = 'flex';
+    returnButton.style.alignItems = 'center';
+    returnButton.style.justifyContent = 'center';
+    returnButton.style.transition = 'background-color 0.2s, transform 0.1s';
+    // Hover effect for return button
+    returnButton.onmouseenter = () => { returnButton.style.backgroundColor = 'rgba(0, 150, 255, 0.7)'; };
+    returnButton.onmouseleave = () => { returnButton.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'; };
+    returnButton.onmousedown = () => { returnButton.style.transform = 'scale(0.9)'; };
+    returnButton.onmouseup = () => { returnButton.style.transform = 'scale(1)'; };
+    
     closeButton = document.createElement('button');
     closeButton.innerHTML = '×'; // Use HTML entity for '✕' for better rendering
     closeButton.style.background = 'rgba(255, 255, 255, 0.1)'; // Subtle background
@@ -97,9 +127,12 @@ export function showTemperatureGameViewport() {
     closeButton.onmousedown = () => { closeButton.style.transform = 'scale(0.9)'; };
     closeButton.onmouseup = () => { closeButton.style.transform = 'scale(1)'; };
 
+    // Add buttons to container
+    buttonsContainer.appendChild(returnButton);
+    buttonsContainer.appendChild(closeButton);
 
     header.appendChild(title);
-    header.appendChild(closeButton);
+    header.appendChild(buttonsContainer);
     viewportContainer.appendChild(header);
 
     // Create iframe to load the temperature-game.html content
@@ -158,9 +191,25 @@ export function showTemperatureGameViewport() {
 
     // Add event listener for close button
     closeButton.addEventListener('click', hideTemperatureGameViewport);
+    
+    // Add event listener for return button to load games HTML in the current iframe
+    returnButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        // Change the title to Games
+        title.textContent = 'Psyche Mission Games';
+        
+        // Load the games HTML in the iframe
+        iframe.src = './games/games.html';
+        console.log("Loading games HTML in temperature game viewport");
+    });
 
     // Add event listener for Escape key to close
     document.addEventListener('keydown', handleKeyDown);
+    
+    // Run the monkey patch to ensure the return button works
+    setTimeout(monkeyPatchReturnButtons, 100);
 }
 
 // --- Make sure hideTemperatureGameViewport resets the correct transform ---

@@ -51,16 +51,69 @@ loader.load(
     }
 );
 
-// Handle Resizing
-window.addEventListener('resize', () => {
-    camera.aspect = container.clientWidth / container.clientHeight;
+// Function to handle container size changes
+function updateRendererSize() {
+    if (!container) return;
+    
+    // Get the current dimensions of the container
+    const width = container.clientWidth || container.offsetWidth;
+    const height = container.clientHeight || container.offsetHeight;
+    
+    // Update camera aspect ratio
+    camera.aspect = width / height;
     camera.updateProjectionMatrix();
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    
+    // Update renderer size (use 97% to avoid scrollbars)
+    renderer.setSize(width * 0.97, height * 0.97);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    
+    console.log(`3D renderer resized to: ${width}x${height}`);
+    
+    // Adjust model scale based on container size
+    if (scene.userData.model) {
+        // Base scale on container width relative to a reference width of 1200px
+        const baseScale = 0.5; // Default scale
+        const referenceWidth = 1200;
+        const scaleFactor = Math.max(0.3, Math.min(1, width / referenceWidth));
+        const newScale = baseScale * scaleFactor;
+        
+        scene.userData.model.scale.set(newScale, newScale, newScale);
+        console.log(`Model scale adjusted to: ${newScale}`);
+    }
+}
+
+// Handle window resizing
+window.addEventListener('resize', updateRendererSize);
+
+// Create a ResizeObserver to monitor container size changes
+const containerObserver = new ResizeObserver(entries => {
+    updateRendererSize();
 });
+
+// Start observing the container
+if (container) {
+    containerObserver.observe(container);
+}
+
+// Create a MutationObserver to detect style changes
+const mutationObserver = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+            updateRendererSize();
+        }
+    });
+});
+
+// Start observing the container for style changes
+if (container) {
+    mutationObserver.observe(container, { attributes: true });
+}
 
 // Animation Loop
 function animate() {
     requestAnimationFrame(animate);
+    
+    // Update light position to follow camera
     light.position.copy(camera.position);
     light.target.position.copy(camera.position).add(camera.getWorldDirection(new THREE.Vector3()));
 
@@ -72,4 +125,15 @@ function animate() {
     controls.update(); // Update OrbitControls
     renderer.render(scene, camera);
 }
+
+// Start animation loop
 animate();
+
+// Initial size update
+updateRendererSize();
+
+// Expose a function to manually trigger resize
+window.updatePsycheModelSize = function() {
+    updateRendererSize();
+    return "Psyche model size updated";
+};

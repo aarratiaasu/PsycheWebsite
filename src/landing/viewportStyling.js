@@ -100,6 +100,27 @@ export function applyCloseButtonStyles(button, options = {}) {
 }
 
 /**
+ * Applies return button styles to a viewport return button
+ * @param {HTMLElement} button - The return button element
+ * @param {Object} options - Optional styling options
+ */
+export function applyReturnButtonStyles(button, options = {}) {
+    const {
+        color = 'white',
+        fontSize = '1.2rem'
+    } = options;
+    
+    button.style.background = 'none';
+    button.style.border = 'none';
+    button.style.color = color;
+    button.style.fontSize = fontSize;
+    button.style.cursor = 'pointer';
+    button.style.padding = '0 5px';
+    button.style.lineHeight = '1';
+    button.style.marginRight = '5px';
+}
+
+/**
  * Applies iframe styles to a viewport iframe
  * @param {HTMLElement} iframe - The iframe element
  * @param {Object} options - Optional styling options
@@ -336,3 +357,159 @@ export function createClosingAnimation(container, onComplete) {
     
     return tl;
 }
+
+/**
+ * Handles the return to games button click
+ * @param {HTMLIFrameElement} iframe - The iframe to load the games HTML in
+ * @param {HTMLElement} title - The title element to update
+ * @returns {Function} - A function that can be used as an event handler
+ */
+export function handleReturnToGames(iframe, title) {
+    return function(event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        
+        // Change the title to Games if provided
+        if (title) {
+            title.textContent = 'Psyche Mission Games';
+        }
+        
+        // Load the games HTML in the iframe
+        if (iframe) {
+            iframe.src = './games/games.html';
+            console.log("Loading games HTML in iframe");
+        }
+    };
+}
+
+/**
+ * Replaces the current viewport content with the games HTML
+ * This is a more invasive approach that directly manipulates the DOM
+ */
+export function replaceWithGamesHTML() {
+    // Find all viewport containers
+    const viewports = [
+        document.getElementById('temperature-game-viewport-container'),
+        document.getElementById('escape-velocity-viewport-container'),
+        document.getElementById('space-pic-viewport-container'),
+        document.getElementById('balance-viewport-container')
+    ];
+    
+    // Find the first visible viewport
+    const viewport = viewports.find(v => v && v.style.display !== 'none');
+    
+    if (!viewport) {
+        console.error("No visible viewport found");
+        return;
+    }
+    
+    console.log("Found viewport:", viewport.id);
+    
+    // Find the iframe in the viewport
+    const iframe = viewport.querySelector('iframe');
+    if (!iframe) {
+        console.error("No iframe found in viewport");
+        return;
+    }
+    
+    // Find the title in the viewport
+    const title = viewport.querySelector('h2');
+    if (title) {
+        title.textContent = 'Psyche Mission Games';
+    }
+    
+    // Change the iframe src to the games HTML
+    iframe.src = './games/games.html';
+    console.log("Loading games HTML in viewport:", viewport.id);
+    
+    // Return a function that can be used as an event handler
+    return function(event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        
+        // Find the iframe in the viewport again (in case it changed)
+        const iframe = viewport.querySelector('iframe');
+        if (!iframe) {
+            console.error("No iframe found in viewport");
+            return;
+        }
+        
+        // Change the iframe src to the games HTML
+        iframe.src = './games/games.html';
+        console.log("Loading games HTML in viewport:", viewport.id);
+    };
+}
+
+/**
+ * Monkey patches all return buttons in all viewports to use the replaceWithGamesHTML function
+ * This is a very invasive approach that directly manipulates the DOM
+ */
+export function monkeyPatchReturnButtons() {
+    // Wait for the DOM to be fully loaded
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', monkeyPatchReturnButtons);
+        return;
+    }
+    
+    // Find all return buttons in all viewports
+    const returnButtons = document.querySelectorAll('button');
+    
+    // Filter to only return buttons (those with the ↩ character)
+    const actualReturnButtons = Array.from(returnButtons).filter(button => 
+        button.textContent === '↩' || button.innerHTML === '↩'
+    );
+    
+    console.log("Found return buttons:", actualReturnButtons.length);
+    
+    // Replace the click event handler for each return button
+    actualReturnButtons.forEach(button => {
+        // Remove all existing click event listeners
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        // Add the new click event handler
+        newButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            // Find the viewport container
+            let viewport = newButton.closest('[id$="-viewport-container"]');
+            if (!viewport) {
+                console.error("No viewport found for return button");
+                return;
+            }
+            
+            console.log("Found viewport for return button:", viewport.id);
+            
+            // Find the iframe in the viewport
+            const iframe = viewport.querySelector('iframe');
+            if (!iframe) {
+                console.error("No iframe found in viewport");
+                return;
+            }
+            
+            // Find the title in the viewport
+            const title = viewport.querySelector('h2');
+            if (title) {
+                title.textContent = 'Psyche Mission Games';
+            }
+            
+            // Change the iframe src to the games HTML
+            iframe.src = './games/games.html';
+            console.log("Loading games HTML in viewport:", viewport.id);
+        });
+    });
+}
+
+// Run the monkey patch when the script is loaded
+monkeyPatchReturnButtons();
+
+// Also run it when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', monkeyPatchReturnButtons);
+
+// And run it periodically to catch any new viewports
+setInterval(monkeyPatchReturnButtons, 1000);

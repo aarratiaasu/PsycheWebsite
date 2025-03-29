@@ -134,12 +134,26 @@ export function showGamesViewport() {
     title.textContent = 'Psyche Mission Games';
     ViewportStyling.applyTitleStyles(title);
     
+    // Create a container for the buttons
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.style.display = 'flex';
+    buttonsContainer.style.alignItems = 'center';
+    
+    // Create return button
+    const returnButton = document.createElement('button');
+    returnButton.textContent = '↩';
+    ViewportStyling.applyReturnButtonStyles(returnButton);
+    
     closeButton = document.createElement('button');
     closeButton.textContent = '✕';
     ViewportStyling.applyCloseButtonStyles(closeButton);
     
+    // Add buttons to the container
+    buttonsContainer.appendChild(returnButton);
+    buttonsContainer.appendChild(closeButton);
+    
     header.appendChild(title);
-    header.appendChild(closeButton);
+    header.appendChild(buttonsContainer);
     viewportContainer.appendChild(header);
     
     // Create iframe to load the games content
@@ -176,6 +190,10 @@ export function showGamesViewport() {
     
     // Add event listener for close button
     closeButton.addEventListener('click', hideGamesViewport);
+    
+    // Add event listener for return button - in this case, just hide the games viewport
+    // since this is the main games menu
+    returnButton.addEventListener('click', hideGamesViewport);
     
     // Add event listener for Escape key
     document.addEventListener('keydown', handleKeyDown);

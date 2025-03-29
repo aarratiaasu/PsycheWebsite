@@ -80,6 +80,7 @@ function calculateViewportSize() {
 
 /**
  * Updates the viewport container size based on current screen dimensions
+ * and applies dynamic scaling to content within the iframe
  */
 function updateViewportSize() {
     if (!viewportContainer) return;
@@ -91,6 +92,81 @@ function updateViewportSize() {
     viewportContainer.style.height = height;
     
     console.log(`Viewport resized to: width=${width}, maxWidth=${maxWidth}, height=${height}`);
+    
+    // Apply dynamic scaling to content within the iframe
+    if (iframe && iframe.contentDocument) {
+        try {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            const psycheContainer = iframeDoc.getElementById('psyche-container');
+            
+            if (psycheContainer) {
+                // Calculate scale based on viewport width
+                const viewportWidth = parseInt(width) || window.innerWidth * (parseInt(width) / 100);
+                const scale = Math.min(1, viewportWidth / 1920); // Base scale on a 1920px reference
+                
+                // Create or update the style element for responsive adjustments
+                let styleEl = iframeDoc.getElementById('responsive-scaling');
+                if (!styleEl) {
+                    styleEl = iframeDoc.createElement('style');
+                    styleEl.id = 'responsive-scaling';
+                    iframeDoc.head.appendChild(styleEl);
+                }
+                
+                // Update the scaling styles
+                styleEl.textContent = `
+                    /* Responsive scaling for surface2 content */
+                    #psyche-container {
+                        width: 100% !important;
+                        height: ${Math.max(300, 50 * scale)}vh !important;
+                        max-width: 100% !important;
+                    }
+                    
+                    #header-h1 {
+                        font-size: ${Math.max(40, 90 * scale)}px !important;
+                    }
+                    
+                    #materials, #features, #dimensions, #comparable, #explore {
+                        width: 90% !important;
+                    }
+                    
+                    #inner-materials h1, #inner-features h1, #inner-dimensions h1, 
+                    #inner-comparable h1, #inner-explore h1 {
+                        font-size: ${Math.max(30, 60 * scale)}px !important;
+                    }
+                    
+                    #inner-materials p, #inner-features p, #inner-dimensions p, 
+                    #inner-comparable p, #inner-explore p {
+                        font-size: ${Math.max(18, 40 * scale)}px !important;
+                    }
+                    
+                    #comparable h3 {
+                        font-size: ${Math.max(25, 50 * scale)}px !important;
+                    }
+                    
+                    #comparable h4 {
+                        font-size: ${Math.max(20, 40 * scale)}px !important;
+                    }
+                    
+                    /* Ensure content is scrollable */
+                    body {
+                        overflow-y: auto !important;
+                    }
+                `;
+                
+                console.log(`Applied responsive scaling: ${scale}`);
+                
+                // Trigger the 3D model resize if the function exists
+                if (iframe.contentWindow.updatePsycheModelSize) {
+                    setTimeout(() => {
+                        iframe.contentWindow.updatePsycheModelSize();
+                        console.log("Triggered 3D model resize");
+                    }, 100); // Small delay to ensure styles are applied first
+                }
+            }
+        } catch (e) {
+            console.error("Could not modify iframe content:", e);
+        }
+    }
 }
 
 /**
@@ -160,6 +236,40 @@ export function showSurface2Viewport() {
     iframe.onload = () => {
         console.log("Surface2 iframe loaded successfully");
         ViewportStyling.injectScrollbarHidingStyles(iframe);
+        
+        // Apply responsive scaling to content after iframe loads
+        updateViewportSize();
+        
+        // Add a MutationObserver to detect changes in the iframe content
+        try {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            const observer = new MutationObserver(() => {
+                // Re-apply responsive scaling when DOM changes
+                updateViewportSize();
+            });
+            
+            // Start observing the iframe document
+            observer.observe(iframeDoc.body, { 
+                childList: true, 
+                subtree: true 
+            });
+            
+            // Also observe the psyche-container specifically for the 3D model
+            const psycheContainer = iframeDoc.getElementById('psyche-container');
+            if (psycheContainer) {
+                observer.observe(psycheContainer, {
+                    childList: true,
+                    subtree: true,
+                    attributes: true
+                });
+                
+                // Ensure the 3D renderer resizes properly
+                const resizeEvent = new Event('resize');
+                window.dispatchEvent(resizeEvent);
+            }
+        } catch (e) {
+            console.error("Could not set up MutationObserver:", e);
+        }
     };
     
     viewportContainer.appendChild(iframe);
@@ -260,6 +370,71 @@ window.setSurface2ViewportSize = function(width, height) {
     
     // Center the viewport
     viewportContainer.style.transform = 'translate(-50%, -50%)';
+    
+    // Apply responsive scaling to content within the iframe
+    if (iframe && iframe.contentDocument) {
+        try {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            const psycheContainer = iframeDoc.getElementById('psyche-container');
+            
+            if (psycheContainer) {
+                // Apply scaling based on viewport width
+                const scale = Math.min(1, width / 1920); // Base scale on a 1920px reference
+                
+                // Create or update the style element
+                let styleEl = iframeDoc.getElementById('responsive-scaling');
+                if (!styleEl) {
+                    styleEl = iframeDoc.createElement('style');
+                    styleEl.id = 'responsive-scaling';
+                    iframeDoc.head.appendChild(styleEl);
+                }
+                
+                // Update the scaling styles
+                styleEl.textContent = `
+                    /* Responsive scaling for surface2 content */
+                    #psyche-container {
+                        width: 100% !important;
+                        height: ${Math.max(300, 50 * scale)}vh !important;
+                        max-width: 100% !important;
+                    }
+                    
+                    #header-h1 {
+                        font-size: ${Math.max(40, 90 * scale)}px !important;
+                    }
+                    
+                    #materials, #features, #dimensions, #comparable, #explore {
+                        width: 90% !important;
+                    }
+                    
+                    #inner-materials h1, #inner-features h1, #inner-dimensions h1, 
+                    #inner-comparable h1, #inner-explore h1 {
+                        font-size: ${Math.max(30, 60 * scale)}px !important;
+                    }
+                    
+                    #inner-materials p, #inner-features p, #inner-dimensions p, 
+                    #inner-comparable p, #inner-explore p {
+                        font-size: ${Math.max(18, 40 * scale)}px !important;
+                    }
+                    
+                    #comparable h3 {
+                        font-size: ${Math.max(25, 50 * scale)}px !important;
+                    }
+                    
+                    #comparable h4 {
+                        font-size: ${Math.max(20, 40 * scale)}px !important;
+                    }
+                `;
+                
+                console.log(`Applied manual scaling: ${scale}`);
+                
+                // Trigger resize event for the 3D renderer
+                const resizeEvent = new Event('resize');
+                window.dispatchEvent(resizeEvent);
+            }
+        } catch (e) {
+            console.error("Could not modify iframe content:", e);
+        }
+    }
     
     return `Viewport size set to ${width}x${height}`;
 };

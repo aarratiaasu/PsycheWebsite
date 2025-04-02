@@ -1,6 +1,31 @@
+function updateScreenWidth() {
+    const box = document.getElementById("screen-width-box");
+    box.textContent = `Width: ${window.innerWidth}px`;
+}
+
+window.addEventListener("resize", updateScreenWidth);
+
+updateScreenWidth();
+
+
+
+
+let windowWidth = window.outerWidth;
+let dpr = window.devicePixelRatio;
+let trueSize = Math.round(windowWidth * dpr);
+
+console.log("window.innerWidth:", window.innerWidth);
+console.log("window.innerHeight:", window.innerHeight);
+console.log("window.outerWidth:", window.outerWidth);
+console.log("devicePixelRatio:", window.devicePixelRatio);
+console.log("Effective Width:", window.innerWidth * window.devicePixelRatio);
+console.log("Zoom Level:", Math.round(window.outerWidth / window.innerWidth * 100) + "%");
+console.log("width of device:", windowWidth, "dpr:", dpr, "trueSize:", trueSize);
+
+
 gsap.set([
     "#page-header", 
-    "#div1", 
+    "#welcome", 
     "#div2", 
     "#div3", 
     "#div4", 
@@ -12,10 +37,9 @@ const tl = gsap.timeline({
 })
 
 tl.fromTo('header', {scale: 10}, {scale: 1, duration: 6})
-//tl.fromTo('#logo', {scale: 10, y: 350}, {scale: 3, duration:2}, '<')
 tl.to('body', {background: 'linear-gradient(to right, #f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144)'})
-//tl.to('#logo', {scale: 1, y: 0, duration: 2}, '<')
 tl.to('body', {background: 'white', delay: 1})
+
 tl.fromTo(
     '#page-header', 
     {
@@ -28,13 +52,30 @@ tl.fromTo(
 )
 
 tl.fromTo(
-    '#div1', 
+    '#welcome', 
     {opacity: 0}, 
     {
         opacity: 1,
         duration: 0.5
     }
 )
+
+/* tl.fromTo(
+    'body', 
+    {
+        backgroundColor: 'white'
+    },
+    {
+        background: 'black', 
+        delay: 1, 
+        scrollTrigger: {
+            trigger: '#welcome',
+            start: 'top center',
+            end: '50% center',
+            scrub: true
+        }
+    }
+) */
 
 tl.fromTo(
     '#location-title',
@@ -45,10 +86,11 @@ tl.fromTo(
         y: 150,
         duration: 1,
         scrollTrigger: {
-            trigger: '#div1',
+            trigger: '#welcome',
             start: 'top center',
             end: '50% center',
-            scrub: true
+            scrub: true,
+            once: true
         }
     }
 )
@@ -67,7 +109,8 @@ tl.fromTo(
             trigger: '#div2',
             start: 'top center',
             end: '40% center',
-            scrub: true
+            scrub: true,
+once: true
         }
     }
 );
@@ -84,7 +127,8 @@ tl.fromTo(
             trigger: '#div3',
             start: 'top center',
             end: 'bottom center',
-            scrub: true
+            scrub: true,
+once: true
         }
     }
 );
@@ -105,7 +149,8 @@ tl.fromTo(
             trigger: '#div4',
             start: 'top center',
             end: '50% center',
-            scrub: true
+            scrub: true,
+once: true
         }
     }
 );
@@ -126,7 +171,8 @@ tl.fromTo(
             trigger: '#div5',
             start: 'top center',
             end: '50% center',
-            scrub: true
+            scrub: true,
+once: true
         }
     }
 );
@@ -147,7 +193,8 @@ tl.fromTo(
             trigger: '#div6',
             start: 'top center',
             end: '50% center',
-            scrub: true
+            scrub: true,
+once: true
         }
     }
 );
@@ -168,7 +215,8 @@ tl.fromTo(
             trigger: '#div7',
             start: 'top center',
             end: '50% center',
-            scrub: true
+            scrub: true,
+once: true
         }
     }
 );
@@ -185,12 +233,6 @@ tl.fromTo(
         y: 0,
         duration: 4,
         pointerEvents: "auto",
-        scrollTrigger: {
-            trigger: '#div8',
-            start: 'top center',
-            end: '50% center',
-            scrub: true
-        }
     }
 );
 
@@ -208,7 +250,8 @@ tl.fromTo(
             trigger: '#div4',
             start: 'top center',
             end: '50% center',
-            scrub: true
+            scrub: true,
+once: true
         }
     }
 );

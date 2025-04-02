@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Escape Velocity Game - Earth vs Psyche</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: white;
+      overflow: hidden;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+    .container {
+      display: flex;
+      width: 100%;
+      padding: 40px;
+      gap: 60px;
+      justify-content: center;
+      align-items: stretch;
+    }
+    .planet-section {
+      flex: 1;
+      max-width: 600px;
+      position: relative;
+      border: 2px solid #444;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+    }
+    .planet-container {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      margin: 60px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .planet {
+      border-radius: 50%;
+      position: relative;
+      transition: transform 0.3s;
+    }
+    .planet:hover {
+      transform: scale(1.05);
+    }
+    /* Make Earth and Psyche sizes for better view */
+    #earth {
+      width: 180px;
+      height: 180px;
+      background: url('images/Earth.jpg') center/cover;
+      box-shadow: 0 0 40px rgba(100, 149, 237, 0.5);
+    }
+    #psyche {
+      width: 90px;
+      height: 90px;
+      background: url('images/psyche.jpg') center/cover;
+      box-shadow: 0 0 40px rgba(218, 165, 32, 0.5);
+    }
+    .disclaimer {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      padding: 6px 12px;
+      border-radius: 5px;
+      font-size: 11px;
+      text-align: center;
+      max-width: 90%;
+      color: #aaa;
+      z-index: 10;
+    }
+    .controls {
+      width: 100%;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      margin-top: 20px;
+      backdrop-filter: blur(5px);
+    }
+    .object-select,
+    .launcher-select {
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      border: 1px solid #444;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .launch-btn {
+      width: 100%;
+      padding: 20px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 20px;
+      margin-top: 15px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: all 0.3s;
+    }
+    .launch-btn:hover {
+      background: #45a049;
+      transform: scale(1.02);
+    }
+    .launch-btn:active {
+      transform: scale(0.98);
+    }
+    /* The object and its trail will have their starting position adjusted dynamically */
+    .object {
+      width: 60px;
+      height: 60px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      font-size: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+    .trail {
+      position: absolute;
+      width: 4px;
+      background: linear-gradient(to top, rgba(255, 255, 255, 0.8), transparent);
+      left: 50%;
+      transform: translateX(-50%);
+      transition: height 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: 1;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 18px;
+      transition: all 0.3s;
+    }
+    .success {
+      background: rgba(76, 175, 80, 0.3);
+      box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+    }
+    .failure {
+      background: rgba(244, 67, 54, 0.3);
+      box-shadow: 0 0 20px rgba(244, 67, 54, 0.3);
+    }
+    .info {
+      position: absolute;
+      bottom: 375px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-size: 16px;
+      text-align: center;
+      backdrop-filter: blur(5px);
+      border: 1px solid #444;
+      line-height: 1.6;
+      z-index: 5;
+    }
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    @keyframes sparkle {
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.3;
+      }
+    }
+    .success-particles {
+      position: absolute;
+      pointer-events: none;
+      animation: sparkle 1s infinite;
+    }
+  </style>
+</head>
+<body>
+  <canvas class="stars" id="starsCanvas"></canvas>
+  <div class="disclaimer">
+    Note: Earth and Psyche sizes shown are not to scale. This is a representation for educational purposes only.
+  </div>
+  <div class="container">
+    <div class="planet-section">
+      <div class="planet-container">
+        <div class="planet" id="earth"></div>
+      </div>
+      <div class="info">
+        Earth's escape velocity: 11.2 km/s<br />
+        Mass: 5.972 × 10²⁴ kg<br />
+        Radius: 6,371 km
+      </div>
+      <div class="controls">
+        <select class="object-select" id="earth-object">
+          <!-- Household Objects -->
+          <option value="toothbrush">🪥 Toothbrush</option>
+          <option value="chair">🪑 Chair</option>
+          <option value="pillow">🛏️ Pillow</option>
+          <option value="backpack">🎒 Backpack</option>
+          <option value="book">📚 Book</option>
+          <option value="smartphone">📱 Smartphone</option>
+          
+          <!-- Sports & Toys -->
+          <option value="basketball">🏀 Basketball</option>
+          <option value="football">🏈 Football</option>
+          <option value="doll">🧸 Doll</option>
+          <option value="teddyBear">🧸 Teddy Bear</option>
+          <option value="shoes">👟 Shoes</option>
+          
+          <!-- Food Items -->
+          <option value="apple">🍎 Apple</option>
+          <option value="banana">🍌 Banana</option>
+          <option value="bread">🍞 Loaf of Bread</option>
+          
+          <!-- Heavy Items -->
+          <option value="refrigerator">❄️ Refrigerator</option>
+          <option value="washingMachine">🧺 Washing Machine</option>
+          <option value="car">🚗 Car</option>
+          <option value="house">🏠 House</option>
+        </select>
+        <select class="launcher-select" id="earth-launcher">
+          <!-- Real Rockets -->
+          <option value="falcon9">🚀 Falcon 9 (SpaceX)</option>
+          <option value="falconHeavy">🚀 Falcon Heavy (SpaceX)</option>
+          <option value="starship">🚀 Starship (SpaceX)</option>
+          <option value="atlasV">🚀 Atlas V (ULA)</option>
+          <option value="antares">🚀 Antares (Northrop Grumman)</option>
+          <option value="minotaur">🚀 Minotaur (Northrop Grumman)</option>
+          <option value="firefly">🚀 Firefly Alpha</option>
+          
+          <!-- Fun/Human Methods -->
+          <option value="handThrow">👋 Throwing by Hand</option>
+          <option value="slingshot">🎯 Giant Slingshot</option>
+          <option value="trampoline">🤸 Trampoline Launch</option>
+          <option value="jumping">🦘 Jumping Really High</option>
+          <option value="firework">🎆 Firework-style Launch</option>
+          <option value="poleVault">🏃 Pole Vault to Space</option>
+          <option value="bungee">🧵 Bungee Cord Slingshot</option>
+        </select>
+        <button class="launch-btn" onclick="launch('earth')">LAUNCH!</button>
+        <div class="result" id="earth-result"></div>
+      </div>
+    </div>
+    <div class="planet-section">
+      <div class="planet-container">
+        <div class="planet" id="psyche"></div>
+      </div>
+      <div class="info">
+        Psyche's escape velocity: 0.18 km/s<br />
+        Mass: 2.27 × 10¹⁹ kg<br />
+        Radius: 113 km
+      </div>
+      <div class="controls">
+        <select class="object-select" id="psyche-object">
+          <!-- Household Objects -->
+          <option value="toothbrush">🪥 Toothbrush</option>
+          <option value="chair">🪑 Chair</option>
+          <option value="pillow">🛏️ Pillow</option>
+          <option value="backpack">🎒 Backpack</option>
+          <option value="book">📚 Book</option>
+          <option value="smartphone">📱 Smartphone</option>
+          
+          <!-- Sports & Toys -->
+          <option value="basketball">🏀 Basketball</option>
+          <option value="football">🏈 Football</option>
+          <option value="doll">🧸 Doll</option>
+          <option value="teddyBear">🧸 Teddy Bear</option>
+          <option value="shoes">👟 Shoes</option>
+          
+          <!-- Food Items -->
+          <option value="apple">🍎 Apple</option>
+          <option value="banana">🍌 Banana</option>
+          <option value="bread">🍞 Loaf of Bread</option>
+          
+          <!-- Heavy Items -->
+          <option value="refrigerator">❄️ Refrigerator</option>
+          <option value="washingMachine">🧺 Washing Machine</option>
+          <option value="car">🚗 Car</option>
+          <option value="house">🏠 House</option>
+        </select>
+        <select class="launcher-select" id="psyche-launcher">
+          <!-- Real Rockets -->
+          <option value="falcon9">🚀 Falcon 9 (SpaceX)</option>
+          <option value="falconHeavy">🚀 Falcon Heavy (SpaceX)</option>
+          <option value="starship">🚀 Starship (SpaceX)</option>
+          <option value="atlasV">🚀 Atlas V (ULA)</option>
+          <option value="antares">🚀 Antares (Northrop Grumman)</option>
+          <option value="minotaur">🚀 Minotaur (Northrop Grumman)</option>
+          <option value="firefly">🚀 Firefly Alpha</option>
+          
+          <!-- Fun/Human Methods -->
+          <option value="handThrow">👋 Throwing by Hand</option>
+          <option value="slingshot">🎯 Giant Slingshot</option>
+          <option value="trampoline">🤸 Trampoline Launch</option>
+          <option value="jumping">🦘 Jumping Really High</option>
+          <option value="firework">🎆 Firework-style Launch</option>
+          <option value="poleVault">🏃 Pole Vault to Space</option>
+          <option value="bungee">🧵 Bungee Cord Slingshot</option>
+        </select>
+        <button class="launch-btn" onclick="launch('psyche')">LAUNCH!</button>
+        <div class="result" id="psyche-result"></div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
+  <script>
+    // Set up Three.js scenes for Earth and Psyche models
+    let psycheScene, psycheCamera, psycheRenderer;
+    let earthScene, earthCamera, earthRenderer;
+    let psycheModel, earthMesh;
+    
+    function initEarthModel() {
+      // Create scene
+      earthScene = new THREE.Scene();
+      
+      // Create camera
+      earthCamera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+      earthCamera.position.z = 5;
+      
+      // Create renderer - larger size for Earth
+      const earthContainer = document.querySelector('#earth').parentElement;
+      earthRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      earthRenderer.setSize(300, 300);
+      earthRenderer.setClearColor(0x000000, 0);
+      earthContainer.appendChild(earthRenderer.domElement);
+      
+      // Add lights for Earth
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+      earthScene.add(ambientLight);
+      
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+      directionalLight.position.set(5, 3, 5);
+      earthScene.add(directionalLight);
+      
+      // Create Earth with realistic textures - larger size
+      const earthGeometry = new THREE.SphereGeometry(3, 64, 64);
+      
+      // Load Earth textures
+      const textureLoader = new THREE.TextureLoader();
+      
+      // Create a material with Earth textures
+      const earthMaterial = new THREE.MeshPhongMaterial({
+        map: textureLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg'),
+        bumpMap: textureLoader.load('https://threejs.org/examples/textures/planets/earth_normal_2048.jpg'),
+        bumpScale: 0.05,
+        specularMap: textureLoader.load('https://threejs.org/examples/textures/planets/earth_specular_2048.jpg'),
+        specular: new THREE.Color('grey'),
+        shininess: 15
+      });
+      
+      // Create Earth mesh
+      earthMesh = new THREE.Mesh(earthGeometry, earthMaterial);
+      earthScene.add(earthMesh);
+      
+      // Add clouds layer - larger size
+      const cloudGeometry = new THREE.SphereGeometry(3.05, 64, 64);
+      const cloudMaterial = new THREE.MeshPhongMaterial({
+        map: textureLoader.load('https://threejs.org/examples/textures/planets/earth_clouds_1024.png'),
+        transparent: true,
+        opacity: 0.4
+      });
+      
+      const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
+      earthScene.add(clouds);
+      
+      // Hide the original earth div
+      document.querySelector('#earth').style.display = 'none';
+      
+      // Start animation
+      function animateEarth() {
+        requestAnimationFrame(animateEarth);
+        
+        earthMesh.rotation.y += 0.002;
+        clouds.rotation.y += 0.0025;
+        
+        earthRenderer.render(earthScene, earthCamera);
+      }
+      
+      animateEarth();
+    }
+    
+    function initPsycheModel() {
+      // Create scene
+      psycheScene = new THREE.Scene();
+      
+      // Create camera
+      psycheCamera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+      psycheCamera.position.z = 5;
+      
+      // Create renderer - smaller size for Psyche
+      const psycheContainer = document.querySelector('#psyche').parentElement;
+      psycheRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      psycheRenderer.setSize(150, 150);
+      psycheRenderer.setClearColor(0x000000, 0);
+      psycheContainer.appendChild(psycheRenderer.domElement);
+      
+      // Add lights - increased brightness
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+      psycheScene.add(ambientLight);
+      
+      // Add multiple directional lights from different angles
+      const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1.2);
+      directionalLight1.position.set(5, 5, 5);
+      psycheScene.add(directionalLight1);
+      
+      const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1.0);
+      directionalLight2.position.set(-5, 5, 5);
+      psycheScene.add(directionalLight2);
+      
+      const directionalLight3 = new THREE.DirectionalLight(0xffffff, 1.0);
+      directionalLight3.position.set(0, -5, 5);
+      psycheScene.add(directionalLight3);
+      
+      // Add a point light near the model for extra brightness
+      const pointLight = new THREE.PointLight(0xffffff, 1.5, 10);
+      pointLight.position.set(0, 0, 3);
+      psycheScene.add(pointLight);
+      
+      // Load Psyche model
+      const loader = new THREE.GLTFLoader();
+      loader.load('/res/models/psyche_new.glb', (gltf) => {
+        psycheModel = gltf.scene;
+        
+        // Center and scale the model
+        const box = new THREE.Box3().setFromObject(psycheModel);
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+        
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const scale = 1.8 / maxDim; // Smaller scale for Psyche
+        
+        psycheModel.scale.set(scale, scale, scale);
+        psycheModel.position.sub(center.multiplyScalar(scale));
+        
+        psycheScene.add(psycheModel);
+        
+        // Hide the original psyche div
+        document.querySelector('#psyche').style.display = 'none';
+        
+        // Start animation
+        animatePsycheModel();
+      });
+    }
+    
+    function animatePsycheModel() {
+      requestAnimationFrame(animatePsycheModel);
+      
+      if (psycheModel) {
+        psycheModel.rotation.y += 0.01;
+      }
+      
+      psycheRenderer.render(psycheScene, psycheCamera);
+    }
+    
+    // Initialize the Earth and Psyche models after the page loads
+    window.addEventListener('load', () => {
+      initEarthModel();
+      initPsycheModel();
+    });
+    
+    // Constants for escape velocities
+    const EARTH_ESCAPE_VELOCITY = 11.2;
+    const PSYCHE_ESCAPE_VELOCITY = 0.18;
+    
+    // Base speeds for different objects (in km/s)
+    const objectSpeeds = {
+      // Light Household Objects
+      toothbrush: { min: 0.3, max: 0.6, mass: 0.1 },
+      pillow: { min: 0.2, max: 0.4, mass: 0.3 },
+      backpack: { min: 0.2, max: 0.5, mass: 0.5 },
+      book: { min: 0.2, max: 0.4, mass: 0.4 },
+      smartphone: { min: 0.3, max: 0.5, mass: 0.2 },
+      
+      // Sports & Toys
+      basketball: { min: 0.3, max: 0.6, mass: 0.6 },
+      football: { min: 0.3, max: 0.6, mass: 0.4 },
+      doll: { min: 0.2, max: 0.5, mass: 0.3 },
+      teddyBear: { min: 0.2, max: 0.4, mass: 0.4 },
+      shoes: { min: 0.2, max: 0.5, mass: 0.5 },
+      
+      // Food Items (Light and fragile)
+      apple: { min: 0.2, max: 0.4, mass: 0.2 },
+      banana: { min: 0.2, max: 0.4, mass: 0.2 },
+      bread: { min: 0.1, max: 0.3, mass: 0.3 },
+      
+      // Medium to Heavy Items
+      chair: { min: 0.1, max: 0.3, mass: 3.0 },
+      refrigerator: { min: 0.1, max: 0.2, mass: 100.0 },
+      washingMachine: { min: 0.1, max: 0.2, mass: 80.0 },
+      car: { min: 0.05, max: 0.15, mass: 1500.0 },
+      house: { min: 0.02, max: 0.1, mass: 20000.0 }
+    };
+    
+    // Power ratings for different launchers (in km/s)
+    const launcherMultipliers = {
+      // Real rockets (high power)
+      falcon9: 7.5,       // Falcon 9 - Reliable, reusable orbital rocket
+      falconHeavy: 8.5,   // Falcon Heavy - More powerful variant
+      starship: 10.0,     // Starship - SpaceX's most powerful rocket
+      atlasV: 7.0,        // Atlas V - Reliable workhorse rocket
+      antares: 6.5,       // Antares - Used for ISS resupply
+      minotaur: 6.0,      // Minotaur - Solid-fuel rocket
+      firefly: 5.5,       // Firefly Alpha - Small satellite launcher
+      
+      // Fun/human methods (low power)
+      handThrow: 0.01,    // Throwing by hand - Impossible for Earth escape
+      slingshot: 0.15,    // Giant slingshot - Fun but impractical
+      trampoline: 0.05,   // Trampoline launch - Would just bounce back
+      jumping: 0.02,      // Jumping really high - Only works on smaller bodies
+      firework: 0.2,      // Firework-style launch - Works for small models
+      poleVault: 0.03,    // Pole vault to space - Would need to be a superhero
+      bungee: 0.12        // Bungee cord slingshot - Extreme G-forces
+    };
+    
+    // Create animated starfield background
+    const canvas = document.getElementById("starsCanvas");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+    
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    
+    function createStars() {
+      stars = [];
+      for (let i = 0; i < 200; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 2,
+          speed: Math.random() * 0.5,
+        });
+      }
+    }
+    
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "white";
+    
+      stars.forEach((star) => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fill();
+    
+        star.y += star.speed;
+        if (star.y > canvas.height) star.y = 0;
+      });
+    
+      requestAnimationFrame(animateStars);
+    }
+    
+    // Initialize starfield
+    resizeCanvas();
+    createStars();
+    animateStars();
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      createStars();
+    });
+    
+    function createSuccessParticles(planet) {
+      const container = document.querySelector(`#${planet}`).parentElement;
+      for (let i = 0; i < 20; i++) {
+        const particle = document.createElement("div");
+        particle.className = "success-particles";
+        particle.style.left = Math.random() * 100 + "%";
+        particle.style.top = Math.random() * 100 + "%";
+        particle.style.fontSize = "20px";
+        particle.textContent = "✨";
+        container.appendChild(particle);
+        setTimeout(() => particle.remove(), 2000);
+      }
+    }
+    
+    // Launch animation and calculation
+    function launch(planet) {
+      const objectType = document.getElementById(`${planet}-object`).value;
+      const launcherType = document.getElementById(`${planet}-launcher`).value;
+      const resultDiv = document.getElementById(`${planet}-result`);
+      const planetContainer = document.querySelector(`#${planet}`).parentElement;
+    
+      // Calculate the starting bottom position
+      const containerHeight = planetContainer.clientHeight;
+      const planetElem = document.getElementById(planet);
+      let startingBottom;
+      
+      if (planet === 'psyche') {
+        // For Psyche, use size-based calculation since it's smaller
+        const modelSize = 150; // Psyche's model size
+        const modelOffset = (containerHeight - modelSize) / 2;
+        startingBottom = containerHeight - modelOffset - 75; // Launch from surface of Psyche
+      } else {
+        // For Earth, use original calculation based on offsetTop
+        startingBottom = containerHeight - planetElem.offsetTop;
+      }
+    
+      // Get object properties
+      const objectData = objectSpeeds[objectType];
+      const launcherPower = launcherMultipliers[launcherType];
+      
+      // Required escape velocity
+      const escapeVelocity = planet === "earth" ? EARTH_ESCAPE_VELOCITY : PSYCHE_ESCAPE_VELOCITY;
+      
+      // Calculate launch speed based on object mass and launcher power
+      // Formula: speed = launcherPower * (baseSpeed / sqrt(mass))
+      const baseSpeed = (objectData.min + objectData.max) / 2; // Use average speed
+      const massEffect = 1 / Math.sqrt(objectData.mass); // Heavier objects are harder to accelerate
+      const launchSpeed = launcherPower * baseSpeed * massEffect;
+      
+      // Calculate percentage of escape velocity achieved
+      const percentOfEscape = (launchSpeed / escapeVelocity) * 100;
+      
+      // Create trail element and set its starting position
+      const trail = document.createElement("div");
+      trail.className = "trail";
+      trail.style.bottom = startingBottom + "px";
+      planetContainer.appendChild(trail);
+    
+      // Create object element and set its starting position
+      const object = document.createElement("div");
+      object.className = "object";
+      object.style.bottom = startingBottom + "px";
+      object.textContent = document.getElementById(`${planet}-object`).selectedOptions[0].text.split(" ")[0];
+      planetContainer.appendChild(object);
+    
+      // Animate launch
+      setTimeout(() => {
+        // Success if launch speed meets or exceeds escape velocity
+        if (launchSpeed >= escapeVelocity) {
+          // Calculate how far beyond escape velocity (for animation speed)
+          const excessFactor = Math.min(launchSpeed / escapeVelocity, 3); // Cap at 3x for animation
+          
+          // Adjust animation speed based on excess velocity
+          object.style.transition = `all ${3/excessFactor}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+          trail.style.transition = `height ${3/excessFactor}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+          
+          object.style.transform = "translateX(-50%) translateY(-1000px) scale(0.1)";
+          object.style.opacity = "0";
+          trail.style.height = "1000px";
+          
+          resultDiv.innerHTML = `
+            🎉 Success! Launch speed: ${launchSpeed.toFixed(2)} km/s<br>
+            Escaped ${planet}'s gravity (${percentOfEscape.toFixed(1)}% of required velocity)!<br>
+            Object: ${objectType} (Mass: ${objectData.mass})<br>
+            Launcher: ${launcherType} (Power: ${launcherPower})
+          `;
+          resultDiv.className = "result success";
+          createSuccessParticles(planet);
+        } else {
+          // Calculate how close to escape velocity (affects height of failed launch)
+          const heightFactor = Math.min(launchSpeed / escapeVelocity, 0.9); // Max 90% of full height
+          const maxHeight = 900 * heightFactor; // Max height for animation
+          
+          object.style.transform = `translateX(-50%) translateY(-${maxHeight}px)`;
+          trail.style.height = `${maxHeight}px`;
+          
+          setTimeout(() => {
+            object.style.transform = "translateX(-50%) translateY(0)";
+            trail.style.height = "0";
+          }, 1000);
+          
+          resultDiv.innerHTML = `
+            ❌ Failed! Launch speed: ${launchSpeed.toFixed(2)} km/s<br>
+            Reached ${percentOfEscape.toFixed(1)}% of required escape velocity (${escapeVelocity} km/s)<br>
+            Object: ${objectType} (Mass: ${objectData.mass})<br>
+            Launcher: ${launcherType} (Power: ${launcherPower})
+          `;
+          resultDiv.className = "result failure";
+        }
+      }, 100);
+    
+      // Clean up animation
+      setTimeout(() => {
+        object.remove();
+        trail.remove();
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

@@ -19,9 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Psyche Page</title>
     <link rel="stylesheet" href="./psycheName.css">
-     <!-- Three.js Scene (Canvas) -->
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-     <script src="https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js"></script>
+     <!-- Three.js Scene removed -->
     <style>
         body {
             margin: 0;
@@ -87,7 +85,6 @@
             <li><a href="javascript:void(0)" id="funFactsLink">Fun Facts</a></li>
 
         </ul>
-        <div id="animation-container"></div>
         <!-- The Container for Detailed Content (Initially Hidden) -->
         <div id="viewportContainer" style="display: none;">
             <button id="closeButton">x Close</button>
@@ -142,113 +139,7 @@
         });
     </script>
 
-    <!-- Three.js Scene -->
-    <script>
-        // Three.js Setup
-        let scene = new THREE.Scene();
-        let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        let renderer = new THREE.WebGLRenderer({ alpha: true });
-
-        renderer.setClearColor(0x000000, 0);
-        let container = document.getElementById("animation-container");
-        if (container) {
-            container.appendChild(renderer.domElement);
-        } else {
-            console.error("Animation container not found!");
-        }
-
-        let light = new THREE.AmbientLight(0xffffff, 2);
-        scene.add(light);
-
-        // Create a fallback sphere in case the model fails to load
-        let fallbackGeometry = new THREE.SphereGeometry(1, 32, 32);
-        let fallbackMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0x888888,
-            roughness: 0.5,
-            metalness: 0.8
-        });
-        let fallbackModel = new THREE.Mesh(fallbackGeometry, fallbackMaterial);
-        fallbackModel.visible = false;
-        scene.add(fallbackModel);
-
-        // Add directional light for better visibility
-        let directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-        directionalLight.position.set(5, 5, 5);
-        scene.add(directionalLight);
-
-        // Animation function that works with either the loaded model or fallback
-        let modelToAnimate = fallbackModel;
-        function animate() {
-            requestAnimationFrame(animate);
-            modelToAnimate.rotation.y += 0.005; // Rotate the model
-            renderer.render(scene, camera);
-        }
-        
-        // Start animation
-        animate();
-
-        // Load .glb Model
-        let loader = new THREE.GLTFLoader();
-        loader.load(
-            "/res/models/psyche_new.glb", 
-            function (gltf) {
-                try {
-                    let model = gltf.scene;
-                    
-                    // Apply a simple material to all meshes if textures fail
-                    model.traverse(function(child) {
-                        if (child.isMesh) {
-                            // Create a backup material
-                            const backupMaterial = new THREE.MeshStandardMaterial({
-                                color: 0x888888,
-                                roughness: 0.5,
-                                metalness: 0.8
-                            });
-                            
-                            // If the mesh has no material or texture issues, use the backup
-                            if (!child.material || child.material.map === null) {
-                                child.material = backupMaterial;
-                            }
-                        }
-                    });
-                    
-                    model.scale.set(0.5, 0.5, 0.5); // scale
-                    model.position.set(0, 0, 0); // position
-                    scene.add(model);
-                    
-                    // Hide fallback and use the loaded model for animation
-                    fallbackModel.visible = false;
-                    modelToAnimate = model;
-                    
-                    console.log("Model loaded successfully");
-                } catch (err) {
-                    console.error("Error processing loaded model:", err);
-                    fallbackModel.visible = true;
-                }
-            },
-            function (xhr) {
-                console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-            },
-            function (error) {
-                console.error("Error loading GLB model:", error);
-                // Show fallback model
-                fallbackModel.visible = true;
-            }
-        );
-
-        // Camera Position
-        camera.position.z = 3;
-       
-        // Show popup
-        function showPopup(id) {
-            document.getElementById(id).style.display = "block";
-        }
-
-        // Hide popup
-        function hidePopup(id) {
-            document.getElementById(id).style.display = "none";
-        }
-    </script>
+    <!-- Three.js Scene and 3D model removed -->
 
 </body>
 </html>

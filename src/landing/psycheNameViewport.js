@@ -110,58 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
         missionLink: "<h2>NASA's Psyche Mission</h2><p>The Psyche spacecraft, designed by NASA, aims to study the asteroid to understand more about planetary cores and the history of the solar system.</p>",
         funFactsLink: "<h2>Fun Facts</h2></h2></h2><ul><li>Psyche is primarily composed of nickel and iron, much like Earth's core.</li><li>It is about 226 kilometers (140 miles) in diameter.</li><li>Its name means 'soul' in Greek mythology.</li></ul>"
     };
-//  POSSIBLE FOR THE GAME 
-const model = document.getElementById("gameModel");
-const openGameButton = document.getElementById("openGameButton");
-const closeModel = document.getElementsByClassName("close")[0];
-
-openGameButton.onclick = function() {
-    model.style.display = "block";
-}
-
-closeModel.onclick = function() {
-    model.style.display = "none";
-}
-
-window.onclick = function(event) {
-    if (event.target == model) {
-        model.style.display = "none";
-    }
-}
-
-// Match the Facts Game Logic
-const draggables = document.querySelectorAll('.draggable');
-const droppables = document.querySelectorAll('.droppable');
-const matchMessage = document.getElementById('match-message');
-
-draggables.forEach(draggable => {
-    draggable.addEventListener('dragstart', () => {
-        draggable.classList.add('dragging');
-    });
-    draggable.addEventListener('dragend', () => {
-        draggable.classList.remove('dragging');
-    });
-});
-
-droppables.forEach(droppable => {
-    droppable.addEventListener('dragover', (e) => {
-        e.preventDefault();
-    });
-    droppable.addEventListener('drop', (e) => {
-        e.preventDefault();
-        const dragging = document.querySelector('.dragging');
-        if (dragging.dataset.match === droppable.dataset.match) {
-            droppable.textContent = dragging.textContent;
-            dragging.remove();
-            if (document.querySelectorAll('.draggable').length === 0) {
-                matchMessage.textContent = 'You matched all the facts correctly!';
-            }
-        } else {
-            matchMessage.textContent = 'Incorrect match. Try again!';
-        }
-    });
-});
-// END GAME 
+ 
     // Show popup when clicking a link
     document.querySelectorAll("ul li a").forEach(link => {
         link.addEventListener("click", function () {

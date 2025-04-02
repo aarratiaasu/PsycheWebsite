@@ -86,7 +86,7 @@
             <li><a href="javascript:void(0)" id="historyLink">Historical Background</a></li>
             <li><a href="javascript:void(0)" id="missionLink">NASA's Psyche Mission</a></li>
             <li><a href="javascript:void(0)" id="funFactsLink">Fun Facts</a></li>
-            <li><a href="javascipt:void(0)" id="gameLink">3D Game</a></li>
+
         </ul>
         <div id="animation-container"></div>
         <!-- The Container for Detailed Content (Initially Hidden) -->
@@ -96,50 +96,13 @@
         </div>
     </main>
 
-
-
-    <button id="openGameButton">3D Game</button>
-
-    <!-- Modal for the 3D Game -->
-    <div id="gameModel" class="model">
-        <div class="model-content">
-            <span class="close">&times;</span>
-            <!-- Content for the 3D game (you can add your 3D game or whatever you need here) -->
-            <h2>3D Asteroid Game</h2>
-            <p>This is where your 3D game or content will go.</p>
-            <!-- You can embed a 3D canvas or interactive game here -->
-            <canvas id="gameCanvas" width="400" height="400"></canvas>
-        </div>
-    </div>
-    
-    <!-- Match the Facts Game -->
-    <div class="game-container">
-        <div class="game" id="match-game">
-            <h2>Match the Facts</h2>
-            <p>Drag the facts to their correct matches!</p>
-    
-            <div id="draggables">
-                <div class="draggable" draggable="true" data-match="fact1">Who discovered Psyche?</div>
-                <div class="draggable" draggable="true" data-match="fact2">Why call it 16 Psyche?</div>
-                <div class="draggable" draggable="true" data-match="fact3">When is NASA Psyche Mission supposed to reach Psyche?</div>
-            </div>
-    
-            <div id="dropzones">
-                <div class="droppable" data-match="fact1">Italian Astronomer Annibale de Gasparis</div>
-                <div class="droppable" data-match="fact2">Psyche was the 16th Asteroid to be discovered</div>
-                <div class="droppable" data-match="fact3">2029</div>
-            </div>
-    
-            <p id="match-message"></p>
-        </div>
-    </div>  
+  
     <!-- Three.js Scene -->
     <script>
         // DOM Content Loaded Event
         document.addEventListener("DOMContentLoaded", function() {
             let contentBox = document.getElementById("content");
             let popup = document.getElementById("viewportContainer");
-            let gameLink = document.getElementbyId("gameLink");
             let closeButton = document.getElementById("closeButton");
 
             // Ensure the elements are available

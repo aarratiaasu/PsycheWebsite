@@ -1,2 +1,0 @@
-# PsycheWebsite
-PsycheWebsite

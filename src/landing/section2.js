@@ -12,9 +12,10 @@
  * - loadSection2(): Creates 3D text mesh to display a message
  */
 
-import { triggerButton3D, clickableModels } from './utils.js';
-import { showPsycheNameViewport } from './psycheNameViewport.js'
+import { createTextMesh, triggerButton3D, clickableModels, applyGlowEffect, makeModelClickable } from './utils.js';
+import { showNameViewport } from './psycheNameViewport.js';
 import * as THREE from 'three';
+import gsap from 'gsap';
 
 export function loadSection2(scene, camera, sections, renderer) {
   const section2Coords = sections[2]?.position;
@@ -34,14 +35,14 @@ export function loadSection2(scene, camera, sections, renderer) {
   return new Promise((resolve, reject) => {
     try {
       const { buttonMesh } = triggerButton3D(
-        "Origin Of A Name",
+        "CLICK HERE TO LEARN HOW PSYCHE GOT ITS NAME!",
         buttonPos,
         rotation,
         0.7,
         scene,
         () => {
-          showPsycheNameViewport();
           console.log("Origin button clicked.");
+          showNameViewport();
         }
       );
 

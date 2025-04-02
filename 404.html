@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resource Not Found</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #f0f0f0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #333;
+    }
+    p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+    a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    #redirect-message {
+      display: none;
+    }
+  </style>
+  <script>
+    // This script handles redirects for missing resources
+    document.addEventListener('DOMContentLoaded', function() {
+      // Extract the requested path from the URL
+      const path = window.location.pathname;
+      
+      // Check if this is a resource path
+      if (path.startsWith('/res/')) {
+        // Show redirect message
+        document.getElementById('redirect-message').style.display = 'block';
+        
+        // Construct the correct path
+        const correctPath = '/PsycheWebsite' + path;
+        
+        // Redirect to the correct resource path
+        setTimeout(function() {
+          window.location.href = correctPath;
+        }, 1000); // Short delay to show the message
+      } else if (path === '/') {
+        // If at the root, redirect to the main page
+        window.location.href = '/PsycheWebsite/';
+      } else {
+        // For other paths, show the 404 message
+        document.getElementById('not-found-message').style.display = 'block';
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Page Not Found</h1>
+    
+    <div id="redirect-message">
+      <p>Redirecting to the correct resource location...</p>
+      <p>If you are not redirected automatically, please <a href="/PsycheWebsite/">click here</a> to go to the homepage.</p>
+    </div>
+    
+    <div id="not-found-message">
+      <p>The page you are looking for does not exist.</p>
+      <p>Please <a href="/PsycheWebsite/">click here</a> to go to the homepage.</p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,661 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-image: url(/img/asteroid.png);
+    background-position: center;
+    background-size: cover;
+    background: linear-gradient(-45deg, #f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144);
+    background-size: 1000% 1000%;
+    animation: gradient 10s ease 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+header {
+    height: 30vh;
+    width: 100%;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+#page-header {
+    width: 100%;
+    text-align: center;
+    margin-top: 1rem;
+    background: none;
+    height: 20vh !important;
+    position: relative;
+    background: linear-gradient(-45deg, #f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144);
+    background-clip:text;
+}
+
+#page-header h1 {
+    color: transparent;
+    font-size: 100px;
+}
+
+#logo {
+    padding-top: 1rem;
+    display: block;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#location-title {
+    width: 40%;
+    margin-top: -15%;
+}
+
+#asteroid {
+    position: absolute;
+    top: 0;
+    min-width: 50%;
+    max-width: 75%;
+    right: 0;
+}
+
+
+#div1{
+    position: relative;
+    text-align: center;
+    padding: 3rem;
+    width: 90%;
+    color: white;
+    background-color: black;
+    border-radius: 1rem;
+}
+
+#div1 p {
+    margin-top: 25%;
+    background: linear-gradient(-45deg, #f9a000, #f47c33);
+    background-clip: text;
+    color: transparent;
+    font-size: 70px;
+    line-height: 1.5;
+}
+
+#div1 p, #div2 p{
+    padding: 3rem;
+    font-weight: 600;
+}
+
+#div2 {
+    width: 100%;
+    margin-top: 2rem;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: black;
+    background-image: url(/img/psyche_surface.jpg);
+    background-size: 30%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-position-y: 40%;
+    color: white;
+    font-size: 50px;
+    border-radius: 5rem;
+
+    h1 {
+        padding-top: 4rem;
+    }
+
+    p {
+        font-size: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 80%;
+        margin-top: 15%;
+        margin-bottom: 5%;
+        line-height: 1.5;
+    }
+}
+
+#sphere {
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    transform: scale(0.75) translateY(40%);
+    overflow-x: visible;
+    overflow-y: visible;
+}
+
+#div2-btn {
+    padding: 3%;
+    margin-bottom: 5%;
+    border-radius: 1rem;
+    cursor: pointer;
+    position: relative;
+    background-color: black;
+    color: white;
+    font-size: large;
+}
+
+#div2-btn:hover {
+    color: #f9a000;
+    font-size: 35px;
+    transition: ease-in-out 1s;
+}
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+#div2-btn::after, #div2-btn::before {
+    
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: conic-gradient(from var(--angle), transparent, #f9a000);
+    /*background-image: conic-gradient(#f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144, #f9a000);*/
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -1;
+    padding: 3px;
+    border-radius: 1rem;
+    animation: 3s spin linear infinite;
+}
+
+#div2-btn::before {
+    filter: blur(1.5rem);
+    opacity: 0.7;
+}
+
+@keyframes spin {
+    from
+    {
+        --angle: 0deg;
+    } 
+    to
+    {
+        --angle:360deg;
+    }
+}
+
+#div3-btn {
+    padding: 3%;
+    margin-top: 3%;
+    margin-bottom: 5%;
+    border-radius: 1rem;
+    cursor: pointer;
+    position: relative;
+    background-color: f9a000;
+    color: #a53f5b;
+    font-size: large;
+}
+
+#div3-btn:hover {
+    color: #f9a000;
+    font-size: 35px;
+    transition: ease-in-out 1s;
+}
+
+#div3-btn::after, #div3-btn::before {
+    
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: conic-gradient(from var(--angle), transparent, #a53f5b);
+    /*background-image: conic-gradient(#f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144, #f9a000);*/
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -1;
+    padding: 6px;
+    border-radius: 1rem;
+    animation: 3s spin reverse infinite;
+}
+
+#div3-btn::before {
+    filter: blur(1.5rem);
+}
+
+#div3 {
+    width: 100%;
+    padding: 5rem;
+    color: black;
+    text-align: center;
+    margin-top: 2%;
+    font-size: 50px;
+    background-image: url(/img/sixteen.svg);
+    background-repeat: no-repeat;
+    background-size: 50%;
+    background-position-y: 65%;
+    background-position-x: -15%;
+
+    p {
+        width: 50%;
+        margin-top: 5%;
+        line-height: 1.5;
+        margin-left: auto;
+        padding: 2rem;
+    }
+}
+
+#grad-text {
+    background: linear-gradient(-45deg, #f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144);
+    background-clip: text;
+    color: transparent;
+}
+
+#div4 {
+    height: 500px;
+    margin-right: 1rem;
+    margin-left: auto;
+    margin-top: 2%;
+    height: 900px;
+    width: 80%;
+    text-align: center;
+    background-color: darkslategray;
+    background-image: url(/img/asteroid-field.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    border-radius: 2rem 4rem;
+    font-size: 50px;
+
+    h1 {
+        margin-top: 3rem;
+    }
+
+    p{
+        margin-top: 5%;
+        line-height: 1.5;
+        width: 80%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+#div4-btn {
+    padding: 3%;
+    margin-top: 10%;
+    margin-bottom: 5%;
+    border-radius: 1rem;
+    cursor: pointer;
+    position: relative;
+    background-color: #483B1B;
+    color: white;
+    font-size: large;
+
+}
+
+#div4-btn:hover {
+    color: #f9a000;
+    font-size: 35px;
+    transition: ease-in-out 1s;
+}
+
+#div4-btn::after, #div4-btn::before {
+    
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: conic-gradient(from var(--angle), transparent, #f9a000, #592651, transparent);
+    /*background-image: conic-gradient(#f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144, #f9a000);*/
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -1;
+    padding: 6px;
+    border-radius: 1rem;
+    animation: 3s spin reverse infinite;
+}
+
+#div4-btn::before {
+    filter: blur(1.5rem);
+}
+
+#div5 {
+    position: relative; 
+    background-color: black; 
+    color: white;
+    margin-top: 2%;
+    width: 80%;
+    margin-left: 1rem;
+    margin-right: auto;
+    text-align: center;
+    font-size: 50px;
+    z-index: 1; 
+    border-radius: 11rem;
+
+    h1 {
+        margin-top: 3rem;
+    }
+
+    p {
+        margin-top: 10%;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+#div5::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(/img/sun-clock.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: -1; 
+}
+
+#div5-btn {
+    padding: 3%;
+    margin-top: 15%;
+    margin-bottom: 5%;
+    border-radius: 1rem;
+    cursor: pointer;
+    position: relative;
+    background-color: black;
+    color: white;
+    font-size: large;
+}
+
+#div5-btn:hover {
+    color: blue;
+    font-size: 35px;
+    transition: ease-in-out 1s;
+}
+
+#div5-btn::after, #div5-btn::before {
+    
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: conic-gradient(from var(--angle), transparent 30%, blue);
+    /*background-image: conic-gradient(#f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144, #f9a000);*/
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -1;
+    padding: 6px;
+    border-radius: 1rem;
+    animation: 3s spin reverse infinite;
+}
+
+#div5-btn::before {
+    filter: blur(1.5rem);
+}
+
+
+#div6 {
+    position: relative; 
+    color: #95d6dc;
+    text-shadow: 3px 3px black;
+    margin-top: 2%;
+    width: 70%;
+    margin-left: auto;
+    margin-right: 1rem;
+    margin-left: auto;
+    text-align: center;
+    font-size: 50px;
+    z-index: 1; 
+
+    h1 {
+        margin-top: 3rem;
+    }
+
+    p {
+        width: 80%;
+        margin-top: 5%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+#div6::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(/img/temp-psyche.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 2rem;
+    opacity: 0.9;
+    z-index: -1; 
+}
+
+#div6-btn {
+    padding: 3%;
+    margin-top: 15%;
+    margin-bottom: 5%;
+    border-radius: 1rem;
+    cursor: pointer;
+    position: relative;
+    background-color: black;
+    color: #95d6dc;
+    font-size: large;
+}
+
+#div6-btn:hover {
+    color: #95d6dc;
+    font-size: 35px;
+    transition: ease-in-out 1s;
+}
+
+#div6-btn::after, #div6-btn::before {
+    
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: conic-gradient(white, #95d6dc, white);
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -1;
+    padding: 6px;
+    border-radius: 1rem;
+    animation: 3s spin reverse infinite;
+}
+
+#div6-btn::before {
+    filter: blur(1.5rem);
+}
+
+#div7 {
+    height: 800px;
+    position: relative;
+    margin-top: 2%;
+    width: 70%;
+    margin-left: 1rem;
+    margin-right: auto;
+    font-size: 50px;
+    text-align: center;
+    border-radius: 3rem;
+    color: white;
+    
+
+    h1 {
+        margin-top: 3rem;
+    }
+
+    p {
+        margin-top: 5%;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.5;
+    }
+}
+
+
+
+#div7::before {
+    background-color: black;
+    background-image: url(/img/lift-car.svg);
+    background-repeat: no-repeat;
+    background-position-x: 5%;
+    background-position-y: 18rem;
+    border-radius: 1rem 1rem 9rem 9rem;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; 
+}
+
+
+#div7-btn {
+    padding: 3%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    border-radius: 1rem;
+    cursor: pointer;
+    position: relative;
+    background-color: black;
+    color: white;
+    font-size: large;
+    grid-row: 3;
+}
+
+#div7-btn:hover {
+    color: green;
+    font-size: 35px;
+    transition: ease-in-out 1s;
+}
+
+#div7-btn::after, #div7-btn::before {
+    
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: conic-gradient(from var(--angle), transparent 1%, green);
+    /*background-image: conic-gradient(#f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144, #f9a000);*/
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -1;
+    padding: 6px;
+    border-radius: 1rem;
+    animation: 2s spin infinite;
+}
+
+#div7-btn::before {
+    filter: blur(1.5rem);
+}
+
+#div8 {
+    position: relative; 
+    color: rgb(184, 145, 73);
+    text-shadow: black -5px -5px 8px;
+    margin-top: 2%;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    border-radius: 3rem;
+    font-size: 50px;
+    z-index: 1; 
+
+    h1 {
+        margin-top: 3rem;
+    }
+
+    p {
+        width: 80%;
+        margin-top: 5%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+#div8::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(/img/psyche.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 3rem;
+    opacity: 0.8;
+    z-index: -1; 
+}
+
+#div8-btn {
+    padding: 3%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    border-radius: 1rem;
+    cursor: pointer;
+    position: relative;
+    background-color: black;
+    color: rgb(184, 145, 73);
+    font-size: large;
+    grid-row: 3;
+}
+
+#div8-btn:hover {
+    color: rgb(184, 145, 73);
+    font-size: 35px;
+    transition: ease-in-out 1s;
+}
+
+#div8-btn::after, #div8-btn::before {
+    
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: conic-gradient(from var(--angle), transparent 1%, rgb(184, 145, 73));
+    /*background-image: conic-gradient(#f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144, #f9a000);*/
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -1;
+    padding: 6px;
+    border-radius: 1rem;
+    animation: 2s spin infinite;
+}
+
+#div8-btn::before {
+    filter: blur(1.5rem);
+}
+
+footer {
+    margin-top: 3%;
+    height: 30vh;
+    width: 100%;
+    background: linear-gradient(-45deg, #f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144);
+}

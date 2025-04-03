@@ -62,6 +62,47 @@ header {
     padding-top: 5rem;
 }
 
+#view3D {
+    margin-top: -6.5rem;
+    margin-right: auto;
+    margin-left: 2rem;
+    background: linear-gradient(-45deg, #f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144);
+    background-clip:text;
+}
+
+#view3D-btn {
+    padding: 5%;
+    width: 10rem;
+    margin-bottom: 5%;
+    border-radius: 1rem;
+    cursor: pointer;
+    position: relative;
+    /*color: #f9a000;
+    background: linear-gradient(-45deg, #a53f5b, #592651, #302144);*/
+    font-size: 1.25rem;
+
+    background-color: #333; 
+    color: orange; 
+}
+
+#view3D-btn::after, #view3D-btn::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: #007bff 0.3rem solid;
+    /* background-image: conic-gradient(from var(--angle), transparent, transparent, #007bff); */
+    /* background-image: conic-gradient(from var(--angle), transparent, transparent, #f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144, #f9a000); */
+    /*background-image: conic-gradient(#f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144, #f9a000);*/
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -1;
+    /* padding: 0.35rem; */
+    border-radius: 1rem;
+    animation: 3s spin linear infinite;
+}
+
 #logo {
     padding-top: 1rem;
     display: block;
@@ -119,7 +160,7 @@ header {
     margin-right: auto;
     margin-left: auto;
     background-color: black;
-    background-image: url(/img/psyche_surface.jpg);
+    background-image: url(../img/psyche-surface.svg);
     background-size: 20%;
     background-repeat: no-repeat;
     background-position: center;
@@ -208,7 +249,7 @@ header {
     text-align: center;
     margin-top: 2%;
     font-size: 70px;
-    background-image: url(/img/sixteen.svg);
+    background-image: url(../img/sixteen.svg);
     background-repeat: no-repeat;
     background-size: 50%;
     background-position-y: 45%;
@@ -283,7 +324,7 @@ header {
     margin-top: 2%;
     text-align: center;
     background-color: darkslategray;
-    background-image: url(/img/asteroid-field.jpg);
+    background-image: url(../img/asteroid-field.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     color: white;
@@ -378,7 +419,7 @@ header {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url(/img/sun-clock.jpg);
+    background: url(../img/sun-clock.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -461,7 +502,7 @@ header {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url(/img/temp-psyche.svg);
+    background: url(../img/temp-psyche.svg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top;
@@ -539,7 +580,7 @@ header {
 
 #div7::before {
     background-color: black;
-    background-image: url(/img/lift-car.svg);
+    background-image: url(../img/lift-car.svg);
     background-repeat: no-repeat;
     background-position-x: 5%;
     background-position-y: 25rem;
@@ -631,7 +672,7 @@ header {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url(/img/psyche.jpg);
+    background-image: url(../img/psyche.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -1350,7 +1391,7 @@ footer {
     *
     */
     #page-header{
-        height: 20vh;
+        height: 25vh;
     }
     #page-header h1 {
         margin-top: -1rem;

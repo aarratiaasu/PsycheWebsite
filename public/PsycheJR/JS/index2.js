@@ -26,6 +26,7 @@ console.log("width of device:", windowWidth, "dpr:", dpr, "trueSize:", trueSize)
 gsap.set([
     "#page-header", 
     "#welcome", 
+    "#view3D",
     "#div2", 
     "#div3", 
     "#div4", 
@@ -52,6 +53,18 @@ tl.fromTo(
 )
 
 tl.fromTo(
+    '#view3D',
+    {
+        opacity: 0
+    },
+    {
+        opacity: 1,
+        duration: 1
+    },
+    "<"
+)
+
+tl.fromTo(
     '#welcome', 
     {opacity: 0}, 
     {
@@ -60,22 +73,6 @@ tl.fromTo(
     }
 )
 
-/* tl.fromTo(
-    'body', 
-    {
-        backgroundColor: 'white'
-    },
-    {
-        background: 'black', 
-        delay: 1, 
-        scrollTrigger: {
-            trigger: '#welcome',
-            start: 'top center',
-            end: '50% center',
-            scrub: true
-        }
-    }
-) */
 
 tl.fromTo(
     '#location-title',

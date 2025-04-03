@@ -76,7 +76,7 @@ header {
     margin-right: auto;
     margin-left: auto;
     margin-top: 25%;
-    background-image: url(/img/psyche-surface.svg);
+    background-image: url(../img/psyche-surface.svg);
     background-color: black;
     background-size: cover;
     background-repeat: no-repeat;
@@ -121,7 +121,7 @@ header {
     margin-left: auto;
     margin-top: 10%;
     border-radius: 3rem;
-    background-image: url(/img/craters.jpg);
+    background-image: url(../img/craters.jpg);
     background-color: black;
     background-size: cover;
     background-repeat: no-repeat;
@@ -147,7 +147,7 @@ header {
     margin-left: auto;
     margin-top: 10%;
     border-radius: 3rem;
-    background-image: url(/img/swiss-map.png);
+    background-image: url(../img/swiss-map.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-color: black;
@@ -347,7 +347,7 @@ footer {
         margin-left: auto;
         margin-top: 1rem;
         border-radius: 3rem;
-        background-image: url(/img/swiss-map.png);
+        background-image: url(../img/swiss-map.png);
         background-position: center;
         background-size: contain;
         background-repeat: no-repeat;
@@ -428,7 +428,7 @@ footer {
         margin-right: auto;
         margin-left: auto;
         margin-top: 25%;
-        background-image: url(/img/psyche-surface.svg);
+        background-image: url(../img/psyche-surface.svg);
         background-color: black;
         background-size: cover;
         background-repeat: no-repeat;
@@ -470,7 +470,7 @@ footer {
         margin-left: auto;
         margin-top: 10%;
         border-radius: 3rem;
-        background-image: url(/img/craters.jpg);
+        background-image: url(../img/craters.jpg);
         background-color: black;
         background-size: cover;
         background-repeat: no-repeat;
@@ -482,7 +482,7 @@ footer {
         margin-left: auto;
         margin-top: 10%;
         border-radius: 3rem;
-        background-image: url(/img/psyche-wide.png);
+        background-image: url(../img/psyche-wide.png);
         background-size: cover;
         background-repeat: no-repeat;
     }
@@ -493,7 +493,7 @@ footer {
         margin-left: auto;
         margin-top: 10%;
         border-radius: 3rem;
-        background-image: url(/img/swiss-map.png);
+        background-image: url(../img/swiss-map.png);
         background-size: cover;
         background-repeat: no-repeat;
         background-color: black;
@@ -595,6 +595,12 @@ footer {
         height: 30vh;
         width: 100%;
         background-color: blue;
+    }
+}
+
+@media (min-width: 1512px) {
+    footer {
+        margin-top: 40rem;
     }
 }
 

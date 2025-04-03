@@ -21,18 +21,26 @@
 import gsap from 'gsap';
 import * as THREE from 'three';
 // import iframe destroy functions to destroy iframes if user navigates away from a section
-import { destroyNameViewport } from './psycheNameViewport.js';
+import { hideNameViewport } from './psycheNameViewport.js';
 import { destroyGamesViewport } from '../../public/games/gamesViewport.js';
-
+import { hideKidsViewport } from '../../public/PsycheJR/kidsViewport.js';
+import { destroyYearViewport } from '../../public/year/yearviewport.js';
+import { destroyWebsiteViewport } from '../../public/website/websiteViewport.js'
+import { destroySurface2Viewport } from '../../public/PsycheJR/surface2Viewport.js'
+import { destroyLocation2Viewport } from '../../public/PsycheJR/location2Viewport.js'
 
 let camera, renderer, sections, currentSection = 1, scrollProgress = 1;
 let isAnimating = false; // Scroll lock flag
 let lastTouchY = 0;
 
 const destroyHandlers = {   // format = sectionNumver: functionName
-  2: destroyNameViewport,
+  2: hideNameViewport,
+  3: hideKidsViewport,
+  4: destroyYearViewport,
+  5: destroyWebsiteViewport,
   6: destroyGamesViewport,
-  // add others =
+  7: destroySurface2Viewport,
+  8: destroyLocation2Viewport
 };
 
 let lastSection = currentSection;

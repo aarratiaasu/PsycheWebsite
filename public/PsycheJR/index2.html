@@ -1,24 +1,51 @@
+<!-- /*
+* index2.html
+* 
+* This index2.html contains the static, non-motion intensive, landing page, which will be utilized on mobile devices and 
+* individuals with sensitivities to motion. This landing page provides an interactive experience for the user, allowing 
+* for navigation through all content.
+* 
+* Class:      SER 403
+* Team:       35
+* Project:    NASA Psyche Mission: Year on Psyche Simulation
+* Authors:    Armando Arratia, Dan McNeil, Jenny Potocki, Josh Anselm, Tyler Brown
+* Date:       1/22/25
+* Revision:   1.0
+*
+
+========================================================================================================
+File Start
+========================================================================================================
+
+-->
+
+<!-- Declarations  -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
     <link rel="stylesheet" href="CSS/index2.css">
     <title>Document</title>
 </head>
+
+<!-- Start of the page body -->
 <body>
+    <!-- Header at the Top of the Page -->
     <header>
         <a href="index2.html"><img src="img/psychelogo.svg" alt="" id="logo"></a> 
     </header>
+    <!-- Divider housing the 3D View Navigation button-->
     <div id="view3D">
         <a href="/index.html"><button id="view3D-btn">Try in 3D</button></a>
     </div>
+    <!-- Main header of the page -->
     <div id="page-header">
         <h1>Welcome to a year on Psyche 16</h1>
     </div>
+    <!-- First content of the page, welcoming the user -->
     <div id="welcome">
-        <img src="img/asteroid.png" alt="" id="asteroid">
+        <img src="img/asteroid.png" alt="Rendered surface image of Psyche" id="asteroid">
         <p id="welcome-p1">
             This interactive experience will entrench you on a journey to learn how life differs on the asteroid 16 Psyche
             to your home planet of Earth. Along the way you will learn the believed origin of the asteroid, how it was named,
@@ -28,8 +55,10 @@
             We hope you enjoy your journey with us!
         </p>
     </div> 
+    <!-- Divider 2 holds the belived origin of Psyche introduction and navigation to corresponding content -->
     <div id="div2">
             <h1>Psyche's believed origin</h1>
+            <!-- Sphere animating Psyche as being a possible core of a planet -->
             <svg id="sphere" width="866px" height="807px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
                 <g transform="matrix(1,0,0,1,-111.772,-552.274)">
                     <g id="bottomRight" transform="matrix(1,0,0,1,-102.707,79.4216)">
@@ -57,6 +86,7 @@
             </p>
             <button id="div2-btn">Learn why this is important</button>
     </div>
+        <!-- Divider 3 holds the Psyche name introduction and navigation to corresponding content -->
     <div id="div3">
         <div id="grad-text">
             <h1>How did Psyche get its name</h1>
@@ -68,6 +98,7 @@
         </p>
         <a href="name.html"><button id="div3-btn">More on Psyche's name</button></a>
     </div>
+        <!-- Divider 4 holds Psyche's location in our solar system introduction and navigation to corresponding content -->
     <div id="div4">
         <h1>Location in our Solar System</h1>
         <p>
@@ -75,6 +106,7 @@
         </p>
         <button id="div4-btn">Psyche's location in more detail</button>
     </div>
+        <!-- Divider 5 holds the introduction into a day on Psyche and navigation to corresponding content -->
     <div id="div5">
         <h1>A day on Psyche</h1>
         <p>
@@ -82,6 +114,7 @@
         </p>
         <a href="year.html"><button id="div5-btn">Learn how your day will differ</button></a>
     </div>
+        <!-- Divider 6 holds the weather on Psyche introduction and navigation to corresponding content -->
     <div id="div6">
         <h1>Weather on Psyche</h1>
         <p>
@@ -89,16 +122,17 @@
         </p>
         <button id="div6-btn">Learn what clothes to pack for your trip</button>
     </div>
+        <!-- Divider 7 holds the physics on Psyche introduction and navigation to corresponding content -->
     <div id="div7">
         <h1>How physics differs on Psyche</h1>
         <p>
-            
             Have you ever seen a strong man competition and wished you too could pick up a car? 
             Well today is your lucky day! If you can lift your dog up on Earth, you most likely
             can lift your family's car up on Psyche! 
         </p>
         <button id="div7-btn">Learn how you can lift a car</button>
     </div>
+        <!-- Divider 8 holds the introduction to Psyche's surface and navigation to corresponding content -->
     <div id="div8">
         <h1>Psyche's Surface</h1>
         <p>
@@ -109,9 +143,14 @@
     </div>
     
     <div id="screen-width-box"></div>
+
+    <!-- Footer Section -->
     <footer>
 
     </footer>
+    <!-- End of Main Page section  -->
+
+    <!-- Associated JavaScript file locations needed for GSAP animations -->
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
     <script src="JS/index2.js"></script>

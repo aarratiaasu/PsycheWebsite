@@ -143,7 +143,7 @@ header {
 *
 */
 
-#welcome, #div2, #div3, #div4, #div5, #div6, #div7, #div8 {
+#welcome, #div3, #div4, #div5, #div8 {
     width: 90%;
 }
 
@@ -170,93 +170,10 @@ header {
     line-height: 1.5;
 }
 
-/** div 2 elements
-*
-*/
-
-#div2 {
-    margin-top: 2rem;
-    text-align: center;
-    margin-right: auto;
-    margin-left: auto;
-    background-color: black;
-    background-image: url(../img/psyche-surface.svg);
-    background-size: 20%;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-position-y: 30%;
-    color: white;
-    font-size: 50px;
-    border-radius: 5rem;
-
-    h1 {
-        padding-top: 4rem;
-        font-size: 120px;
-    }
-
-    p {
-        font-size: 70px;
-        margin-left: auto;
-        margin-right: auto;
-        width: 80%;
-        margin-top: 15%;
-        margin-bottom: 5%;
-        line-height: 1.5;
-    }
-}
-
-#sphere {
-    margin-right: auto;
-    margin-left: auto;
-    margin-top: auto;
-    margin-bottom: auto;
-    transform: scale(0.75) translateY(10%);
-    overflow-x: visible;
-    overflow-y: visible;
-}
-
-#div2-btn {
-    padding: 3%;
-    margin-bottom: 5%;
-    border-radius: 1rem;
-    cursor: pointer;
-    position: relative;
-    background-color: black;
-    color: white;
-    font-size: 40px;
-}
-
-#div2-btn:hover {
-    color: #f9a000;
-    font-size: 55px;
-    transition: ease-in-out 1s;
-}
-
 @property --angle {
     syntax: "<angle>";
     initial-value: 0deg;
     inherits: false;
-}
-
-#div2-btn::after, #div2-btn::before {
-    content: '';
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-image: conic-gradient(from var(--angle), transparent, #f9a000);
-    /*background-image: conic-gradient(#f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144, #f9a000);*/
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
-    z-index: -1;
-    padding: 3px;
-    border-radius: 1rem;
-    animation: 3s spin linear infinite;
-}
-
-#div2-btn::before {
-    filter: blur(1.5rem);
-    opacity: 0.7;
 }
 
 /** div3 elements
@@ -274,7 +191,6 @@ header {
     background-size: 50%;
     background-position-y: 45%;
     background-position-x: -15%;
-    background-color: white;
 
     h1{
         font-size: 120px;
@@ -296,7 +212,6 @@ header {
     border-radius: 1rem;
     cursor: pointer;
     position: relative;
-    background-color: f9a000;
     color: #a53f5b;
     font-size: 40px;
 }
@@ -308,13 +223,11 @@ header {
 }
 
 #div3-btn::after, #div3-btn::before {
-    
     content: '';
     position: absolute;
     height: 100%;
     width: 100%;
     background-image: conic-gradient(from var(--angle), transparent, #a53f5b);
-    /*background-image: conic-gradient(#f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144, #f9a000);*/
     top: 50%;
     left: 50%;
     translate: -50% -50%;
@@ -486,175 +399,6 @@ header {
     filter: blur(1.5rem);
 }
 
-/** div 6 elements
-*
-*/
-
-#div6 {
-    position: relative; 
-    color: #95d6dc;
-    text-shadow: 3px 3px black;
-    margin-top: 2%;
-    margin-left: auto;
-    margin-right: 1rem;
-    margin-left: auto;
-    text-align: center;
-    z-index: 1; 
-
-    h1 {
-        margin-top: 3rem;
-        font-size: 120px;
-    }
-
-    p {
-        width: 80%;
-        margin-top: 20%;
-        margin-right: auto;
-        margin-left: auto;
-        font-size: 70px;
-    }
-}
-
-#div6::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url(../img/temp-psyche.svg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: top;
-    border-radius: 2rem;
-    opacity: 0.9;
-    z-index: -1; 
-}
-
-#div6-btn {
-    padding: 3%;
-    margin-top: 15%;
-    margin-bottom: 5%;
-    border-radius: 1rem;
-    cursor: pointer;
-    position: relative;
-    background-color: black;
-    color: #95d6dc;
-    font-size: 40px;
-}
-
-#div6-btn:hover {
-    color: #95d6dc;
-    font-size: 55px;
-    transition: ease-in-out 1s;
-}
-
-#div6-btn::after, #div6-btn::before {
-    content: '';
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-image: conic-gradient(white, #95d6dc, white);
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
-    z-index: -1;
-    padding: 6px;
-    border-radius: 1rem;
-    animation: 3s spin reverse infinite;
-}
-
-#div6-btn::before {
-    filter: blur(1.5rem);
-}
-
-/** div 7 elements
-*
-*/
-
-#div7 {
-    height: 1400px;
-    position: relative;
-    margin-top: 2%;
-    margin-left: 1rem;
-    margin-right: auto;
-    text-align: center;
-    border-radius: 3rem;
-    color: white;
-    
-
-    h1 {
-        margin-top: 3rem;
-        font-size: 120px;
-    }
-
-    p {
-        margin-top: 5%;
-        width: 80%;
-        margin-left: auto;
-        margin-right: auto;
-        line-height: 1.5;
-        font-size: 70px;
-    }
-}
-
-#div7::before {
-    background-color: black;
-    background-image: url(../img/lift-car.svg);
-    background-repeat: no-repeat;
-    background-position-x: 5%;
-    background-position-y: 25rem;
-    border-radius: 1rem 1rem 9rem 9rem;
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1; 
-}
-
-#div7-btn {
-    padding: 3%;
-    margin-top: 7%;
-    margin-bottom: 5%;
-    margin-left: 15rem;
-    border-radius: 1rem;
-    cursor: pointer;
-    position: relative;
-    background-color: black;
-    color: white;
-    font-size: 40px;
-    grid-row: 3;
-}
-
-#div7-btn:hover {
-    color: green;
-    font-size: 55px;
-    transition: ease-in-out 1s;
-}
-
-#div7-btn::after, #div7-btn::before {
-    
-    content: '';
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-image: conic-gradient(from var(--angle), transparent 1%, green);
-    /*background-image: conic-gradient(#f9a000, #f47c33, #ef5966, #a53f5b, #592651, #302144, #f9a000);*/
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
-    z-index: -1;
-    padding: 6px;
-    border-radius: 1rem;
-    animation: 0.5s spin infinite;
-}
-
-#div7-btn::before {
-    filter: blur(1.5rem);
-}
-
 /** div 8 elements
 *
 */
@@ -692,7 +436,7 @@ header {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url(../img/psyche.jpg);
+    background-image: url(../img/psyche.jpeg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -788,7 +532,7 @@ footer {
     p {
         font-size: 1rem !important;
     }
-    #div2-btn, #div3-btn, #div4-btn, #div5-btn, #div6-btn, #div7-btn, #div8-btn {
+    #div3-btn, #div4-btn, #div5-btn, #div8-btn {
         font-size: 0.75rem;
     } 
 
@@ -819,22 +563,6 @@ footer {
     #welcome p{
         margin-top: 10%;
         font-size: 1rem; 
-    }
-
-    /** div 2 elements
-    *
-    */
-    #div2{
-        background-size: 60%;
-        background-position-y: 45%;
-        border-radius: 1rem;
-        margin-top: 0.5rem;
-    }
-    #div2 p{
-        margin-top: -20rem;
-    }
-    #sphere{
-        transform: scale(0.25) translateY(-100%) translateX(-120%);
     }
 
     /** div 3 elements
@@ -880,43 +608,6 @@ footer {
     }
     #div5 p {
         margin-top: 3rem;
-    }
-
-    /** div 6 elements
-    *
-    */
-    #div6::before{
-        background-size: cover;
-    }
-    #div6 h1{
-        margin-top: 1rem;
-    }
-    #div6 p {
-        margin-top: 3rem;
-    }
-
-    /** div 7 elements
-    *
-    */
-    #div7{
-        height: 700px;
-    }
-    #div7::before{
-        border-radius: 1rem;
-        background-position-x: 5%;
-        background-position-y: 17rem;
-        background-size: 70%;
-    }
-    #div7 h1{
-        margin-top: 1rem;
-    }
-    #div7 p {
-        margin-top: 3rem;
-    }
-    #div7-btn{
-        margin-top: 70% !important;
-        margin-left: auto;
-        margin-right: auto;
     }
 
     /** div 8 elements
@@ -979,22 +670,6 @@ footer {
         margin-top: 10%;
     }
 
-    /** div 2 elements
-    *
-    */
-    #div2{
-        background-size: 60%;
-        background-position-y: 45%;
-        border-radius: 1rem;
-        margin-top: 0.5rem;
-    }
-    #div2 p{
-        margin-top: -10rem;
-    }
-    #sphere{
-        transform: scale(0.5) translateY(-20%) translateX(-20%);
-    }
-
     /** div 3 elements
     *
     */
@@ -1027,32 +702,6 @@ footer {
     }
     #div5 p {
         margin-top: 3rem;
-    }
-
-    /** div 6 elements
-    *
-    */
-    #div6{
-        margin-right: auto;
-        margin-left: auto;
-    }
-
-    /** div 7 elements
-    *
-    */
-    #div7{
-        margin-right: auto;
-        margin-left: auto;
-        
-        height: 600px;
-    }
-    #div7::before{
-        border-radius: 1rem !important;
-        background-position-x: 0rem;
-        background-position-y: 12rem; 
-    }
-    #div7-btn {
-        margin-left: 16rem;
     }
 }
 
@@ -1098,22 +747,6 @@ footer {
         margin-top: 10%;
     }
 
-    /** div 2 elements
-    *
-    */
-    #div2{
-        background-size: 40%;
-        background-position-y: 40%;
-        border-radius: 1rem;
-        margin-top: 0.5rem;
-    }
-    #div2 p{
-        margin-top: -10rem;
-    }
-    #sphere{
-        transform: scale(0.5) translateY(-20%);
-    }
-
     /** div 3 elements
     *
     */
@@ -1131,18 +764,6 @@ footer {
         margin-top: 5rem;
         margin-bottom: 5%;
     }
-
-    /** div 7 elements
-    *
-    */
-    #div7{
-        height: 700px;
-    }
-    #div7::before{
-        background-size: 40%;
-        background-position-x: 5%;
-        background-position-y: 15rem;
-    }
 }
 
 /*1280px*/
@@ -1150,16 +771,16 @@ footer {
     /** multi-element styling
     *
     */
-    #div2-btn, #div3-btn, #div4-btn, #div5-btn, #div6-btn, #div7-btn, #div8-btn {
+    #div3-btn, #div4-btn, #div5-btn, #div8-btn {
         font-size: 20px;
     } 
-    #div2-btn:hover, #div3-btn:hover, #div4-btn:hover, #div5-btn:hover, #div6-btn:hover, #div7-btn:hover, #div8-btn:hover {
+    #div3-btn:hover, #div4-btn:hover, #div5-btn:hover, #div8-btn:hover {
         font-size: 25px;
     } 
-    #div2 h1, #div3 h1, #div4 h1, #div5 h1, #div6 h1, #div7 h1, #div8 h1 {
+    #div3 h1, #div4 h1, #div5 h1, #div8 h1 {
         font-size: 60px;
     } 
-    #div2 p, #div3 p, #div4 p, #div5 p, #div6 p, #div7 p, #div8 p  {
+    #div3 p, #div4 p, #div5 p, #div8 p  {
         font-size: 30px;
     }
 
@@ -1186,17 +807,6 @@ footer {
     #welcome p{
         margin-top: 10%;
         font-size: 40px; 
-    }
-
-    /** div 2 elements
-    *
-    */
-    #div2{
-        background-size: 50%;
-        background-position-y: 35%;
-    }
-    #sphere {
-        transform: scale(0.75) translateY(0%);
     }
 
     /** div 3 elements
@@ -1232,40 +842,6 @@ footer {
         margin-top: 15%;
         width: 80%;
     }
-
-    /** div 6 elements
-    *
-    */
-    #div6{
-        height: 800px;
-    }
-    #div6::before{
-        background-color: black;
-        background-size: contain;
-    }
-    #div6 h1{
-        margin-top: 5%;
-    }
-    #div6 p{
-        background-color: rgba(27, 27, 27, 0.7);
-        margin-top: 15%;
-    }
-    #div6-btn{
-        padding: 3%;
-        margin-top: 8%;
-        margin-bottom: 5%;
-    }
-
-    /** div 7 elements
-    *
-    */
-    #div7{
-        height: 700px;
-    }
-    #div7::before{
-        background-size: 35%;
-        background-position-y: 12rem;
-    }
 }
 
 /*1440px*/
@@ -1280,10 +856,10 @@ footer {
         font-size: 30px !important;
     }
 
-    #div2-btn, #div3-btn, #div4-btn, #div5-btn, #div6-btn, #div7-btn, #div8-btn {
+    #div3-btn, #div4-btn, #div5-btn, #div8-btn {
         font-size: 20px;
     } 
-    #div2-btn:hover, #div3-btn:hover, #div4-btn:hover, #div5-btn:hover, #div6-btn:hover, #div7-btn:hover, #div8-btn:hover {
+    #div3-btn:hover, #div4-btn:hover, #div5-btn:hover, #div8-btn:hover {
         font-size: 25px;
     } 
 
@@ -1313,13 +889,6 @@ footer {
         font-size: 40px !important;
     }
 
-    /** div 2 elements
-    *
-    */
-    #div2 {
-        background-size: 40%;
-        background-position-y: 40%;
-    }
     /** div 3 elements
     *
     */
@@ -1353,40 +922,6 @@ footer {
         margin-top: 15%;
         width: 80%;
     }
-
-    /** div 6 elements
-    *
-    */
-    #div6{
-        height: 800px;
-    }
-    #div6::before{
-        background-color: black;
-        background-size: contain;
-    }
-    #div6 h1{
-        margin-top: 5%;
-    }
-    #div6 p{
-        background-color: rgba(27, 27, 27, 0.7);
-        margin-top: 15%;
-    }
-    #div6-btn{
-        padding: 3%;
-        margin-top: 8%;
-        margin-bottom: 5%;
-    }
-
-    /** div 7 elements
-    *
-    */
-    #div7{
-        height: 700px;
-    }
-    #div7::before{
-        background-size: 25%;
-        background-position-y: 15rem;
-    }
 }
 
 /*Full HD*/
@@ -1400,10 +935,10 @@ footer {
     p{
         font-size: 40px !important;
     }
-    #div2-btn, #div3-btn, #div4-btn, #div5-btn, #div6-btn, #div7-btn, #div8-btn {
+    #div3-btn, #div4-btn, #div5-btn, #div8-btn {
         font-size: 25px;
     } 
-    #div2-btn:hover, #div3-btn:hover, #div4-btn:hover, #div5-btn:hover, #div6-btn:hover, #div7-btn:hover, #div8-btn:hover {
+    #div3-btn:hover, #div4-btn:hover, #div5-btn:hover, #div8-btn:hover {
         font-size: 30px;
     } 
 
@@ -1428,18 +963,6 @@ footer {
     }
     #welcome p{
         margin-top: 10%;
-    }
-
-    /** div 2 elements
-    *
-    */
-    #div2{
-        background-size: 30%;
-        background-position-y: 45%;
-    }
-
-    #sphere {
-        transform: scale(0.75) translateY(30%);
     }
 
     /** div 3 elements
@@ -1475,41 +998,6 @@ footer {
         padding: 3%;
         margin-top: 8%;
         margin-bottom: 5%;
-    }
-
-    /** div 6 elements
-    *
-    */
-    #div6{
-        height: 1100px;
-    }
-    #div6::before{
-        background-color: black;
-        background-size: contain;
-    }
-    #div6 p{
-        background-color: rgba(27, 27, 27, 0.7);
-    }
-    #div6-btn{
-        padding: 3%;
-        margin-top: 8%;
-        margin-bottom: 5%;
-    }
-
-    /** div 7 elements
-    *
-    */
-    #div7{
-        height: 800px;
-    }
-    #div7-btn{
-        padding: 3%;
-        margin-top: 5%;
-        margin-bottom: 5%;
-        margin-left: 5%;
-    }
-    #div7::before{
-        background-position-y: 15rem; 
     }
 
     /** div 8 elements
@@ -1566,47 +1054,6 @@ footer {
     #welcome p {
         padding-top: 1rem;
     }
-
-    /** div 2 elements
-    *
-    */
-    #div2 {
-        background-size: 30%;
-        background-position-y: 40%;
-    }
-    #sphere {
-        transform: scale(1) translateY(20%);
-    }
-
-    /** div3 elements
-    *
-    */
-
-    /** div4 elements
-    *
-    */
-
-    /** div5 elements
-    *
-    */
-
-    /** div6 elements
-    *
-    */
-
-    /** div7 elements
-    *
-    */
-    #div7::before{
-        background-position-y: 15rem;
-    }
-    #div7-btn {
-        margin-left: 20rem;
-    }
-    /** div8 elements
-    *
-    */
-
 }
 
 /*2510px*/
@@ -1614,28 +1061,16 @@ footer {
     /** multi-element styling
     *
     */
-    #div2-btn, #div3-btn, #div4-btn, #div5-btn, #div6-btn, #div7-btn, #div8-btn {
+    #div3-btn, #div4-btn, #div5-btn, #div8-btn {
         font-size: 30px;
     } 
-    #div2-btn:hover, #div3-btn:hover, #div4-btn:hover, #div5-btn:hover, #div6-btn:hover, #div7-btn:hover, #div8-btn:hover {
+    #div3-btn:hover, #div4-btn:hover, #div5-btn:hover, #div8-btn:hover {
         font-size: 40px;
     } 
-    #div2 h1, #div3 h1, #div4 h1, #div5 h1, #div6 h1, #div7 h1, #div8 h1 {
+    #div3 h1, #div4 h1, #div5 h1, #div8 h1 {
         font-size: 80px;
     } 
-    #div2 p, #div3 p, #div4 p, #div5 p, #div6 p, #div7 p, #div8 p  {
+    #div3 p, #div4 p, #div5 p, #div8 p  {
         font-size: 50px;
-    }
-
-    /** div2 elements
-    *
-    */
-    #div2{
-        background-size: 20%;
-        background-position-y: 40%;
-    } 
-
-    #sphere {
-        transform: scale(0.75) translateY(40%);
     }
 }

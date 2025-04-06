@@ -4,9 +4,8 @@
  * This module handles loading the psycheName.html content in an iframe
  * that appears on top of the Three.js scene
  */
-import * as THREE from 'three';
 import gsap from 'gsap';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
 // Keep track of the viewport DOM elements
 let viewportContainer = null;
 let iframe = null;
@@ -151,30 +150,26 @@ document.addEventListener("DOMContentLoaded", function () {
  */
 export function hideNameViewport() {
     if (!viewportContainer) return;
-//    viewportContainer.style.button = "-100%";
-//    viewportContainer.style.opacity = "0";
 
-//    setTimeout(() => {
-//        document.body.removeChild(viewportContainer);
-//        viewportContainer = null;
-//        iframe = null;
-//        closeButton = null;
-//    }, 500);
-//    };
-    // Animate closing
+    // Animation or immediate style change before removal
     gsap.to(viewportContainer, {
         opacity: 0,
         scale: 0.8,
         duration: 0.3,
         ease: "power2.in",
         onComplete: () => {
-            viewportContainer.style.display = 'none';
-            // Reset opacity and scale for next time
-            viewportContainer.style.opacity = 1;
-            viewportContainer.style.transform = 'translate(-50%, -50%) scale(1)';
+            if (iframe) {
+                viewportContainer.removeChild(iframe);
+                iframe = null; // Remove reference to iframe
+            }
+            document.body.removeChild(viewportContainer);
+            viewportContainer = null;
+            closeButton = null;
         }
     });
 }
+
+
 /**
  * Handles keydown events for the viewport
  */

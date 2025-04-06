@@ -172,7 +172,7 @@ ul li:last-child {
     width: 80vh;
     height: 67vh;
     margin: 0 auto;
-    background: url('../res/textures/8k_stars_milky_way.jpg'), black;
+    background: url('res/textures/8k_stars_milky_way.jpg'), black;
     background-position: center;
     border-radius: 10px;
     border: transparent;

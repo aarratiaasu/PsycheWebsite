@@ -111,9 +111,7 @@ export function showYearViewport() {
     // Add scrollbar hiding styles to the document
     addScrollbarHidingStyles(document);
     
-    // Add event listener for close button
-    closeButton.addEventListener('click', hideYearViewport);
-    
+
     // Add event listener for Escape key
     document.addEventListener('keydown', handleKeyDown);
 }
@@ -175,7 +173,7 @@ export function destroyYearViewport() {
         
         closeButton.removeEventListener('click', hideYearViewport);
         document.removeEventListener('keydown', handleKeyDown);
-        document.body.removeChild(viewportContainer);
+        document.body.removeChild('year-viewport-container');
         
         // Reset all references
         viewportContainer = null;

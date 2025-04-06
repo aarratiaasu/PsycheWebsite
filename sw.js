@@ -16,7 +16,11 @@ const REDIRECT_RESOURCES = [
   '/assets/index-Vy6LOWVX.js',
   '/assets/index-rgFOEOuc.css',
   '/assets/psyche_badge-DgbJMAPd.svg',
-  '/assets/viewportspacepic-BMLYPJMw.js'
+  '/assets/viewportspacepic-BMLYPJMw.js',
+  '/assets/index-JOHF8NKl.js',
+  '/assets/index-CpqhUVrE.js',
+  '/dist/assets/index-JOHF8NKl.js',
+  '/dist/assets/index-CpqhUVrE.js'
 ];
 
 // HTML template for 404 page
@@ -131,14 +135,41 @@ self.addEventListener('fetch', event => {
   const path = url.pathname;
   
   // Check if this is a resource that needs to be redirected
-  if (REDIRECT_RESOURCES.includes(path) || path.startsWith('/res/') || path.startsWith('/assets/')) {
+  if (REDIRECT_RESOURCES.includes(path) ||
+      path.startsWith('/res/') ||
+      path.startsWith('/assets/') ||
+      path.startsWith('/dist/') ||
+      path.includes('/assets/') ||
+      path.includes('/res/')) {
     console.log('Service Worker: Redirecting resource', path);
     
     // Get the repository name from the current URL
     const repoPath = self.location.pathname.split('/')[1] ? '/' + self.location.pathname.split('/')[1] : '';
     
+    // Handle different path formats
+    let adjustedPath = path;
+    
+    // If the path starts with ./ (relative path), remove the dot
+    if (adjustedPath.startsWith('./')) {
+      adjustedPath = adjustedPath.substring(1);
+    }
+    
+    // If the path doesn't start with /, add it
+    if (!adjustedPath.startsWith('/')) {
+      adjustedPath = '/' + adjustedPath;
+    }
+    
+    // If the path includes /dist/ but we're in production, remove the /dist part
+    // This handles the case where resources are in a dist folder during development
+    // but are at the root in production (GitHub Pages)
+    if (adjustedPath.includes('/dist/') && repoPath) {
+      adjustedPath = adjustedPath.replace('/dist', '');
+    }
+    
     // Construct the correct URL
-    const correctUrl = new URL(repoPath + path, url.origin);
+    const correctUrl = new URL(repoPath + adjustedPath, url.origin);
+    
+    console.log('Service Worker: Redirecting from', path, 'to', correctUrl.href);
     
     // Fetch the resource from the correct location
     event.respondWith(

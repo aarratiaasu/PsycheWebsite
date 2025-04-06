@@ -22428,7 +22428,7 @@ between Earth and Psyche`, s, o, 0.7, r, () => {
     const i = document.createElement("h2");
     i.textContent = "Psyche Mission Website", Hs(i);
     const s = document.createElement("div");
-    s.style.display = "flex", s.style.alignItems = "center", lo = document.createElement("button"), lo.textContent = "\u2715", Gs(lo), s.appendChild(lo), n.appendChild(i), n.appendChild(s), ot.appendChild(n), Bi = document.createElement("iframe"), Bi.src = "./../../public/website/index.html", Ws(Bi, {
+    s.style.display = "flex", s.style.alignItems = "center", lo = document.createElement("button"), lo.textContent = "\u2715", Gs(lo), s.appendChild(lo), n.appendChild(i), n.appendChild(s), ot.appendChild(n), Bi = document.createElement("iframe"), Bi.src = "./PsycheJR/index2.html", Ws(Bi, {
       backgroundColor: "rgba(0, 0, 0, 0.0)"
     }), Xs(document), Bi.onerror = () => {
       console.error("Failed to load website iframe content");

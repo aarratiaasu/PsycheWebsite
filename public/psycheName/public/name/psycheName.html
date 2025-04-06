@@ -85,14 +85,94 @@
             <li><a href="javascript:void(0)" id="funFactsLink">Fun Facts</a></li>
 
         </ul>
+        <!-- for the quiz -->
+        <button id="quizButton" style="margin: 20px;">Test your knowledge!</button>
         <!-- The Container for Detailed Content (Initially Hidden) -->
         <div id="viewportContainer" style="display: none;">
             <button id="closeButton">x Close</button>
             <div id="content"></div>
         </div>
+        <div class="popup" id="quizPopup" style="display: none;">
+            <span class="close-btn" id="quizClose">x</span>
+            <h2>Welcome to the Psyche Quiz!</h2>
+            <div id="quizContent"></div>
+            <button id="nextQuestion">Next</button>
+        </div>
     </main>
 
-  
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const quizButton = document.getElementById("quizButton");
+            const quizPopup = document.getElementById("quizPopup");
+            const quizClose = document.getElementById("quizClose");
+            const quizContent = document.getElementById("quizContent");
+            const nextButton = document.getElementById("nextQuestion");
+    
+            const quiz = [
+                {
+                    question: "What is Psyche primarily made of?",
+                    choices: ["Rock and Ice", "Nickel and Iron", "Carbon", "Gas"],
+                    answer: "Nickel and Iron"
+                },
+                {
+                    question: "What does the name 'Psyche' mean in Greek mythology?",
+                    choices: ["Star", "Soul", "Warrior", "Hope"],
+                    answer: "Soul"
+                },
+                {
+                    question: "Which organization is conducting the Psyche mission?",
+                    choices: ["SpaceX", "NASA", "ESA", "Blue Origin"],
+                    answer: "NASA"
+                }
+            ];
+    
+            let currentQuestion = 0;
+    
+            function loadQuestion() {
+                const q = quiz[currentQuestion];
+                quizContent.innerHTML = `<p><strong>${q.question}</strong></p>` + 
+                    q.choices.map(choice => 
+                        `<button class="quiz-option" data-answer="${choice}">${choice}</button>`
+                    ).join("<br><br>");
+            }
+    
+            quizButton.addEventListener("click", () => {
+                currentQuestion = 0;
+                quizPopup.style.display = "block";
+                loadQuestion();
+            });
+    
+            quizClose.addEventListener("click", () => {
+                quizPopup.style.display = "none";
+            });
+    
+            nextButton.addEventListener("click", () => {
+                currentQuestion++;
+                if (currentQuestion < quiz.length) {
+                    loadQuestion();
+                } else {
+                    quizContent.innerHTML = "<h3>🎉 Great job! You finished the quiz.</h3>";
+                    nextButton.style.display = "none";
+                }
+            });
+    
+            document.addEventListener("click", (e) => {
+                if (e.target.classList.contains("quiz-option")) {
+                    const selected = e.target.dataset.answer;
+                    const correct = quiz[currentQuestion].answer;
+                    if (selected === correct) {
+                        e.target.style.backgroundColor = "lightgreen";
+                    } else {
+                        e.target.style.backgroundColor = "tomato";
+                    }
+                    // Disable other buttons
+                    document.querySelectorAll(".quiz-option").forEach(btn => {
+                        btn.disabled = true;
+                    });
+                }
+            });
+        });
+    </script>
     <!-- Three.js Scene -->
     <script>
         // DOM Content Loaded Event

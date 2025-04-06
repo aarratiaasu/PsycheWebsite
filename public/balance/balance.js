@@ -348,68 +348,145 @@ document.addEventListener('DOMContentLoaded', () => {
     function getSideAtPosition(x) {
         return x < balance.x ? 'left' : 'right';
     }
-    // EVENT HANDLERS
-    canvas.addEventListener('mousedown', (e) => {
+
+    // --- Event Handling ---
+
+    // Helper to get coordinates from either mouse or touch event
+    function getEventCoordinates(e) {
         const rect = canvas.getBoundingClientRect();
-        mouseX = e.clientX - rect.left;
-        mouseY = e.clientY - rect.top;
+        let clientX, clientY;
+        if (e.touches && e.touches.length > 0) {
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
+        } else if (e.changedTouches && e.changedTouches.length > 0) {
+            // Use changedTouches for touchend
+            clientX = e.changedTouches[0].clientX;
+            clientY = e.changedTouches[0].clientY;
+        } else {
+            clientX = e.clientX;
+            clientY = e.clientY;
+        }
+        return {
+            x: clientX - rect.left,
+            y: clientY - rect.top
+        };
+    }
+
+    // --- Canvas Dragging (Existing Objects) ---
+    function handleDragStart(e) {
+        const coords = getEventCoordinates(e);
+        mouseX = coords.x;
+        mouseY = coords.y;
         const clickedObject = getObjectAtPosition(mouseX, mouseY);
         if (clickedObject) {
+            e.preventDefault(); // Prevent default actions like text selection or scrolling
             draggedObject = clickedObject;
             dragOffsetX = mouseX - clickedObject.x;
             dragOffsetY = mouseY - clickedObject.y;
-            removeObject(clickedObject);
+            removeObject(clickedObject); // Remove from balance temporarily
         }
-    });
-    document.addEventListener('mousemove', (e) => {
-        const rect = canvas.getBoundingClientRect();
-        mouseX = e.clientX - rect.left;
-        mouseY = e.clientY - rect.top;
+    }
+
+    function handleDragMove(e) {
         if (draggedObject) {
+            e.preventDefault(); // Prevent scrolling during drag
+            const coords = getEventCoordinates(e);
+            mouseX = coords.x;
+            mouseY = coords.y;
             draggedObject.x = mouseX - dragOffsetX;
             draggedObject.y = mouseY - dragOffsetY;
         }
-    });
-    document.addEventListener('mouseup', (e) => {
+    }
+
+    function handleDragEnd(e) {
         if (draggedObject) {
-            const rect = canvas.getBoundingClientRect();
-            const canvasX = e.clientX - rect.left;
-            const canvasY = e.clientY - rect.top;
+            // Use changedTouches for touchend coordinates
+            const coords = getEventCoordinates(e);
+            const canvasX = coords.x;
+            const canvasY = coords.y;
+            // Check if dropped within canvas bounds
             if (canvasX >= 0 && canvasX <= canvas.width &&
                 canvasY >= 0 && canvasY <= canvas.height) {
+
                 const side = getSideAtPosition(canvasX);
-                const isInValidY = canvasY > balance.y - 100 && canvasY < balance.y + 100;
-                const isInValidX = Math.abs(canvasX - balance.x) < balance.width / 2 + 50;
-                if (isInValidY && isInValidX) {
+                // Define a reasonable drop zone around the balance beam
+                const dropZoneYMin = balance.y - balance.height * 2 - draggedObject.size; // Above beam
+                const dropZoneYMax = balance.y + balance.height * 2 + draggedObject.size; // Below beam
+                const dropZoneXMin = balance.x - balance.width / 2 - draggedObject.size;
+                const dropZoneXMax = balance.x + balance.width / 2 + draggedObject.size;
+
+                // Check if dropped within the valid drop zone near the beam
+                if (canvasY > dropZoneYMin && canvasY < dropZoneYMax &&
+                    canvasX > dropZoneXMin && canvasX < dropZoneXMax) {
+
+                    // Snap to a position relative to the beam center
+                    const relativeX = canvasX - balance.x;
+                    const snappedX = balance.x + Math.max(Math.min(relativeX, balance.width / 2 - draggedObject.size / 2), -balance.width / 2 + draggedObject.size / 2);
+                    const snappedY = balance.y - balance.height / 2 - draggedObject.size / 2 - 5; // Place slightly above the beam
+
+                    draggedObject.x = snappedX;
+                    draggedObject.y = snappedY;
                     draggedObject.side = side;
-                    objects[side].push(draggedObject);
+                    objects[side].push(draggedObject); // Add back to the correct side
+
                     if (leftWeightEnabled || rightWeightEnabled) {
-                        calculateWeights();
+                        calculateWeights(); // Recalculate if needed
                     }
                 }
+                // If not dropped in a valid zone, it disappears (or handle differently if needed)
             }
-            draggedObject = null;
+            // Else: dropped outside canvas, object disappears
+
+            draggedObject = null; // End drag operation
         }
-    });
-    // Button "drag" creation
+    }
+
+    // Attach mouse listeners
+    canvas.addEventListener('mousedown', handleDragStart);
+    document.addEventListener('mousemove', handleDragMove);
+    document.addEventListener('mouseup', handleDragEnd);
+
+    // Attach touch listeners
+    canvas.addEventListener('touchstart', handleDragStart, { passive: false });
+    document.addEventListener('touchmove', handleDragMove, { passive: false });
+    document.addEventListener('touchend', handleDragEnd);
+
+
+    // --- Button Dragging (New Objects) ---
+    function handleButtonDragStart(e, btn) {
+        e.preventDefault(); // Prevent default button actions and scrolling
+        const mass = parseFloat(btn.dataset.mass);
+        const coords = getEventCoordinates(e);
+        const canvasX = coords.x;
+        const canvasY = coords.y;
+        // Create the object slightly offset from the touch/mouse point for better visibility
+        draggedObject = new BalanceObject(
+            canvasX + 10, // Offset slightly
+            canvasY + 10, // Offset slightly
+            mass,
+            getSideAtPosition(canvasX) // Initial side guess
+        );
+        // Set offset relative to the object's center for smoother dragging
+        dragOffsetX = 10 + draggedObject.size / 2;
+        dragOffsetY = 10 + draggedObject.size / 2;
+
+        // Immediately update position based on offset
+        draggedObject.x = canvasX - dragOffsetX;
+        draggedObject.y = canvasY - dragOffsetY;
+    }
+
     document.querySelectorAll('.object-btn').forEach(btn => {
-        btn.addEventListener('mousedown', (e) => {
-            e.preventDefault();
-            const mass = parseFloat(btn.dataset.mass);
-            const rect = canvas.getBoundingClientRect();
-            const canvasX = e.clientX - rect.left;
-            const canvasY = e.clientY - rect.top;
-            draggedObject = new BalanceObject(
-                canvasX,
-                canvasY,
-                mass,
-                getSideAtPosition(canvasX)
-            );
-            dragOffsetX = 0;
-            dragOffsetY = 0;
-        });
+        // Mouse listener for buttons
+        btn.addEventListener('mousedown', (e) => handleButtonDragStart(e, btn));
+
+        // Touch listener for buttons
+        btn.addEventListener('touchstart', (e) => handleButtonDragStart(e, btn), { passive: false });
     });
-    // Clear all
+
+    // Note: The existing document-level mousemove/touchmove and mouseup/touchend listeners
+    // will handle the movement and dropping of objects created from buttons.
+
+    // --- Other Event Listeners ---
     clearBtn.addEventListener('click', () => {
         objects.left = [];
         objects.right = [];

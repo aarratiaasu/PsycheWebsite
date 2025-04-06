@@ -86,7 +86,7 @@ export function showYearViewport() {
     
     // Create iframe to load the year.html content
     iframe = document.createElement('iframe');
-    iframe.src = './year/year.html';  // Updated path to point to the year.html file in public/year
+    iframe.src = './../../public/year/year.html';  // Updated path to point to the year.html file in public/year
     applyIframeStyles(iframe, {
         backgroundColor: '#222'
     });

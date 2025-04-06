@@ -378,7 +378,7 @@ export function handleReturnToGames(iframe, title) {
         
         // Load the games HTML in the iframe
         if (iframe) {
-            iframe.src = './games/games.html';
+            iframe.src = './../../public/games/games.html';
             console.log("Loading games HTML in iframe");
         }
     };
@@ -421,7 +421,7 @@ export function replaceWithGamesHTML() {
     }
     
     // Change the iframe src to the games HTML
-    iframe.src = './games/games.html';
+    iframe.src = './../../public/games/games.html';
     console.log("Loading games HTML in viewport:", viewport.id);
     
     // Return a function that can be used as an event handler
@@ -439,7 +439,7 @@ export function replaceWithGamesHTML() {
         }
         
         // Change the iframe src to the games HTML
-        iframe.src = './games/games.html';
+        iframe.src = './../../public/games/games.html';
         console.log("Loading games HTML in viewport:", viewport.id);
     };
 }

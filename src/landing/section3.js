@@ -8,7 +8,7 @@
 import * as THREE from 'three';
 import { getCurrentSection } from './sectionTracking.js';
 import { triggerButton3D, clickableModels, applyGlowEffect } from './utils.js';
-import { showKidsViewport, hideKidsViewport } from '../../public/PsycheJR/kidsViewport.js';
+import { showKidsViewport, hideKidsViewport } from './../../public/PsycheJR/kidsViewport.js';
 
 //let yearButton;
 //let buttonLabel;

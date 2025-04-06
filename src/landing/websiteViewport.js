@@ -151,7 +151,7 @@ export function showWebsiteViewport() {
     
     // Create iframe to load the website content
     iframe = document.createElement('iframe');
-    iframe.src = '/website/index.html';
+    iframe.src = './../../public/website/index.html';
     ViewportStyling.applyIframeStyles(iframe, {
         backgroundColor: 'rgba(0, 0, 0, 0.0)' // Completely transparent background
     });

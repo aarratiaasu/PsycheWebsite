@@ -12,7 +12,11 @@ const REDIRECT_RESOURCES = [
   '/res/font/Roboto_Regular.json',
   '/res/models/nasaLogo.glb',
   '/res/models/navigation_pin.glb',
-  '/res/models/arcade_controller.glb'
+  '/res/models/arcade_controller.glb',
+  '/assets/index-Vy6LOWVX.js',
+  '/assets/index-rgFOEOuc.css',
+  '/assets/psyche_badge-DgbJMAPd.svg',
+  '/assets/viewportspacepic-BMLYPJMw.js'
 ];
 
 // Install event - cache basic resources
@@ -37,7 +41,7 @@ self.addEventListener('fetch', event => {
   const path = url.pathname;
   
   // Check if this is a resource that needs to be redirected
-  if (REDIRECT_RESOURCES.includes(path) || path.startsWith('/res/')) {
+  if (REDIRECT_RESOURCES.includes(path) || path.startsWith('/res/') || path.startsWith('/assets/')) {
     console.log('Service Worker: Redirecting resource', path);
     
     // Get the repository name from the current URL

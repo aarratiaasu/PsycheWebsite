@@ -44,8 +44,8 @@
       // Extract the requested path from the URL
       const path = window.location.pathname;
       
-      // Check if this is a resource path
-      if (path.startsWith('/res/')) {
+      // Check if this is a resource or asset path
+      if (path.startsWith('/res/') || path.startsWith('/assets/')) {
         // Show redirect message
         document.getElementById('redirect-message').style.display = 'block';
         

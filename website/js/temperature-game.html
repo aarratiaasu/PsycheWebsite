@@ -206,6 +206,89 @@
         .glow-effect {
             animation: glow 2s infinite;
         }
+
+        /* Added styles from landing page */
+        .landing-container { /* Renamed from .container to avoid conflicts */
+            background-color: rgba(42, 67, 101, 0.8);
+            padding: 40px 60px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            max-width: 600px;
+            position: relative; /* Changed from absolute positioning */
+            overflow: hidden;
+            margin: 20px auto; /* Center it */
+            text-align: center; /* Added */
+            color: #e0e0e0; /* Added */
+            animation: fadeIn 0.8s ease-out; /* Added */
+        }
+
+        .landing-graphic { /* Renamed */
+            position: absolute;
+            bottom: -30px;
+            right: -40px;
+            width: 150px; /* Smaller */
+            opacity: 0.6;
+            pointer-events: none;
+            transform: rotate(15deg);
+        }
+
+        .landing-graphic-2 { /* Renamed */
+            position: absolute;
+            top: -20px;
+            left: -30px;
+            width: 130px; /* Smaller */
+            opacity: 0.5;
+            pointer-events: none;
+            transform: rotate(-10deg);
+        }
+
+        .landing-container h1 { /* Scoped */
+            color: #f0a500;
+            font-size: 2.5em; /* Adjusted */
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .landing-container p { /* Scoped */
+            font-size: 1.1em; /* Adjusted */
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .play-button { /* Keep name, add ID later */
+            display: inline-block;
+            background-color: #f0a500;
+            color: #1a1a2e;
+            padding: 15px 30px;
+            font-size: 1.3em;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .play-button:hover {
+            background-color: #ffbf40;
+            transform: translateY(-2px);
+        }
+
+        .play-button:active {
+            transform: translateY(1px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Added rule to hide game initially */
+        .game-container, .game-info {
+            display: none;
+        }
+        /* End added styles */
     </style>
 </head>
 <body>
@@ -213,7 +296,17 @@
         <h1>PSYCHE TEMPERATURE CONTROL GAME</h1>
         <p class="subtitle">Navigate through extreme temperature zones on Psyche's surface</p>
     </header>
-    
+
+    <!-- Added Landing Page Content -->
+    <div class="landing-container" id="landingContainer">
+        <h1>Calling All Space Explorers!</h1>
+        <p>Hey brave astronaut! Guide your rover across Psyche's mysterious surface, dodging hazards and asteroids along the way. Are you ready for this exciting mission? Let's blast off!</p>
+        <a href="#" class="play-button" id="startButton">Start Your Mission!</a>
+        <img src="../../../img/PsycheTransparent.png" alt="Psyche Asteroid Graphic" class="landing-graphic">
+        <img src="../../../img/PsycheTransparent.png" alt="Psyche Asteroid Graphic 2" class="landing-graphic-2">
+    </div>
+    <!-- End Landing Page Content -->
+
     <div class="game-container">
         <canvas id="gameCanvas"></canvas>
         <div id="game-menu">
@@ -243,10 +336,35 @@
     
     <script src="../../games/temperature-game.js"></script>
     <script>
-        // Initialize the game when the page loads
-        window.addEventListener('load', function() {
-            showMainMenu();
+        const landingContainer = document.getElementById('landingContainer');
+        const startButton = document.getElementById('startButton');
+        const gameContainer = document.querySelector('.game-container');
+        const gameInfo = document.querySelector('.game-info');
+
+        // Function to show the actual game menu (originally called on load)
+        // Assumes showMainMenu() is defined in temperature-game.js and makes the menu visible
+        function displayGameMenu() {
+             if (typeof showMainMenu === 'function') {
+                 showMainMenu(); // This should display the #game-menu div
+             } else {
+                 console.error('showMainMenu function not found. Cannot display game menu.');
+                 // Fallback: maybe just make the game menu div visible directly?
+                 const gameMenu = document.getElementById('game-menu');
+                 if(gameMenu) gameMenu.style.display = 'block';
+             }
+        }
+
+        // Add event listener for the landing page button
+        startButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            if (landingContainer) landingContainer.style.display = 'none'; // Hide landing page
+            if (gameContainer) gameContainer.style.display = 'block'; // Show game container
+            if (gameInfo) gameInfo.style.display = 'flex'; // Show game info (original was flex)
+            displayGameMenu(); // Show the game's own menu (Easy, Medium, Hard)
         });
+
+        // Note: No automatic call to showMainMenu() on load anymore
+        // The game starts only when the "Start Your Mission!" button is clicked.
     </script>
 </body>
 </html>

@@ -116,7 +116,7 @@ export function onScroll(event) {
   if (isAnimating) return;
 
   const direction = event.deltaY > 0 ? 1 : -1;
-  const newSection = currentSection + direction;
+  let newSection = currentSection + direction;
   console.log("Swipe Direction: ", direction);
 
   if (newSection > 8) {

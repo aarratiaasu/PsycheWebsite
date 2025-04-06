@@ -3,7 +3,8 @@
 // This service worker intercepts requests for resources and redirects them to the correct location
 
 const CACHE_NAME = 'psyche-website-cache-v1';
-const BASE_URL = '/PsycheWebsite';
+// Dynamically determine the base URL based on the repository name
+const BASE_URL = location.pathname.split('/')[1] ? '/' + location.pathname.split('/')[1] : '';
 
 // Resources that need to be redirected
 const REDIRECT_RESOURCES = [
@@ -39,8 +40,11 @@ self.addEventListener('fetch', event => {
   if (REDIRECT_RESOURCES.includes(path) || path.startsWith('/res/')) {
     console.log('Service Worker: Redirecting resource', path);
     
+    // Get the repository name from the current URL
+    const repoPath = self.location.pathname.split('/')[1] ? '/' + self.location.pathname.split('/')[1] : '';
+    
     // Construct the correct URL
-    const correctUrl = new URL(BASE_URL + path, url.origin);
+    const correctUrl = new URL(repoPath + path, url.origin);
     
     // Fetch the resource from the correct location
     event.respondWith(

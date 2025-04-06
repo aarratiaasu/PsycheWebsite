@@ -169,27 +169,37 @@ function handleKeyDown(e) {
 /**
  * Removes the viewport completely
  */
+import gsap from 'gsap';
+
 export function destroyYearViewport() {
     if (viewportContainer) {
-        // Kill any active animations
         if (pulseAnimation) {
             pulseAnimation.kill();
         }
-        
-        closeButton.removeEventListener('click', hideYearViewport);
-        document.removeEventListener('keydown', handleKeyDown);
-        document.body.removeChild(viewportContainer);
-        
-        // Reset all references
-        viewportContainer = null;
-        iframe = null;
-        closeButton = null;
-        headerElement = null;
-        titleElement = null;
-        starsContainer = null;
-        pulseAnimation = null;
+
+        gsap.to(viewportContainer, {
+            y: '100%',
+            duration: 0.5,
+            ease: "power1.in",
+            onComplete: () => {
+                closeButton.removeEventListener('click', hideYearViewport);
+                document.removeEventListener('keydown', handleKeyDown);
+                document.body.removeChild(viewportContainer);
+                
+                viewportContainer = null;
+                iframe = null;
+                closeButton = null;
+                headerElement = null;
+                titleElement = null;
+                starsContainer = null;
+                pulseAnimation = null;
+            }
+        });
+    } else {
+        console.log("No viewport container found to destroy.");
     }
 }
+
 
 /**
  * Loads the Year on Psyche section with a clickable button

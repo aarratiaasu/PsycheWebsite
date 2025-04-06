@@ -29,6 +29,7 @@ import { destroyWebsiteViewport } from '../../public/website/websiteViewport.js'
 import { destroySurface2Viewport } from '../../public/PsycheJR/surface2Viewport.js'
 import { destroyLocation2Viewport } from '../../public/PsycheJR/location2Viewport.js'
 
+
 let camera, renderer, sections, currentSection = 1, scrollProgress = 1;
 let isAnimating = false; // Scroll lock flag
 let lastTouchY = 0;
@@ -70,8 +71,10 @@ export function initSectionTracking(cam, sectionList, rend) {
   camera = cam;
   renderer = rend;
   sections = sectionList;
-  window.addEventListener("wheel", onScroll, { passive: false });  window.addEventListener("touchstart", onTouchStart, { passive: false });
+  window.addEventListener("wheel", onScroll, { passive: false });
+  window.addEventListener("touchstart", onTouchStart, { passive: false });
   window.addEventListener("touchmove", onTouchMove, { passive: false });
+  window.addEventListener("keydown", onKeyDown, { passive: false });
   window.addEventListener('resize', () => onResize(camera, renderer));
 }
 
@@ -116,7 +119,7 @@ export function onScroll(event) {
   if (isAnimating) return;
 
   const direction = event.deltaY > 0 ? 1 : -1;
-  const newSection = currentSection + direction;
+  let newSection = currentSection + direction;
   console.log("Swipe Direction: ", direction);
 
   if (newSection > 8) {
@@ -201,4 +204,47 @@ function logCameraDirection() {
 */
 export function getCurrentSection() {
   return currentSection;
+}
+
+
+
+/**
+ * Handles keyboard navigation between sections using arrow keys.
+ * - Up/Left arrows move to the previous section
+ * - Down/Right arrows move to the next section
+ * 
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function onKeyDown(event) {
+  if (isAnimating) return;
+  
+  let direction = 0;
+  
+  switch (event.key) {
+    case 'ArrowUp':
+    case 'ArrowLeft':
+      direction = -1;
+      break;
+    case 'ArrowDown':
+    case 'ArrowRight':
+      direction = 1;
+      break;
+    default:
+      return; // Exit if not an arrow key
+  }
+  
+  let newSection = currentSection + direction;
+  
+  // Handle wrapping from section 8 to section 1 and vice versa
+  if (newSection > 8) {
+    newSection = 1;
+  } else if (newSection < 1) {
+    newSection = 8;
+  }
+  
+  isAnimating = true;
+  moveToSection(newSection);
+  
+  // Prevent default browser scrolling behavior
+  event.preventDefault();
 }

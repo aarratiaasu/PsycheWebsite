@@ -1,3 +1,22 @@
+/*
+* surface2.CSS
+* 
+* This surface2.CSS contains the styling for all elements on the surface2.html page.
+* 
+* Class:      SER 402
+* Team:       35
+* Project:    NASA Psyche Mission: Year on Psyche Simulation
+* Authors:    Armando Arratia, Dan McNeil, Jenny Potocki, Josh Anselm, Tyler Brown
+* Date:       1/22/25
+* Revision:   1.0
+*
+
+========================================================================================================
+File Start
+========================================================================================================
+
+-->
+
 /*For Testing Delete before production*/
 
 #screen-width-box {
@@ -76,7 +95,7 @@ header {
     margin-right: auto;
     margin-left: auto;
     margin-top: 25%;
-    background-image: url(/img/psyche-surface.svg);
+    background-image: url(../img/psyche-surface.svg);
     background-color: black;
     background-size: cover;
     background-repeat: no-repeat;
@@ -121,7 +140,7 @@ header {
     margin-left: auto;
     margin-top: 10%;
     border-radius: 3rem;
-    background-image: url(/img/craters.jpg);
+    background-image: url(../img/craters.jpg);
     background-color: black;
     background-size: cover;
     background-repeat: no-repeat;
@@ -147,7 +166,7 @@ header {
     margin-left: auto;
     margin-top: 10%;
     border-radius: 3rem;
-    background-image: url(/img/swiss-map.png);
+    background-image: url(../img/swiss-map.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-color: black;
@@ -347,7 +366,7 @@ footer {
         margin-left: auto;
         margin-top: 1rem;
         border-radius: 3rem;
-        background-image: url(/img/swiss-map.png);
+        background-image: url(../img/swiss-map.png);
         background-position: center;
         background-size: contain;
         background-repeat: no-repeat;
@@ -428,7 +447,7 @@ footer {
         margin-right: auto;
         margin-left: auto;
         margin-top: 25%;
-        background-image: url(/img/psyche-surface.svg);
+        background-image: url(../img/psyche-surface.svg);
         background-color: black;
         background-size: cover;
         background-repeat: no-repeat;
@@ -470,7 +489,7 @@ footer {
         margin-left: auto;
         margin-top: 10%;
         border-radius: 3rem;
-        background-image: url(/img/craters.jpg);
+        background-image: url(../img/craters.jpg);
         background-color: black;
         background-size: cover;
         background-repeat: no-repeat;
@@ -482,7 +501,7 @@ footer {
         margin-left: auto;
         margin-top: 10%;
         border-radius: 3rem;
-        background-image: url(/img/psyche-wide.png);
+        background-image: url(../img/psyche-wide.png);
         background-size: cover;
         background-repeat: no-repeat;
     }
@@ -493,7 +512,7 @@ footer {
         margin-left: auto;
         margin-top: 10%;
         border-radius: 3rem;
-        background-image: url(/img/swiss-map.png);
+        background-image: url(../img/swiss-map.png);
         background-size: cover;
         background-repeat: no-repeat;
         background-color: black;
@@ -595,6 +614,12 @@ footer {
         height: 30vh;
         width: 100%;
         background-color: blue;
+    }
+}
+
+@media (min-width: 1512px) {
+    footer {
+        margin-top: 40rem;
     }
 }
 

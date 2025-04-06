@@ -8,8 +8,6 @@ window.addEventListener("resize", updateScreenWidth);
 updateScreenWidth();
 
 
-
-
 let windowWidth = window.outerWidth;
 let dpr = window.devicePixelRatio;
 let trueSize = Math.round(windowWidth * dpr);
@@ -26,6 +24,7 @@ console.log("width of device:", windowWidth, "dpr:", dpr, "trueSize:", trueSize)
 gsap.set([
     "#page-header", 
     "#welcome", 
+    "#view3D",
     "#div2", 
     "#div3", 
     "#div4", 
@@ -52,30 +51,28 @@ tl.fromTo(
 )
 
 tl.fromTo(
+    '#view3D',
+    {
+        opacity: 0
+    },
+    {
+        opacity: 1,
+        duration: 1
+    },
+    "<"
+)
+
+tl.fromTo(
     '#welcome', 
-    {opacity: 0}, 
+    {
+        opacity: 0
+    }, 
     {
         opacity: 1,
         duration: 0.5
     }
 )
 
-/* tl.fromTo(
-    'body', 
-    {
-        backgroundColor: 'white'
-    },
-    {
-        background: 'black', 
-        delay: 1, 
-        scrollTrigger: {
-            trigger: '#welcome',
-            start: 'top center',
-            end: '50% center',
-            scrub: true
-        }
-    }
-) */
 
 tl.fromTo(
     '#location-title',
@@ -96,26 +93,6 @@ tl.fromTo(
 )
 
 tl.fromTo(
-    '#div2',
-    { 
-        x: 1000, 
-        opacity: 0 
-    },
-    {
-        x: 0,
-        opacity: 1,
-        duration: 7,
-        scrollTrigger: {
-            trigger: '#div2',
-            start: 'top center',
-            end: '40% center',
-            scrub: true,
-once: true
-        }
-    }
-);
-
-tl.fromTo(
     '#div3',
     {
         opacity: 0
@@ -128,7 +105,7 @@ tl.fromTo(
             start: 'top center',
             end: 'bottom center',
             scrub: true,
-once: true
+            once: true
         }
     }
 );
@@ -150,7 +127,7 @@ tl.fromTo(
             start: 'top center',
             end: '50% center',
             scrub: true,
-once: true
+            once: true
         }
     }
 );
@@ -172,51 +149,7 @@ tl.fromTo(
             start: 'top center',
             end: '50% center',
             scrub: true,
-once: true
-        }
-    }
-);
-
-tl.fromTo(
-    '#div6',
-    {
-        opacity: 0,
-        x: 1000,
-        pointerEvents: "none"
-    },
-    {
-        opacity: 1,
-        x: 0,
-        duration: 2,
-        pointerEvents: "auto",
-        scrollTrigger: {
-            trigger: '#div6',
-            start: 'top center',
-            end: '50% center',
-            scrub: true,
-once: true
-        }
-    }
-);
-
-tl.fromTo(
-    '#div7',
-    {
-        opacity: 0,
-        x: -1000,
-        pointerEvents: "none"
-    },
-    {
-        opacity: 1,
-        x: 0,
-        duration: 2,
-        pointerEvents: "auto",
-        scrollTrigger: {
-            trigger: '#div7',
-            start: 'top center',
-            end: '50% center',
-            scrub: true,
-once: true
+            once: true
         }
     }
 );
@@ -251,7 +184,7 @@ tl.fromTo(
             start: 'top center',
             end: '50% center',
             scrub: true,
-once: true
+            once: true
         }
     }
 );
@@ -263,8 +196,9 @@ const tl2 = gsap.timeline(
             repeat: -1,
             duration: 5,
             repeatDelay: 1
-
-}})
+        }
+    }
+);
 
 tl2.fromTo(
     '#bottomLeft',

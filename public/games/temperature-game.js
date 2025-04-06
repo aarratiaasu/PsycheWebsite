@@ -405,10 +405,21 @@ class RoverGame {
         this.player.upgrades = JSON.parse(JSON.stringify(roverData.initialUpgrades));
         this.player.deathAnimation = { frame: 0, maxFrames: 90, pieces: [] };
 
+        // Initialize color cache and tracking variables
+        this.colorCache = {};
+        this.lastRenderedTemp = 50;
+        this.lastEvolutionStage = 0;
+        
         try {
-            const initialSvg = roverData.getSvg.call(roverData, this.getTemperatureColor(50), this.player.upgrades, 0);
+            // Generate initial SVG with cached color
+            const initialSvg = roverData.getSvg.call(roverData, this.getCachedTemperatureColor(50), this.player.upgrades, 0);
             this.roverSprite.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(initialSvg);
             this.roverSprite.onerror = (e) => { console.error("Error loading initial rover sprite:", e); };
+            
+            // Preload common temperature colors to reduce lag during gameplay
+            [0, 20, 40, 60, 80, 100].forEach(temp => {
+                this.getCachedTemperatureColor(temp);
+            });
         } catch (error) {
             console.error("Error generating initial SVG:", error);
             this.roverSprite.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg width="40" height="30" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="30" height="15" fill="#808080" rx="2"/><circle cx="10" cy="20" r="5" fill="#505050"/><circle cx="30" cy="20" r="5" fill="#505050"/></svg>`);
@@ -561,12 +572,31 @@ class RoverGame {
     }
 
     getTemperatureColor(temperature) {
-        if (temperature <= 20) return this.temperatureEffects.frozen.color;
-        if (temperature <= 40) return this.temperatureEffects.cold.color;
         const baseRoverColor = roverTypes[this.selectedRoverTypeKey]?.svgColor || this.temperatureEffects.normal.baseColor;
-        if (temperature <= 60) return this.blendColors(this.temperatureEffects.cold.color, baseRoverColor, (temperature - 40) / 20);
-        if (temperature <= 80) return this.blendColors(baseRoverColor, this.temperatureEffects.hot.color, (temperature - 60) / 20);
-        return this.blendColors(this.temperatureEffects.hot.color, this.temperatureEffects.overheated.color, (temperature - 80) / 20);
+        
+        // Enhanced color transitions for more dramatic effect
+        if (temperature <= 20) {
+            // Very cold - intense blue
+            return '#0055FF';
+        }
+        if (temperature <= 40) {
+            // Cold - blend from intense blue to light blue
+            return this.blendColors('#0055FF', '#87CEEB', (temperature - 20) / 20);
+        }
+        if (temperature <= 60) {
+            // Normal range - blend from light blue to base color to light red
+            if (temperature <= 50) {
+                return this.blendColors('#87CEEB', baseRoverColor, (temperature - 40) / 10);
+            } else {
+                return this.blendColors(baseRoverColor, '#FFA07A', (temperature - 50) / 10);
+            }
+        }
+        if (temperature <= 80) {
+            // Hot - blend from light red to intense red
+            return this.blendColors('#FFA07A', '#FF3000', (temperature - 60) / 20);
+        }
+        // Very hot - blend to extremely intense red
+        return this.blendColors('#FF3000', '#FF0000', (temperature - 80) / 20);
     }
 
     blendColors(colorA, colorB, amount) {
@@ -576,6 +606,29 @@ class RoverGame {
         const g = Math.round(gA + (gB - gA) * amount).toString(16).padStart(2, '0');
         const b = Math.round(bA + (bB - bA) * amount).toString(16).padStart(2, '0');
         return `#${r}${g}${b}`;
+    }
+    
+    // Cache the blended colors to improve performance
+    getCachedTemperatureColor(temperature) {
+        // Round to nearest integer to reduce unnecessary recalculations
+        const tempRounded = Math.round(temperature);
+        
+        // Use cached color if available
+        if (this.colorCache && this.colorCache[tempRounded]) {
+            return this.colorCache[tempRounded];
+        }
+        
+        // Calculate the color and cache it
+        const color = this.getTemperatureColor(temperature);
+        
+        // Initialize cache if needed
+        if (!this.colorCache) {
+            this.colorCache = {};
+        }
+        
+        // Store in cache
+        this.colorCache[tempRounded] = color;
+        return color;
     }
 
     updateTemperature() {
@@ -931,42 +984,74 @@ class RoverGame {
     }
 
     drawRover() {
-        const ctx = this.ctx; ctx.save(); ctx.translate(this.player.x, this.player.y);
-        if (this.player.state === 'crashed') { this.drawCrashedRover(); }
-        else {
+        const ctx = this.ctx;
+        ctx.save();
+        ctx.translate(this.player.x, this.player.y);
+        
+        if (this.player.state === 'crashed') {
+            this.drawCrashedRover();
+        } else {
+            // Calculate evolution stage based on score
             let evolutionStage = 0;
-            if (this.score >= 10000) evolutionStage = 6; else if (this.score >= 7500) evolutionStage = 5;
-            else if (this.score >= 5000) evolutionStage = 4; else if (this.score >= 3000) evolutionStage = 3;
-            else if (this.score >= 2000) evolutionStage = 2; else if (this.score >= 1000) evolutionStage = 1;
+            if (this.score >= 10000) evolutionStage = 6;
+            else if (this.score >= 7500) evolutionStage = 5;
+            else if (this.score >= 5000) evolutionStage = 4;
+            else if (this.score >= 3000) evolutionStage = 3;
+            else if (this.score >= 2000) evolutionStage = 2;
+            else if (this.score >= 1000) evolutionStage = 1;
 
-            const currentTempColor = this.getTemperatureColor(this.player.temperature);
+            // Get rover data and temperature color
             const roverData = roverTypes[this.selectedRoverTypeKey];
-
+            const tempColor = this.getCachedTemperatureColor(this.player.temperature);
+            
+            // Fallback if rover data is missing
             if (!roverData || typeof roverData.getSvg !== 'function') {
                 console.error("Rover data or getSvg function missing for:", this.selectedRoverTypeKey);
-                ctx.fillStyle = 'grey'; ctx.fillRect(-this.player.width / 2, -this.player.height / 2, this.player.width, this.player.height);
-                ctx.restore(); return;
+                ctx.fillStyle = tempColor;
+                ctx.fillRect(-this.player.width / 2, -this.player.height / 2, this.player.width, this.player.height);
+                ctx.restore();
+                return;
             }
+            
             try {
-                const currentSvgString = roverData.getSvg.call(roverData, currentTempColor, this.player.upgrades, evolutionStage);
-                const newSrc = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(currentSvgString);
-                if (this.roverSprite.src !== newSrc) {
+                // Only update the sprite source when temperature changes significantly
+                // This prevents constant regeneration that causes blinking
+                const tempRounded = Math.round(this.player.temperature);
+                if (!this.lastRenderedTemp || Math.abs(this.lastRenderedTemp - tempRounded) >= 2 ||
+                    this.lastEvolutionStage !== evolutionStage) {
+                    
+                    this.lastRenderedTemp = tempRounded;
+                    this.lastEvolutionStage = evolutionStage;
+                    
+                    // Generate the rover SVG with the temperature color
+                    const upgrades = this.player.upgrades || {};
+                    const currentSvgString = roverData.getSvg.call(roverData, tempColor, upgrades, evolutionStage);
+                    
+                    // Update sprite source
+                    const newSrc = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(currentSvgString);
                     this.roverSprite.src = newSrc;
-                    this.roverSprite.onerror = (e) => { console.error("Error loading rover sprite source:", e, newSrc.substring(0, 100)); };
                 }
-                if (this.player.hasShield) this.drawShieldEffect();
-                if (this.roverSprite.complete && this.roverSprite.naturalWidth > 0) {
-                    const yOffset = Math.sin(this.frameCount * 0.1) * 0.5;
-                    ctx.drawImage(this.roverSprite, -this.player.width / 2, -this.player.height / 2 + yOffset);
-                } else {
-                    ctx.fillStyle = '#808080'; ctx.fillRect(-this.player.width / 2, -this.player.height / 2, this.player.width, this.player.height);
-                    ctx.strokeStyle = '#505050'; ctx.strokeRect(-this.player.width / 2, -this.player.height / 2, this.player.width, this.player.height);
-                    ctx.beginPath(); ctx.moveTo(-5, -5); ctx.lineTo(5, 5); ctx.moveTo(5, -5); ctx.lineTo(-5, 5);
-                    ctx.strokeStyle = '#A00000'; ctx.lineWidth = 2; ctx.stroke();
+                
+                // Draw shield effect if the rover has a shield
+                if (this.player.hasShield) {
+                    this.drawShieldEffect();
+                }
+                
+                // Draw the rover with a subtle vertical animation
+                const yOffset = Math.sin(this.frameCount * 0.1) * 0.5;
+                ctx.drawImage(this.roverSprite, -this.player.width / 2, -this.player.height / 2 + yOffset);
+                
+                // Indicate crashed state without making it blink
+                if (this.player.state === 'crashed') {
+                    ctx.strokeStyle = 'rgba(255,0,0,0.7)';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(-this.player.width / 2, -this.player.height / 2, this.player.width, this.player.height);
                 }
             } catch (error) {
-                 console.error("Error during rover SVG generation or drawing:", error);
-                ctx.fillStyle = 'darkred'; ctx.fillRect(-this.player.width / 2, -this.player.height / 2, this.player.width, this.player.height);
+                console.error("Error during rover SVG generation or drawing:", error);
+                // Fallback rendering in case of error
+                ctx.fillStyle = 'darkred';
+                ctx.fillRect(-this.player.width / 2, -this.player.height / 2, this.player.width, this.player.height);
             }
         }
         ctx.restore();
@@ -1015,35 +1100,59 @@ class RoverGame {
     }
 
     drawShieldEffect() {
-        const ctx = this.ctx, shieldBaseRadius = this.player.width * 0.7;
-        const pulse = (Math.sin(this.frameCount * 0.15) + 1) / 2;
-        const currentRadius = shieldBaseRadius + pulse * 2.5, glowRadius = currentRadius + pulse * 5;
-
+        const ctx = this.ctx;
+        const shieldBaseRadius = this.player.width * 0.7;
+        
+        // Use fixed values for shield rendering to prevent blinking
+        const currentRadius = shieldBaseRadius + 1.5;
+        const glowRadius = currentRadius + 5;
+        
+        // Draw the shield glow with consistent opacity
         const glowGradient = ctx.createRadialGradient(0, 0, currentRadius * 0.8, 0, 0, glowRadius);
-        const glowColor = 'rgba(173, 255, 216, ';
-        glowGradient.addColorStop(0, glowColor + `${0.1 + pulse * 0.2})`); glowGradient.addColorStop(0.7, glowColor + `${0.05 + pulse * 0.1})`); glowGradient.addColorStop(1, glowColor + '0)');
-        ctx.fillStyle = glowGradient; ctx.beginPath(); ctx.arc(0, 0, glowRadius, 0, Math.PI * 2); ctx.fill();
-
-        const hexSize = 8, shieldOpacity = 0.4 + pulse * 0.3;
-        ctx.strokeStyle = `rgba(200, 255, 230, ${shieldOpacity})`; ctx.lineWidth = 1.0;
-        ctx.save(); ctx.clip();
-        const hexAngle = Math.PI / 3, hexDist = hexSize * Math.sin(hexAngle);
-        const startY = -currentRadius - hexSize, endY = currentRadius + hexSize, startX = -currentRadius - hexSize, endX = currentRadius + hexSize;
-        let row = 0;
-        for (let y = startY; y < endY; y += hexDist) {
-            const xOffset = (row % 2) * hexSize * 1.5;
-            for (let x = startX + xOffset; x < endX; x += hexSize * 3) {
-                ctx.beginPath();
-                for (let i = 0; i < 6; i++) {
-                    const angle = hexAngle * i + Math.PI / 6;
-                    const hx = x + hexSize * Math.cos(angle), hy = y + hexSize * Math.sin(angle);
-                    if (i === 0) ctx.moveTo(hx, hy); else ctx.lineTo(hx, hy);
-                } ctx.closePath(); ctx.stroke();
-            } row++;
-        }
-        ctx.restore();
-        ctx.strokeStyle = `rgba(255, 255, 255, ${0.3 + pulse * 0.2})`; ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.arc(0, 0, currentRadius, 0, Math.PI * 2); ctx.stroke();
+        glowGradient.addColorStop(0, 'rgba(173, 255, 216, 0.2)');
+        glowGradient.addColorStop(0.7, 'rgba(173, 255, 216, 0.1)');
+        glowGradient.addColorStop(1, 'rgba(173, 255, 216, 0)');
+        
+        ctx.fillStyle = glowGradient;
+        ctx.beginPath();
+        ctx.arc(0, 0, glowRadius, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Draw shield border
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(0, 0, currentRadius, 0, Math.PI * 2);
+        ctx.stroke();
+        
+        // Draw hexagon pattern with consistent opacity
+        const hexSize = 8;
+        ctx.strokeStyle = 'rgba(200, 255, 230, 0.5)';
+        ctx.lineWidth = 1.0;
+        
+        // Only draw a limited number of hexagons for better performance
+        const hexPatterns = [
+            {x: 0, y: -currentRadius * 0.5},
+            {x: -currentRadius * 0.4, y: -currentRadius * 0.25},
+            {x: currentRadius * 0.4, y: -currentRadius * 0.25},
+            {x: -currentRadius * 0.4, y: currentRadius * 0.25},
+            {x: currentRadius * 0.4, y: currentRadius * 0.25},
+            {x: 0, y: currentRadius * 0.5}
+        ];
+        
+        const hexAngle = Math.PI / 3;
+        hexPatterns.forEach(pattern => {
+            ctx.beginPath();
+            for (let i = 0; i < 6; i++) {
+                const angle = hexAngle * i + Math.PI / 6;
+                const hx = pattern.x + hexSize * Math.cos(angle);
+                const hy = pattern.y + hexSize * Math.sin(angle);
+                if (i === 0) ctx.moveTo(hx, hy);
+                else ctx.lineTo(hx, hy);
+            }
+            ctx.closePath();
+            ctx.stroke();
+        });
     }
 
     drawObstacles() {
@@ -1407,9 +1516,10 @@ class RoverGame {
         if (this.player.state !== newState) {
             this.player.state = newState; this.player.velocity = { x: 0, y: 0 };
             if (newState === 'crashed') {
-                 this.player.deathAnimation.frame = 0; this.player.deathAnimation.pieces = [];
-                 this.player.stateTimer = this.player.deathAnimation.maxFrames + 60;
-                 this.breakShield(true);
+                // Only initialize death animation when rover is actually dead
+                this.player.deathAnimation.frame = 0; this.player.deathAnimation.pieces = [];
+                this.player.stateTimer = this.player.deathAnimation.maxFrames + 60;
+                this.breakShield(true);
             } else { this.player.stateTimer = 0; }
         }
     }

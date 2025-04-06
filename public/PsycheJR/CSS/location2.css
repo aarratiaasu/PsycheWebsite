@@ -1,3 +1,22 @@
+/*
+* location2.CSS
+* 
+* This location2.CSS contains the styling for all elements on the location2.html page.
+* 
+* Class:      SER 402
+* Team:       35
+* Project:    NASA Psyche Mission: Year on Psyche Simulation
+* Authors:    Armando Arratia, Dan McNeil, Jenny Potocki, Josh Anselm, Tyler Brown
+* Date:       1/22/25
+* Revision:   1.0
+*
+
+========================================================================================================
+File Start
+========================================================================================================
+
+-->
+
 /** body elements
 *
 */
@@ -211,52 +230,52 @@ header {
 
 /*grid content*/
 #mercury {
-    background-image: url(/img/mercury.jpg);
+    background-image: url(../img/mercury.jpg);
     background-size: cover;
 }
 
 #venus {
-    background-image: url(/img/venus.jpg);
+    background-image: url(../img/venus.jpg);
     background-size: cover;
 }
 
 #earth {
-    background-image: url(/img/Earth.jpg);
+    background-image: url(../img/Earth.jpg);
     background-size: cover;
 }
 
 #mars {
-    background-image: url(/img/mars.jpg);
+    background-image: url(../img/mars.jpg);
     background-size: cover;
 }
 
 #psyche-location {
-    background-image: url(/img/psyche.jpg);
+    background-image: url(../img/psyche.jpg);
     background-size: cover;
 }
 
 #jupiter {
-    background-image: url(/img/jupiter.jpg);
+    background-image: url(../img/jupiter.jpg);
     background-size: cover;
 }
 
 #saturn {
-    background-image: url(/img/saturn.jpg);
+    background-image: url(../img/saturn.jpg);
     background-size: cover;
 }
 
 #uranus {
-    background-image: url(/img/uranus.jpg);
+    background-image: url(../img/uranus.jpg);
     background-size: cover;
 }
 
 #neptune {
-    background-image: url(/img/neptune.jpg);
+    background-image: url(../img/neptune.jpg);
     background-size: cover;
 }
 
 #pluto {
-    background-image: url(/img/pluto.jpg);
+    background-image: url(../img/pluto.jpg);
     background-size: cover;
 }
 
@@ -638,6 +657,14 @@ footer {
     #div3 div {
         margin: 0.5rem;
         padding: 5%;
+    }
+}
+
+@media (min-width: 1512px) {
+    #page-header {
+        padding-top: 7rem;
+        padding-bottom: 5rem;
+
     }
 }
 

@@ -6,22 +6,41 @@ const CACHE_NAME = 'psyche-website-cache-v1';
 // Dynamically determine the base URL based on the repository name
 const BASE_URL = location.pathname.split('/')[1] ? '/' + location.pathname.split('/')[1] : '';
 
-// Resources that need to be redirected
-const REDIRECT_RESOURCES = [
+/**
+ * Resources that need to be redirected
+ *
+ * This Set contains paths to resources that require redirection to the correct location
+ * based on the repository name. Resources are organized by type for better maintainability.
+ *
+ * Using a Set instead of an Array for O(1) lookup performance.
+ */
+const REDIRECT_RESOURCES = new Set([
+  // Font resources
   '/res/font/GenosThin_Regular.json',
   '/res/font/Roboto_Regular.json',
+  
+  // 3D Model resources
   '/res/models/nasaLogo.glb',
   '/res/models/navigation_pin.glb',
   '/res/models/arcade_controller.glb',
-  '/assets/index-Vy6LOWVX.js',
+  
+  // CSS assets
   '/assets/index-rgFOEOuc.css',
-  '/assets/psyche_badge-DgbJMAPd.svg',
+  
+  // JavaScript assets
+  '/assets/index-Vy6LOWVX.js',
   '/assets/viewportspacepic-BMLYPJMw.js',
+  '/assets/viewportspacepic-vBhYZtMZ.js', // Added new asset
   '/assets/index-JOHF8NKl.js',
   '/assets/index-CpqhUVrE.js',
+  
+  // Distribution folder assets (may be at root in production)
   '/dist/assets/index-JOHF8NKl.js',
-  '/dist/assets/index-CpqhUVrE.js'
-];
+  '/dist/assets/index-CpqhUVrE.js',
+  
+  // Image assets
+  '/assets/psyche_badge-DgbJMAPd.svg'
+]);
 
 // HTML template for 404 page
 const NOT_FOUND_HTML = `
@@ -135,7 +154,7 @@ self.addEventListener('fetch', event => {
   const path = url.pathname;
   
   // Check if this is a resource that needs to be redirected
-  if (REDIRECT_RESOURCES.includes(path) ||
+  if (REDIRECT_RESOURCES.has(path) ||
       path.startsWith('/res/') ||
       path.startsWith('/assets/') ||
       path.startsWith('/dist/') ||

@@ -21281,7 +21281,7 @@ void main() {
     const r = document.createElement("div");
     r.style.display = "flex", r.style.justifyContent = "space-between", r.style.alignItems = "center", r.style.padding = "1px 2px", r.style.backgroundColor = "rgba(0, 0, 0, 0.3)", r.style.color = "white", r.style.borderTopLeftRadius = "20px", r.style.borderTopRightRadius = "20px";
     const e = document.createElement("h2");
-    e.style.fontSize = "1.2rem", zn = document.createElement("button"), zn.textContent = "\u2715", zn.style.background = "none", zn.style.border = "none", zn.style.color = "white", zn.style.fontSize = "1.5rem", zn.style.cursor = "pointer", zn.style.padding = "0 5px", zn.style.lineHeight = "1", r.appendChild(zn), ut.appendChild(r), di = document.createElement("iframe"), di.src = "./public/psycheName/public/name/psycheName.html", di.style.width = "100%", di.style.height = "100%", di.style.border = "none", di.style.backgroundColor = "#222", di.onerror = () => {
+    e.style.fontSize = "1.2rem", zn = document.createElement("button"), zn.textContent = "\u2715", zn.style.background = "none", zn.style.border = "none", zn.style.color = "white", zn.style.fontSize = "1.5rem", zn.style.cursor = "pointer", zn.style.padding = "0 5px", zn.style.lineHeight = "1", r.appendChild(zn), ut.appendChild(r), di = document.createElement("iframe"), di.src = "./psycheName/public/name/", di.style.width = "100%", di.style.height = "100%", di.style.border = "none", di.style.backgroundColor = "#222", di.onerror = () => {
       console.error("Failed to load iframe content");
     }, di.onload = () => {
       console.log("Iframe loaded successfully");
@@ -21516,7 +21516,7 @@ void main() {
     const s = document.createElement("div");
     s.style.display = "flex", s.style.alignItems = "center";
     const o = document.createElement("button");
-    o.textContent = "\u21A9", QT(o), _r = document.createElement("button"), _r.textContent = "\u2715", Gs(_r), s.appendChild(o), s.appendChild(_r), n.appendChild(i), n.appendChild(s), Je.appendChild(n), pi = document.createElement("iframe"), pi.src = "./public/games/games.html", Ws(pi, {
+    o.textContent = "\u21A9", QT(o), _r = document.createElement("button"), _r.textContent = "\u2715", Gs(_r), s.appendChild(o), s.appendChild(_r), n.appendChild(i), n.appendChild(s), Je.appendChild(n), pi = document.createElement("iframe"), pi.src = "./games/games.html", Ws(pi, {
       backgroundColor: "rgba(0, 0, 0, 0.0)"
     }), Xs(document), pi.onerror = () => {
       console.error("Failed to load games iframe content");
@@ -21600,7 +21600,7 @@ void main() {
     const n = document.createElement("div");
     Vs(n);
     const i = document.createElement("h2");
-    i.textContent = "Psyche Jr - Kids Space Explorer", Hs(i), xr = document.createElement("button"), xr.textContent = "\u2715", Gs(xr), n.appendChild(i), n.appendChild(xr), Xe.appendChild(n), Nt = document.createElement("iframe"), Nt.src = "./public/PsycheJR/kids.html", Ws(Nt), Xs(document), Nt.onerror = () => {
+    i.textContent = "Psyche Jr - Kids Space Explorer", Hs(i), xr = document.createElement("button"), xr.textContent = "\u2715", Gs(xr), n.appendChild(i), n.appendChild(xr), Xe.appendChild(n), Nt = document.createElement("iframe"), Nt.src = "./PsycheJR/kids.html", Ws(Nt), Xs(document), Nt.onerror = () => {
       console.error("Failed to load kids iframe content");
     }, Nt.onload = () => {
       console.log("Kids iframe loaded successfully"), qs(Nt), vr();
@@ -21677,7 +21677,7 @@ void main() {
       backgroundColor: "#f9a000",
       gradientStart: "#f9a000",
       gradientEnd: "#f9a000"
-    }), po = document.createElement("h2"), po.textContent = "Compare Earth and Psyche", Hs(po), yr = document.createElement("button"), yr.textContent = "\u2715", Gs(yr), pr.appendChild(po), pr.appendChild(yr), gt.appendChild(pr), mi = document.createElement("iframe"), mi.src = "./public/year/year.html", Ws(mi, {
+    }), po = document.createElement("h2"), po.textContent = "Compare Earth and Psyche", Hs(po), yr = document.createElement("button"), yr.textContent = "\u2715", Gs(yr), pr.appendChild(po), pr.appendChild(yr), gt.appendChild(pr), mi = document.createElement("iframe"), mi.src = "./year/year.html", Ws(mi, {
       backgroundColor: "#222"
     }), mi.onerror = () => {
       console.error("Failed to load iframe content");
@@ -21841,7 +21841,7 @@ between Earth and Psyche`, s, o, 0.7, r, () => {
       gradientEnd: "rgba(20, 20, 40, 0.2)"
     });
     const i = document.createElement("h2");
-    i.textContent = "The Surface of Psyche", Hs(i), Sr = document.createElement("button"), Sr.textContent = "\u2715", Gs(Sr), n.appendChild(i), n.appendChild(Sr), Qe.appendChild(n), wt = document.createElement("iframe"), wt.src = "/public/PsycheJR/surface2.html", Ws(wt, {
+    i.textContent = "The Surface of Psyche", Hs(i), Sr = document.createElement("button"), Sr.textContent = "\u2715", Gs(Sr), n.appendChild(i), n.appendChild(Sr), Qe.appendChild(n), wt = document.createElement("iframe"), wt.src = "./PsycheJR/surface2.html", Ws(wt, {
       backgroundColor: "rgba(0, 0, 0, 0.0)"
     }), Xs(document), wt.onerror = () => {
       console.error("Failed to load surface2 iframe content");
@@ -21977,7 +21977,7 @@ between Earth and Psyche`, s, o, 0.7, r, () => {
       gradientEnd: "rgba(20, 20, 40, 0.2)"
     });
     const i = document.createElement("h2");
-    i.textContent = "Psyche's Location in Space", Hs(i), Er = document.createElement("button"), Er.textContent = "\u2715", Gs(Er), n.appendChild(i), n.appendChild(Er), et.appendChild(n), gi = document.createElement("iframe"), gi.src = "/public/PsycheJR/location2.html", Ws(gi, {
+    i.textContent = "Psyche's Location in Space", Hs(i), Er = document.createElement("button"), Er.textContent = "\u2715", Gs(Er), n.appendChild(i), n.appendChild(Er), et.appendChild(n), gi = document.createElement("iframe"), gi.src = "./PsycheJR/location2.html", Ws(gi, {
       backgroundColor: "rgba(0, 0, 0, 0.0)"
     }), Xs(document), gi.onerror = () => {
       console.error("Failed to load location2 iframe content");

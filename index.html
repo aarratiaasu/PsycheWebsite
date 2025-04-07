@@ -43,49 +43,6 @@
     }
   </script>
   
-  <!-- Service Worker Reload Button -->
-  <script>
-    // Add a button to reload the service worker
-    document.addEventListener('DOMContentLoaded', function() {
-      const reloadButton = document.createElement('button');
-      reloadButton.textContent = 'Reload Service Worker';
-      reloadButton.style.position = 'fixed';
-      reloadButton.style.bottom = '10px';
-      reloadButton.style.right = '10px';
-      reloadButton.style.zIndex = '9999';
-      reloadButton.style.padding = '8px 12px';
-      reloadButton.style.backgroundColor = '#007bff';
-      reloadButton.style.color = 'white';
-      reloadButton.style.border = 'none';
-      reloadButton.style.borderRadius = '4px';
-      reloadButton.style.cursor = 'pointer';
-      reloadButton.style.display = 'none'; // Hide by default
-      
-      // Show the button after 5 seconds (in case there are issues)
-      setTimeout(() => {
-        reloadButton.style.display = 'block';
-      }, 5000);
-      
-      reloadButton.addEventListener('click', function() {
-        if (window.deployHelper && window.deployHelper.reloadServiceWorker) {
-          window.deployHelper.reloadServiceWorker();
-        } else {
-          // Fallback if deployHelper is not available
-          if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(registrations => {
-              for (let registration of registrations) {
-                registration.unregister();
-              }
-              window.location.reload();
-            });
-          }
-        }
-      });
-      
-      document.body.appendChild(reloadButton);
-    });
-  </script>
-  
 </head>
 <body>
   <script>

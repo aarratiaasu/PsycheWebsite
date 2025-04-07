@@ -187,9 +187,15 @@ self.addEventListener('fetch', event => {
       adjustedPath = adjustedPath.replace('/dist', '');
     }
     
-    // Remove '/public/' prefix from paths
+    // Remove '/public/' prefix from paths, except for psycheName paths
     if (adjustedPath.includes('/public/')) {
-      adjustedPath = adjustedPath.replace('/public/', '/');
+      // Keep the public part for psycheName paths
+      if (adjustedPath.includes('/psycheName/public/')) {
+        // Don't modify the path for psycheName/public
+        console.log('Service Worker: Keeping public in path for psycheName:', adjustedPath);
+      } else {
+        adjustedPath = adjustedPath.replace('/public/', '/');
+      }
     }
     
     // Special case for surface2.html and location2.html

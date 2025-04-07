@@ -540,7 +540,7 @@ input[type="color"] {
     margin-left: auto;
     text-align: center;
     color: white;
-    background-image: url(/img/star-background.jpg);
+    background-image: url(../../img/star-background.jpg);
     background-size: cover;
     background-color: black;
     border-radius: 1rem;
@@ -571,7 +571,7 @@ input[type="color"] {
 
 #sphere-background {
     background-color: transparent;
-    background-image: url(/img/psyche_surface2.svg);
+    background-image: url(../../img/psyche_surface2.svg);
     background-size: 30%;
     background-repeat: no-repeat;
     background-position: center;
@@ -579,7 +579,7 @@ input[type="color"] {
 }
 
 #div10-wrapper {
-    background-image: url(/img/psyche.jpg);
+    background-image: url(../../img/psyche.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     border-radius: 3rem;

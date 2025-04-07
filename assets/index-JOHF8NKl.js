@@ -22921,11 +22921,8 @@ between Earth and Psyche`, s, o, 0.7, r, () => {
     r.style.transition = "opacity 0.5s ease", r.style.opacity = "0", setTimeout(() => r.remove(), 500);
   }
   window.addEventListener("resize", () => {
-    if (typeof camera !== 'undefined' && typeof renderer !== 'undefined') {
-      Hm(camera, renderer);
-    } else {
-      console.warn("Resize event fired, but camera or renderer is not defined.");
-    }
+    camera && renderer ? Hm(camera, renderer) : console.warn("Resize event fired, but camera or renderer is not defined.");
+
   });
   Ob();
 })();

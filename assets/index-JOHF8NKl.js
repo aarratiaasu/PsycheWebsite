@@ -21516,7 +21516,7 @@ void main() {
     const s = document.createElement("div");
     s.style.display = "flex", s.style.alignItems = "center";
     const o = document.createElement("button");
-    o.textContent = "\u21A9", QT(o), _r = document.createElement("button"), _r.textContent = "\u2715", Gs(_r), s.appendChild(o), s.appendChild(_r), n.appendChild(i), n.appendChild(s), Je.appendChild(n), pi = document.createElement("iframe"), pi.src = "/public/games/games.html", Ws(pi, {
+    o.textContent = "\u21A9", QT(o), _r = document.createElement("button"), _r.textContent = "\u2715", Gs(_r), s.appendChild(o), s.appendChild(_r), n.appendChild(i), n.appendChild(s), Je.appendChild(n), pi = document.createElement("iframe"), pi.src = "./public/games/games.html", Ws(pi, {
       backgroundColor: "rgba(0, 0, 0, 0.0)"
     }), Xs(document), pi.onerror = () => {
       console.error("Failed to load games iframe content");
@@ -21600,7 +21600,7 @@ void main() {
     const n = document.createElement("div");
     Vs(n);
     const i = document.createElement("h2");
-    i.textContent = "Psyche Jr - Kids Space Explorer", Hs(i), xr = document.createElement("button"), xr.textContent = "\u2715", Gs(xr), n.appendChild(i), n.appendChild(xr), Xe.appendChild(n), Nt = document.createElement("iframe"), Nt.src = "/public/PsycheJR/kids.html", Ws(Nt), Xs(document), Nt.onerror = () => {
+    i.textContent = "Psyche Jr - Kids Space Explorer", Hs(i), xr = document.createElement("button"), xr.textContent = "\u2715", Gs(xr), n.appendChild(i), n.appendChild(xr), Xe.appendChild(n), Nt = document.createElement("iframe"), Nt.src = "./public/PsycheJR/kids.html", Ws(Nt), Xs(document), Nt.onerror = () => {
       console.error("Failed to load kids iframe content");
     }, Nt.onload = () => {
       console.log("Kids iframe loaded successfully"), qs(Nt), vr();
@@ -21677,7 +21677,7 @@ void main() {
       backgroundColor: "#f9a000",
       gradientStart: "#f9a000",
       gradientEnd: "#f9a000"
-    }), po = document.createElement("h2"), po.textContent = "Compare Earth and Psyche", Hs(po), yr = document.createElement("button"), yr.textContent = "\u2715", Gs(yr), pr.appendChild(po), pr.appendChild(yr), gt.appendChild(pr), mi = document.createElement("iframe"), mi.src = "./../../public/year/year.html", Ws(mi, {
+    }), po = document.createElement("h2"), po.textContent = "Compare Earth and Psyche", Hs(po), yr = document.createElement("button"), yr.textContent = "\u2715", Gs(yr), pr.appendChild(po), pr.appendChild(yr), gt.appendChild(pr), mi = document.createElement("iframe"), mi.src = "./public/year/year.html", Ws(mi, {
       backgroundColor: "#222"
     }), mi.onerror = () => {
       console.error("Failed to load iframe content");

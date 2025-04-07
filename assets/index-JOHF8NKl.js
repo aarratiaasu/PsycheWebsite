@@ -21281,7 +21281,7 @@ void main() {
     const r = document.createElement("div");
     r.style.display = "flex", r.style.justifyContent = "space-between", r.style.alignItems = "center", r.style.padding = "1px 2px", r.style.backgroundColor = "rgba(0, 0, 0, 0.3)", r.style.color = "white", r.style.borderTopLeftRadius = "20px", r.style.borderTopRightRadius = "20px";
     const e = document.createElement("h2");
-    e.style.fontSize = "1.2rem", zn = document.createElement("button"), zn.textContent = "\u2715", zn.style.background = "none", zn.style.border = "none", zn.style.color = "white", zn.style.fontSize = "1.5rem", zn.style.cursor = "pointer", zn.style.padding = "0 5px", zn.style.lineHeight = "1", r.appendChild(zn), ut.appendChild(r), di = document.createElement("iframe"), di.src = "./psycheName/public/name/psycheName.html", di.style.width = "100%", di.style.height = "100%", di.style.border = "none", di.style.backgroundColor = "#222", di.onerror = () => {
+    e.style.fontSize = "1.2rem", zn = document.createElement("button"), zn.textContent = "\u2715", zn.style.background = "none", zn.style.border = "none", zn.style.color = "white", zn.style.fontSize = "1.5rem", zn.style.cursor = "pointer", zn.style.padding = "0 5px", zn.style.lineHeight = "1", r.appendChild(zn), ut.appendChild(r), di = document.createElement("iframe"), di.src = "../psycheName/public/name/psycheName.html", di.style.width = "100%", di.style.height = "100%", di.style.border = "none", di.style.backgroundColor = "#222", di.onerror = () => {
       console.error("Failed to load iframe content");
     }, di.onload = () => {
       console.log("Iframe loaded successfully");

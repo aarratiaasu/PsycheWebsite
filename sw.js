@@ -187,12 +187,13 @@ self.addEventListener('fetch', event => {
       adjustedPath = adjustedPath.replace('/dist', '');
     }
     
-    // Remove '/public/' prefix from paths, except for psycheName paths
+    // Remove '/public/' prefix from paths
     if (adjustedPath.includes('/public/')) {
-      // Keep the public part for psycheName paths
+      // Don't redirect psycheName/public paths - let them be handled directly
       if (adjustedPath.includes('/psycheName/public/')) {
-        // Don't modify the path for psycheName/public
-        console.log('Service Worker: Keeping public in path for psycheName:', adjustedPath);
+        // Skip redirection for psycheName paths
+        console.log('Service Worker: Skipping redirection for psycheName path:', adjustedPath);
+        return fetch(event.request);
       } else {
         adjustedPath = adjustedPath.replace('/public/', '/');
       }

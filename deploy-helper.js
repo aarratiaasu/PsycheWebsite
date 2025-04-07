@@ -117,7 +117,7 @@ window.deployHelper = {
   getRepoPath,
   fixPath,
   fixAllPaths,
-  fixImportPath
+  fixImportPath,
   // Force reload the service worker
   reloadServiceWorker: function() {
     if ('serviceWorker' in navigator) {

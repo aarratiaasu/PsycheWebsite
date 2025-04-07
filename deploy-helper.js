@@ -117,7 +117,7 @@ window.deployHelper = {
   getRepoPath,
   fixPath,
   fixAllPaths,
-  fixImportPath,
+  fixImportPath
   // Force reload the service worker
   reloadServiceWorker: function() {
     if ('serviceWorker' in navigator) {
@@ -141,11 +141,6 @@ function fixIframeSrc(iframe) {
       let cleanSrc = src;
       if (cleanSrc.includes('/public/')) {
         cleanSrc = cleanSrc.replace('/public/', '/');
-      }
-      
-      // Special case for psycheName path
-      if (cleanSrc.includes('/psycheName/public/name/')) {
-        cleanSrc = './psycheName/public/name/psycheName.html';
       }
       
       // Special case for surface2.html and location2.html

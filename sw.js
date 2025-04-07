@@ -192,11 +192,6 @@ self.addEventListener('fetch', event => {
       adjustedPath = adjustedPath.replace('/public/', '/');
     }
     
-    // Special case for psycheName path
-    if (adjustedPath.includes('/psycheName/public/name/')) {
-      adjustedPath = adjustedPath.replace('/psycheName/public/name/', '/psycheName/public/name/psycheName.html');
-    }
-    
     // Special case for surface2.html and location2.html
     if (adjustedPath.includes('/PsycheJR/surface2.html') || adjustedPath.includes('/PsycheJR/location2.html')) {
       // Make sure the path starts with the repository name

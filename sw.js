@@ -159,7 +159,8 @@ self.addEventListener('fetch', event => {
       path.startsWith('/assets/') ||
       path.startsWith('/dist/') ||
       path.includes('/assets/') ||
-      path.includes('/res/')) {
+      path.includes('/res/') ||
+      path.includes('/public/')) {
     console.log('Service Worker: Redirecting resource', path);
     
     // Get the repository name from the current URL
@@ -184,6 +185,19 @@ self.addEventListener('fetch', event => {
     // but are at the root in production (GitHub Pages)
     if (adjustedPath.includes('/dist/') && repoPath) {
       adjustedPath = adjustedPath.replace('/dist', '');
+    }
+    
+    // Remove '/public/' prefix from paths
+    if (adjustedPath.includes('/public/')) {
+      adjustedPath = adjustedPath.replace('/public/', '/');
+    }
+    
+    // Special case for surface2.html and location2.html
+    if (adjustedPath.includes('/PsycheJR/surface2.html') || adjustedPath.includes('/PsycheJR/location2.html')) {
+      // Make sure the path starts with the repository name
+      if (repoName && !adjustedPath.startsWith('/' + repoName)) {
+        adjustedPath = '/' + repoName + '/PsycheJR/' + adjustedPath.split('/PsycheJR/')[1];
+      }
     }
     
     // Check if the path already includes the repository name to avoid duplication

@@ -20,8 +20,13 @@ function fixPath(path) {
     return path;
   }
   
-  // If the path starts with ./ (relative path), remove the dot
+  // Remove any '/public/' prefix from the path
   let adjustedPath = path;
+  if (adjustedPath.includes('/public/')) {
+    adjustedPath = adjustedPath.replace('/public/', '/');
+  }
+  
+  // If the path starts with ./ (relative path), remove the dot
   if (adjustedPath.startsWith('./')) {
     adjustedPath = adjustedPath.substring(1);
   }
@@ -37,6 +42,13 @@ function fixPath(path) {
   const repoPath = getRepoPath();
   if (adjustedPath.includes('/dist/') && repoPath) {
     adjustedPath = adjustedPath.replace('/dist', '');
+  }
+  
+  // Special case for surface2.html and location2.html
+  if (adjustedPath.includes('/PsycheJR/surface2.html') || adjustedPath.includes('/PsycheJR/location2.html')) {
+    // Make sure we're using the correct path
+    const fileName = adjustedPath.includes('surface2.html') ? 'surface2.html' : 'location2.html';
+    adjustedPath = '/PsycheJR/' + fileName;
   }
   
   // Add the repository name to the path
@@ -76,6 +88,19 @@ function fixAllPaths() {
       a.setAttribute('href', fixPath(href));
     }
   });
+  
+  // Fix iframe src attributes
+  document.querySelectorAll('iframe[src]').forEach(iframe => {
+    const src = iframe.getAttribute('src');
+    if (src && !src.startsWith('http') && !src.startsWith('//')) {
+      // Remove any '/public/' prefix from the path
+      let cleanSrc = src;
+      if (cleanSrc.includes('/public/')) {
+        cleanSrc = cleanSrc.replace('/public/', '/');
+      }
+      iframe.setAttribute('src', fixPath(cleanSrc));
+    }
+  });
 }
 
 // Function to fix import paths in JavaScript modules
@@ -93,7 +118,70 @@ window.deployHelper = {
   fixPath,
   fixAllPaths,
   fixImportPath
+  // Force reload the service worker
+  reloadServiceWorker: function() {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+        // After unregistering, reload the page to get a fresh service worker
+        window.location.reload();
+      });
+    }
+  }
 };
+
+// Function to fix iframe src attributes
+function fixIframeSrc(iframe) {
+  if (iframe && iframe.src) {
+    const src = iframe.getAttribute('src');
+    if (src && !src.startsWith('http') && !src.startsWith('//')) {
+      // Remove any '/public/' prefix from the path
+      let cleanSrc = src;
+      if (cleanSrc.includes('/public/')) {
+        cleanSrc = cleanSrc.replace('/public/', '/');
+      }
+      
+      // Special case for surface2.html and location2.html
+      if (cleanSrc.includes('/PsycheJR/surface2.html') || cleanSrc.includes('/PsycheJR/location2.html')) {
+        const fileName = cleanSrc.includes('surface2.html') ? 'surface2.html' : 'location2.html';
+        cleanSrc = './PsycheJR/' + fileName;
+      }
+      
+      iframe.setAttribute('src', fixPath(cleanSrc));
+    }
+  }
+}
+
+// Add fixIframeSrc to the exported functions
+window.deployHelper.fixIframeSrc = fixIframeSrc;
 
 // Automatically fix paths when the DOM is loaded
 document.addEventListener('DOMContentLoaded', fixAllPaths);
+
+// Create a MutationObserver to watch for dynamically added iframes
+const observer = new MutationObserver(mutations => {
+  mutations.forEach(mutation => {
+    if (mutation.addedNodes) {
+      mutation.addedNodes.forEach(node => {
+        // Check if the added node is an iframe
+        if (node.tagName === 'IFRAME') {
+          fixIframeSrc(node);
+        }
+        // Check if the added node contains iframes
+        if (node.querySelectorAll) {
+          node.querySelectorAll('iframe').forEach(iframe => {
+            fixIframeSrc(iframe);
+          });
+        }
+      });
+    }
+  });
+});
+
+// Start observing the document with the configured parameters
+observer.observe(document.body, {
+  childList: true,
+  subtree: true
+});

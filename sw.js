@@ -144,7 +144,8 @@ self.addEventListener('fetch', event => {
     console.log('Service Worker: Redirecting resource', path);
     
     // Get the repository name from the current URL
-    const repoPath = self.location.pathname.split('/')[1] ? '/' + self.location.pathname.split('/')[1] : '';
+    const repoName = self.location.pathname.split('/')[1] || '';
+    const repoPath = repoName ? '/' + repoName : '';
     
     // Handle different path formats
     let adjustedPath = path;
@@ -166,8 +167,18 @@ self.addEventListener('fetch', event => {
       adjustedPath = adjustedPath.replace('/dist', '');
     }
     
+    // Check if the path already includes the repository name to avoid duplication
+    let finalPath;
+    if (repoName && adjustedPath.startsWith('/' + repoName + '/')) {
+      // Path already includes repo name, don't add it again
+      finalPath = adjustedPath;
+    } else {
+      // Path doesn't include repo name, add it
+      finalPath = repoPath + adjustedPath;
+    }
+    
     // Construct the correct URL
-    const correctUrl = new URL(repoPath + adjustedPath, url.origin);
+    const correctUrl = new URL(finalPath, url.origin);
     
     console.log('Service Worker: Redirecting from', path, 'to', correctUrl.href);
     

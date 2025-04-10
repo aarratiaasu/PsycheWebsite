@@ -13,16 +13,15 @@ export default defineConfig({
             targets: [
                 // Files
                 { src: ".gitignore", dest: "" },
-                { src: "index.html", dest: "" }, // Note: Vite will likely overwrite this with its processed version
+                { src: "index.html", dest: "" },
                 { src: "package-lock.json", dest: "" },
                 { src: "package.json", dest: "" },
                 { src: "README.md", dest: "" },
                 { src: "structure.txt", dest: "" },
                 { src: "vite.config.mjs", dest: "" },
-                // Folders (excluding 'dist' and 'public')
-                { src: ".git", dest: "" },
-                { src: ".github", dest: "" },
-                { src: "assets", dest: "" }, // Note: Vite also processes assets into dist/assets
+                
+                // Main folders - simplified approach
+                { src: "assets", dest: "" },
                 { src: "balance", dest: "" },
                 { src: "css", dest: "" },
                 { src: "escapeVelocity", dest: "" },
@@ -33,12 +32,12 @@ export default defineConfig({
                 { src: "psycheName", dest: "" },
                 { src: "res", dest: "" },
                 { src: "spacepic", dest: "" },
-                { src: "src", dest: "" }, // Note: Vite processes src separately; this copies the raw source
+                { src: "src", dest: "" },
                 { src: "TEST_IFRAME_SECTION7", dest: "" },
                 { src: "website", dest: "" },
                 { src: "year", dest: "" }
             ],
-            // Optional: Add options like `overwrite: true` if needed, default is true
+            flatten: false
         })
     ],
     optimizeDeps: {
@@ -46,6 +45,15 @@ export default defineConfig({
     },
     build: {
         assetsDir: "assets",
-        outDir: "dist"  // Changed back to "dist" to avoid conflicts
+        outDir: "dist",
+        chunkSizeWarningLimit: 1000, // Increase chunk size warning limit to 1000 KB
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    three: ['three'],
+                    vendor: ['gsap']
+                }
+            }
+        }
     }
 });

@@ -5,7 +5,7 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 
 export default defineConfig({
     base: '/PsycheWebsite/', // Base path for GitHub Pages
-    publicDir: 'public', // Enable Vite's public dir handling
+    publicDir: false, // Disable Vite's default public dir handling as we're handling it in the GitHub workflow
     plugins: [
         wasm(),
         topLevelAwait(),

@@ -13,9 +13,28 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Genos&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&display=swap">
+  
+  <!-- Import maps for ES modules -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.173.0/build/three.module.js",
+        "three/": "https://unpkg.com/three@0.173.0/"
+      }
+    }
+  </script>
 </head>
 <body>
   <script>
+    // Unregister any service workers
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+    
     if (window.innerWidth < 912) {
       window.location.href = "./public/PsycheJR/index2.html";
     }
@@ -70,7 +89,7 @@
   <script>
     const switchButton = document.getElementById('switch-to-html');
     switchButton.addEventListener('click', () => {
-      window.location.href = "/public/PsycheJR/index2.html"; 
+      window.location.href = "./public/PsycheJR/index2.html"; 
     });
   </script>
   

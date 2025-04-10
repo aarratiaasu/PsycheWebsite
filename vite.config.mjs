@@ -4,7 +4,8 @@ import topLevelAwait from "vite-plugin-top-level-await";
 import { viteStaticCopy } from "vite-plugin-static-copy"; 
 
 export default defineConfig({
-    publicDir: false, // Disable Vite's default public dir handling
+    base: '/PsycheWebsite/', // Base path for GitHub Pages
+    publicDir: 'public', // Enable Vite's public dir handling
     plugins: [
         wasm(),
         topLevelAwait(),
@@ -28,7 +29,6 @@ export default defineConfig({
                 { src: "games", dest: "" },
                 { src: "img", dest: "" },
                 { src: "name", dest: "" },
-                { src: "node_modules", dest: "" }, // Warning: This will significantly increase dist size
                 { src: "PsycheJR", dest: "" },
                 { src: "psycheName", dest: "" },
                 { src: "res", dest: "" },
@@ -36,8 +36,7 @@ export default defineConfig({
                 { src: "src", dest: "" }, // Note: Vite processes src separately; this copies the raw source
                 { src: "TEST_IFRAME_SECTION7", dest: "" },
                 { src: "website", dest: "" },
-                { src: "year", dest: "" },
-                { src: "public", dest: "" } // Explicitly copy the public folder
+                { src: "year", dest: "" }
             ],
             // Optional: Add options like `overwrite: true` if needed, default is true
         })

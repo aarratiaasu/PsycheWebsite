@@ -17,7 +17,7 @@
 import * as THREE from 'three';
 import { getCurrentSection } from './sectionTracking.js';
 import { triggerButton3D, clickableModels, applyGlowEffect, loadModel } from './utils.js';
-import { showLocation2Viewport } from '../../public/PsycheJR/location2Viewport.js';
+import { showLocation2Viewport } from './../../public/PsycheJR/location2Viewport.js';
 
 let hasShownViewport = false;
 
@@ -47,7 +47,7 @@ export function loadSection8(scene, camera, sections, renderer) {
       try {
         loadModel(
           "controller",
-          "/res/models/navigation_pin.glb",
+          "./../../res/models/navigation_pin.glb",
           modelPosition, // position
           1, // scale
           objRotation, // rotation

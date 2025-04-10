@@ -75,10 +75,7 @@ export function loadSection1(scene, camera, sections) {
       scene, 
       (model) => { 
         asteroidModel = model;
-        makeModelClickable(asteroidModel, () => {
-          console.log("asteroid clicked");
-          moveToSection(2, psycheModelPosition);
-        });
+        // Removed the makeModelClickable to disable click functionality
         resolve();
       }, camera
     );

@@ -1,12 +1,11 @@
 /**
- * PsycheName Viewport Module
- * 
- * This module handles loading the psycheName/psycheName.html content in an iframe
- * that appears on top of the Three.js scene.
+ * Name Viewport Module
+ *
+ * This module handles loading the psycheName.html content in an iframe
+ * that appears on top of the Three.js scene
  */
-import * as THREE from 'three';
 import gsap from 'gsap';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
 // Keep track of the viewport DOM elements
 let viewportContainer = null;
 let iframe = null;
@@ -45,7 +44,7 @@ export function showNameViewport() {
     header.style.justifyContent = 'space-between';
     header.style.alignItems = 'center';
     header.style.padding = '1px 2px';
-    header.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+    header.style.backgroundColor = 'rbga(0, 0, 0, 0.3)';
     header.style.color = 'white';
     header.style.borderTopLeftRadius = '20px';
     header.style.borderTopRightRadius = '20px';
@@ -65,9 +64,9 @@ export function showNameViewport() {
  //   header.appendChild(title);
     header.appendChild(closeButton);
     viewportContainer.appendChild(header);
-    // Create iframe to load the psycheName.html content
+    // Create iframe to load the balance.html content
     iframe = document.createElement('iframe');
-    iframe.src = './public/psycheName/public/name/psycheName.html';
+    iframe.src = './name/psycheName.html';
     iframe.style.width = '100%';
     iframe.style.height = '100%';
     iframe.style.border = 'none';
@@ -80,6 +79,16 @@ export function showNameViewport() {
     iframe.onload = () => {
         console.log("Iframe loaded successfully");
     };
+    iframe.onerror = () => {
+        console.error("Failed to load iframe content");
+        iframe.style.backgroundColor = '#444'; // Show a dark background or message
+    };
+    closeButton.addEventListener('mouseover', () => {
+        closeButton.style.transform = 'scale(1.2)';
+    });
+    closeButton.addEventListener('mouseout', () => {
+        closeButton.style.transform = 'scale(1)';
+    });
     viewportContainer.appendChild(iframe);
     document.body.appendChild(viewportContainer);
     // Add animation for opening
@@ -94,37 +103,71 @@ export function showNameViewport() {
     // Add event listener for Escape key
     document.addEventListener('keydown', handleKeyDown);
 }
-// Content for the iframe is handled by the psycheName.html file
+document.addEventListener("DOMContentLoaded", function () {
+    let contentBox = document.getElementById("content");
+    let popup = document.getElementById("viewportContainer");
+    let closeButton = document.getElementById("closeButton");
+
+    if (!popup || !contentBox || !closeButton) {
+        console.error("Missing elements: viewportContainer, content, or closeButton.");
+        return;
+    }
+    // Content for each section
+    const sections = {
+        introLink: "<h2>Introduction</h2><p>Psyche is a metal-rich asteroid orbiting the Sun between Mars and Jupiter. It was named after the Greek goddess Psyche.</p>",
+        historyLink: "<h2>Historical Background</h2><p>Psyche was discovered in 1852 by Italian astronomer Annibale de Gasparis and is one of the largest asteroids in our solar system.</p>",
+        missionLink: "<h2>NASA's Psyche Mission</h2><p>The Psyche spacecraft, designed by NASA, aims to study the asteroid to understand more about planetary cores and the history of the solar system.</p>",
+        funFactsLink: "<h2>Fun Facts</h2></h2></h2><ul><li>Psyche is primarily composed of nickel and iron, much like Earth's core.</li><li>It is about 226 kilometers (140 miles) in diameter.</li><li>Its name means 'soul' in Greek mythology.</li></ul>"
+    };
+
+    // Show popup when clicking a link
+    document.querySelectorAll("ul li a").forEach(link => {
+        link.addEventListener("click", function () {
+            let sectionKey = this.id;
+            contentBox.innerHTML = sections[sectionKey] || "No content available.";
+            popup.style.display = "block";
+            gsap.from(popup, {
+                opacity: 0,
+                scale: 0.8,
+                duration: 0.4,
+                ease: "power2.out"
+            });
+        });
+    });
+
+    // Close popup
+    closeButton.addEventListener("click", hideNameViewport); 
+
+    // Close popup when clicking outside of it
+    window.addEventListener("click", function (e) {
+        if (e.target === popup) {
+            hideNameViewport();
+        }
+    });
+});
 /**
  * Hides the name viewport
  */
 export function hideNameViewport() {
     if (!viewportContainer) return;
-//    viewportContainer.style.button = "-100%";
-//    viewportContainer.style.opacity = "0";
 
-//    setTimeout(() => {
-//        document.body.removeChild(viewportContainer);
-//        viewportContainer = null;
-//        iframe = null;
-//        closeButton = null;
-//    }, 500);
-//    };
-    // Animate closing
+    // Animation or immediate style change before removal
     gsap.to(viewportContainer, {
         opacity: 0,
-       scale: 0.8,
+        scale: 0.8,
         duration: 0.3,
         ease: "power2.in",
         onComplete: () => {
-            viewportContainer.style.display = 'none';
-            // Reset opacity and scale for next time
-            viewportContainer.style.opacity = 1;
-            viewportContainer.style.transform = 'translate(-50%, -50%) scale(1)';
+            if (iframe) {
+                viewportContainer.removeChild(iframe);
+                iframe = null; // Remove reference to iframe
+            }
+            document.body.removeChild(viewportContainer);
+            viewportContainer = null;
+            closeButton = null;
         }
     });
 }
-
 
 
 /**
@@ -148,3 +191,4 @@ export function destroyNameViewport() {
         closeButton = null;
     }
 }
+

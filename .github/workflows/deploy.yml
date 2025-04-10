@@ -1,13 +1,17 @@
 # Simple workflow for deploying static content to GitHub Pages
 # IMPORTANT: Before this workflow can run successfully:
-# 1. Enable GitHub Pages in your repository settings:
+# 1. Commit and push this workflow file to the "deployment-test-Armando" branch:
+#    git add .github/workflows/deploy.yml
+#    git commit -m "Add GitHub Pages deployment workflow"
+#    git push origin deployment-test-Armando
+# 2. Enable GitHub Pages in your repository settings:
 #    Go to https://github.com/aarratiaasu/PsycheWebsite/settings/pages and configure GitHub Pages to use GitHub Actions
 name: Deploy static content to Pages
 
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["main"]
+    branches: ["deployment-test-Armando"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -43,4 +47,4 @@ jobs:
           path: '.'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v3

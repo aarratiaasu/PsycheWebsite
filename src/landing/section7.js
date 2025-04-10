@@ -14,7 +14,7 @@
  */
 
 import { createMenuItem } from './utils.js';
-import { showSurface2Viewport } from '../../public/PsycheJR/surface2Viewport.js';
+import { showSurface2Viewport } from './../../public/PsycheJR/surface2Viewport.js';
 
 export function loadSection7(scene, camera, sections) {
     return new Promise((resolve, reject) => {

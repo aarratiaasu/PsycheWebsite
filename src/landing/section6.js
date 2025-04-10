@@ -13,7 +13,7 @@
 import * as THREE from 'three';
 import { triggerButton3D, clickableModels, applyGlowEffect, loadModel } from './utils.js';
 import { getCurrentSection } from './sectionTracking.js';
-import { showGamesViewport, hideGamesViewport } from '../../public/games/gamesViewport.js';
+import { showGamesViewport, hideGamesViewport } from './../../public/games/gamesViewport.js';
 
 let hasShownViewport = false;
 let sectionInitialized = false;
@@ -56,7 +56,7 @@ export function loadSection6(scene, camera, sections, renderer) {
     try {
       loadModel(
         "controller",
-        "/res/models/arcade_controller.glb",
+        "./../../res/models/arcade_controller.glb",
         modelPosition, // position
         2, // scale
         objRotation, // rotation

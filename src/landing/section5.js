@@ -4,6 +4,7 @@
 
 import { triggerButton3D, clickableModels, loadModel } from './utils.js';
 import { showWebsiteViewport } from './websiteViewport.js';
+import { getCurrentSection } from './sectionTracking.js';
 import * as THREE from 'three';
 
 let hasShownViewport = false;
@@ -35,7 +36,7 @@ export function loadSection5(scene, camera, sections, renderer) {
       try {
         loadModel(
           "probe",
-          "/res/models/nasaLogo.glb",
+          "./../../res/models/nasaLogo.glb",
           modelPosition, // position
           .7, // scale
           objRotation, // rotation

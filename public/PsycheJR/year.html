@@ -4,7 +4,7 @@
 * This year.html contains the content that the users can interact with to figure out what life would be like on 
 * Psyche for a year. There are other forms of interaction like figuring out your age on Psyche vs Earth.
 * 
-* Class:      SER 403
+* Class:      SER 402
 * Team:       35
 * Project:    NASA Psyche Mission: Year on Psyche Simulation
 * Authors:    Armando Arratia, Dan McNeil, Jenny Potocki, Josh Anselm, Tyler Brown
@@ -24,7 +24,7 @@ File Start
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./yearPage.css">
+  <link rel="stylesheet" href="./CSS/yearPage.css">
   <title>Year on Psyche Sim</title>
 </head>
 
@@ -32,8 +32,8 @@ File Start
 <body>
     <!-- Header at the Top of the Page -->
     <header id="header">
-      <img src="../img/psyche.svg" id="psyche"> 
-      <img src="../img/asteroid.png" id="asteroid">
+      <a href="./index2.html"><img src="./img/psyche.svg" id="psyche"></a>
+      <img src="./img/asteroid.png" id="asteroid">
     </header>
   
     <!-- Start of Main section -->
@@ -108,7 +108,7 @@ File Start
 
               // Set initial selected year as first year '2025'
               scrollWheel.scrollTop = 0;
-              yearList.children[0].classList.add('selected');
+              yearList.children.classList.add('selected');
               </script>
     </div>
 

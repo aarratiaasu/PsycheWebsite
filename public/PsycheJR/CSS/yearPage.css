@@ -183,7 +183,7 @@ img {
 
 
 #ageOnEarth {
-    background-image: url(../../img/EarthTransparent.png);
+    background-image: url(/img/EarthTransparent.png);
     background-size: cover;
     background-position: center;
     color: #087f23;
@@ -201,7 +201,7 @@ img {
 }
 
 #ageOnPsyche {
-    background-image: url(../../img/PsycheTransparent.png);
+    background-image: url(/img/PsycheTransparent.png);
     background-size: cover;
     background-position: center;
     color: #f9a000; 
@@ -293,7 +293,7 @@ input[type="radio"]#Psyche:checked + label {
 
 
 #work {
-    background-image: url(../../img/work.jpeg);
+    background-image: url(/img/work.jpeg);
     background-position: center;
     display: flex;
     height: 220px;
@@ -313,7 +313,7 @@ input[type="radio"]#Psyche:checked + label {
 }
 
 #school {
-    background-image: url(../../img/school.jpeg);
+    background-image: url(/img/school.jpeg);
     background-position: center;
     display: flex;
     height: 220px;
@@ -333,7 +333,7 @@ input[type="radio"]#Psyche:checked + label {
 }
 
 #sleep {
-    background-image: url(../../img/sleep.jpeg);
+    background-image: url(/img/sleep.jpeg);
     background-position: center;
     display: flex;
     height: 220px;
@@ -353,7 +353,7 @@ input[type="radio"]#Psyche:checked + label {
     }
 
 #relax {
-    background-image: url(../../img/relax.jpeg);
+    background-image: url(/img/relax.jpeg);
     display: flex;
     height: 220px;
     background-size: cover;
@@ -372,7 +372,7 @@ input[type="radio"]#Psyche:checked + label {
     }
 
 #eat {
-    background-image: url(../../img/eat.jpg);
+    background-image: url(/img/eat.jpg);
     background-size: cover;
     height: 220px;
     font-size: 45px;

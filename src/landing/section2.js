@@ -15,7 +15,7 @@
 import { createTextMesh, triggerButton3D, clickableModels, applyGlowEffect, makeModelClickable } from './utils.js';
 import { showNameViewport } from './psycheNameViewport.js';
 import * as THREE from 'three';
-import gsap from 'gsap';
+import { gsap } from 'gsap';
 
 export function loadSection2(scene, camera, sections, renderer) {
   const section2Coords = sections[2]?.position;

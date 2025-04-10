@@ -10,7 +10,7 @@
  * - Custom sizes set via developer tools
  */
 
-import gsap from 'gsap';
+import { gsap } from 'gsap';
 import * as ViewportStyling from './viewportStyling.js';
 
 // Keep track of the viewport DOM elements

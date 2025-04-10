@@ -5,7 +5,7 @@
  * It can be used by different viewport modules to maintain consistent styling.
  */
 
-import gsap from 'gsap';
+import { gsap } from 'gsap';
 
 /**
  * Applies common styles to a viewport container

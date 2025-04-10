@@ -18,7 +18,7 @@
  * - getCurrentSection(): Returns the index of the current section.
  */
 
-import gsap from 'gsap';
+import { gsap } from 'gsap';
 import * as THREE from 'three';
 // import iframe destroy functions to destroy iframes if user navigates away from a section
 import { hideNameViewport } from './psycheNameViewport.js';

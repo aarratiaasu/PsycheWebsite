@@ -44,7 +44,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
-import gsap from 'gsap';
+import { gsap } from 'gsap';
 
 /*
  * modelCache (Map): Caches loaded 3D models to optimize performance and resource usage.

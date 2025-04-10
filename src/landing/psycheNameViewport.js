@@ -5,7 +5,7 @@
  * that appears on top of the Three.js scene.
  */
 import * as THREE from 'three';
-import gsap from 'gsap';
+import { gsap } from 'gsap';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 // Keep track of the viewport DOM elements
 let viewportContainer = null;

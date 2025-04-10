@@ -169,7 +169,7 @@ function handleKeyDown(e) {
 /**
  * Removes the viewport completely
  */
-import gsap from 'gsap';
+import { gsap } from 'gsap';
 
 export function destroyYearViewport() {
     if (viewportContainer) {

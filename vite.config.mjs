@@ -16,7 +16,6 @@ export default defineConfig({
                 { src: "package-lock.json", dest: "" },
                 { src: "package.json", dest: "" },
                 { src: "README.md", dest: "" },
-                { src: "setup-deployment.bat", dest: "" },
                 { src: "structure.txt", dest: "" },
                 { src: "vite.config.mjs", dest: "" },
                 // Folders (excluding 'dist' and 'public')

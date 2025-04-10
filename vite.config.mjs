@@ -41,19 +41,21 @@ export default defineConfig({
         })
     ],
     optimizeDeps: {
-        include: ["three"]
+        include: ["three", "gsap"]
     },
     build: {
         assetsDir: "assets",
         outDir: "dist",
         chunkSizeWarningLimit: 10000, // Increase chunk size warning limit to 1000 KB
         rollupOptions: {
-            output: {
-                manualChunks: {
-                    three: ['three'],
-                    vendor: ['gsap']
-                }
-            }
+            // Don't use manualChunks for externalized modules
+            external: ['three', 'gsap']
+        }
+    },
+    resolve: {
+        alias: {
+            'gsap': 'https://unpkg.com/gsap@3.12.7/dist/gsap.min.js',
+            'three': 'https://unpkg.com/three@0.173.0/build/three.module.js'
         }
     }
 });
